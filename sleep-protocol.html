@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lazarus Method — Optimal Sleep Protocol</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+  :root {
+    --gold: #96792F;
+    --gold-soft: #B8975A;
+    --gold-bg: #FAF6ED;
+    --navy: #1A1A2E;
+    --charcoal: #3A3A3A;
+    --med: #8A8A8A;
+    --subtle: #BBBBBB;
+    --cream: #FDFBF7;
+    --white: #FFFFFF;
+    --border: #E8E0D0;
+    --warn: #CC6600;
+    --sleep-bg: #E8E0F0;
+    --sleep-text: #5A4A7A;
+    --wind-bg: #FFF3E0;
+    --wind-text: #8A6A2A;
+    --morning-bg: #E8F5E9;
+    --morning-text: #3A6A3A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    background: #F0EDE6;
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ INPUT PANEL ═══ */
+  .input-panel {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 24px;
+  }
+
+  .input-inner { max-width: 920px; margin: 0 auto; }
+
+  .input-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+
+  .input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 12px;
+  }
+
+  .field { display: flex; flex-direction: column; }
+
+  .field label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .field input, .field select {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 7px 9px;
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 26px;
+  }
+
+  .field input:focus, .field select:focus { border-color: var(--gold-soft); }
+  .field input::placeholder { color: var(--subtle); font-style: italic; }
+  .field.wide { grid-column: span 2; }
+
+  /* Instructions */
+  .instructions {
+    margin-top: 20px;
+    padding: 20px 24px;
+    background: var(--gold-bg);
+    border-radius: 5px;
+    border-left: 3px solid var(--gold-soft);
+  }
+
+  .instructions-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .instructions p {
+    font-size: 14px;
+    color: var(--charcoal);
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+
+  .instructions p:last-child { margin-bottom: 0; }
+  .instructions strong { color: var(--navy); font-weight: 600; }
+
+  .instructions .step-number {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: var(--gold);
+    color: var(--white);
+    border-radius: 50%;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  @media print { .instructions { display: none !important; } }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .btn-generate {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    padding: 9px 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 600;
+  }
+
+  .btn-generate:hover { background: var(--gold); }
+
+  .btn-print {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-soft);
+    padding: 8px 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+
+  .btn-print:hover { background: var(--gold); color: var(--white); }
+
+  .status { font-size: 13px; color: var(--subtle); font-style: italic; }
+
+  /* ═══ REPORT ═══ */
+  .report-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 20px 60px;
+    gap: 40px;
+  }
+
+  .report {
+    background: var(--white);
+    width: 8.5in;
+    min-height: 11in;
+    padding: 0.55in 0.8in;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+    position: relative;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .report:last-child { page-break-after: auto; }
+
+  .report-logo {
+    display: block;
+    margin: 0 auto 12px;
+    height: 38px;
+    width: auto;
+  }
+
+  .report-subtitle {
+    text-align: center;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .gold-rule {
+    border: none;
+    border-top: 1.5px solid var(--gold-soft);
+    margin: 0 0 24px;
+  }
+
+  .patient-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .patient-name {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: var(--navy);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .patient-date { font-size: 14px; color: var(--med); font-style: italic; }
+
+  .patient-meta {
+    font-size: 14px;
+    color: var(--subtle);
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  /* Journey */
+  .journey {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .journey-side { flex: 1; }
+  .journey-side.right { text-align: right; }
+
+  .journey-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 3px;
+    color: var(--med);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  .journey-label.gold { color: var(--gold); }
+
+  .journey-hero {
+    font-size: 44px;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1;
+  }
+
+  .journey-hero.gold { color: var(--gold); }
+  .journey-hero .unit { font-size: 20px; color: var(--med); }
+  .journey-hero.gold .unit { color: var(--gold-soft); }
+
+  .journey-context {
+    font-size: 14px;
+    color: var(--med);
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  .journey-context.gold { color: var(--gold-soft); }
+
+  .journey-arrow { font-size: 28px; color: var(--gold-soft); padding: 0 16px; margin-top: 12px; }
+
+  .journey-summary {
+    text-align: center;
+    font-size: 14px;
+    color: var(--med);
+    font-style: italic;
+    margin: 20px 0 28px;
+    line-height: 1.6;
+  }
+
+  .gold-rule-thin {
+    border: none;
+    border-top: 1px solid var(--gold-soft);
+    margin: 0 0 26px;
+  }
+
+  /* Key Times */
+  .section-title {
+    text-align: center;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+
+  .key-times {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .key-time { flex: 1; padding: 12px 4px; }
+  .key-time:nth-child(odd) { background: var(--gold-bg); border-radius: 5px; }
+
+  .key-time-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--subtle);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  .key-time-value { font-size: 22px; color: var(--charcoal); line-height: 1; }
+
+  /* Section Divider */
+  .section-divider {
+    margin: 24px auto;
+    width: 80px;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Routine Table */
+  .routine-header {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--navy);
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
+  }
+
+  .routine-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+  }
+
+  .routine-table th {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 7px 10px;
+    text-align: left;
+    border-bottom: 1.5px solid var(--border);
+  }
+
+  .routine-table td {
+    font-size: 13px;
+    padding: 6px 10px;
+    border-bottom: 1px solid #F0ECE4;
+    vertical-align: middle;
+  }
+
+  .routine-table td:first-child {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    color: var(--charcoal);
+    font-weight: 600;
+    white-space: nowrap;
+    width: 130px;
+  }
+
+  .routine-table td:nth-child(2) {
+    font-weight: 500;
+    color: var(--navy);
+  }
+
+  .routine-table td:nth-child(3) {
+    font-style: italic;
+    color: var(--med);
+    font-size: 12px;
+  }
+
+  /* Row type colors */
+  .row-sleep { background: var(--sleep-bg); }
+  .row-sleep td:nth-child(2) { color: var(--sleep-text); font-weight: 600; }
+
+  .row-wind { background: var(--wind-bg); }
+  .row-wind td:nth-child(2) { color: var(--wind-text); }
+
+  .row-morning { background: var(--morning-bg); }
+  .row-morning td:nth-child(2) { color: var(--morning-text); }
+
+  .row-open td:nth-child(2) {
+    color: var(--subtle);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 12px 0 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+
+  /* Protocol Rules */
+  .protocol-rules {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--gold-bg);
+    border-radius: 5px;
+    border-left: 3px solid var(--gold-soft);
+  }
+
+  .protocol-rules-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .protocol-rules p {
+    font-size: 13px;
+    color: var(--charcoal);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+
+  .protocol-rules p:last-child { margin-bottom: 0; }
+
+  .protocol-rules strong { color: var(--navy); }
+
+  /* Footer */
+  .report-footer {
+    margin-top: auto;
+    padding-top: 20px;
+  }
+
+  .footer-rule {
+    border: none;
+    border-top: 1px solid var(--gold-soft);
+    margin: 0 0 10px;
+  }
+
+  .footer-text {
+    text-align: center;
+    font-size: 11px;
+    color: var(--subtle);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  .footer-brand {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .footer-icon { width: 14px; height: 14px; }
+  .footer-url { font-size: 11px; color: var(--gold-soft); }
+
+  .empty-state {
+    text-align: center;
+    padding: 70px 40px;
+    color: var(--subtle);
+    font-style: italic;
+    font-size: 17px;
+  }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    body { background: white !important; }
+    .input-panel { display: none !important; }
+    .report-wrap { padding: 0; }
+    .report {
+      box-shadow: none;
+      width: 100%;
+      min-height: auto;
+      padding: 0.4in 0.6in;
+    }
+    .report-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ INPUT PANEL ═══ -->
+<div class="input-panel">
+  <div class="input-inner">
+    <div class="input-title">Patient Information</div>
+    <div class="input-grid">
+      <div class="field wide">
+        <label>Patient Name</label>
+        <input type="text" id="name" placeholder="Full name">
+      </div>
+      <div class="field">
+        <label>Date</label>
+        <input type="date" id="date">
+      </div>
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="age" placeholder="63">
+      </div>
+      <div class="field">
+        <label>Desired Wake Time</label>
+        <select id="wakeTime">
+          <option value="4:00">4:00 AM</option>
+          <option value="4:30">4:30 AM</option>
+          <option value="5:00">5:00 AM</option>
+          <option value="5:30">5:30 AM</option>
+          <option value="6:00" selected>6:00 AM</option>
+          <option value="6:30">6:30 AM</option>
+          <option value="7:00">7:00 AM</option>
+          <option value="7:30">7:30 AM</option>
+          <option value="8:00">8:00 AM</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Target Sleep (hours)</label>
+        <select id="targetSleep">
+          <option value="6">6</option>
+          <option value="6.5">6.5</option>
+          <option value="7">7</option>
+          <option value="7.5" selected>7.5</option>
+          <option value="8">8</option>
+          <option value="8.5">8.5</option>
+          <option value="9">9</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Current Avg Sleep (hrs)</label>
+        <input type="number" id="currentSleep" placeholder="5.5" step="0.5" min="0" max="14">
+      </div>
+      <div class="field">
+        <label>Wind-Down Period</label>
+        <select id="windDown">
+          <option value="30">30 minutes</option>
+          <option value="60" selected>60 minutes</option>
+          <option value="90">90 minutes</option>
+          <option value="120">120 minutes</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Caffeine Cutoff</label>
+        <select id="caffeineCut">
+          <option value="6">6 hrs before bed</option>
+          <option value="8" selected>8 hrs before bed</option>
+          <option value="10">10 hrs before bed</option>
+          <option value="12">12 hrs before bed</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Screens Off</label>
+        <select id="screenCut">
+          <option value="30">30 min before bed</option>
+          <option value="60" selected>60 min before bed</option>
+          <option value="90">90 min before bed</option>
+          <option value="120">120 min before bed</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <div class="instructions-title">How to Use This Tool</div>
+      <p>This tool creates your personalized Optimal Sleep Protocol by reverse-engineering the ideal bedtime from the time you want to wake up. It then builds a structured evening wind-down routine and morning routine around your sleep window, giving you a clear plan for every 30-minute block from 8 PM to 8 AM.</p>
+      <p><span class="step-number">1</span> <strong>Enter your information above.</strong> Your name, date, age, and current average sleep hours establish your baseline. If you are unsure of your current average, estimate the number of hours you typically sleep on a weeknight.</p>
+      <p><span class="step-number">2</span> <strong>Set your sleep targets.</strong> Choose the time you want to wake up each morning, how many hours of sleep you are targeting, how long you need to wind down before bed, and your caffeine and screen cutoff preferences.</p>
+      <p><span class="step-number">3</span> <strong>Click Generate Protocol.</strong> Your personalized routine will appear below with every 30-minute block mapped out, color-coded by activity type. To save or print your protocol, click Print / Save PDF.</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn-generate" onclick="calc()">Generate Protocol</button>
+      <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
+      <span class="status" id="status"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REPORT ═══ -->
+<div class="report-wrap" id="reportWrap">
+  <div class="report" id="report">
+    <img class="report-logo" alt="The Lazarus Method"
+         src="data:image/png;base64,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">
+    <div class="report-subtitle">Optimal Sleep Protocol</div>
+    <hr class="gold-rule">
+
+    <div id="reportContent">
+      <div class="empty-state">Enter patient information above and click Generate Protocol.</div>
+    </div>
+
+    <div class="report-footer" id="reportFooter" style="display:none;">
+      <hr class="footer-rule">
+      <div class="footer-text">Reassess every 3 to 4 weeks.</div>
+      <div class="footer-brand">
+        <img class="footer-icon" alt=""
+             src="data:image/png;base64,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">
+        <span class="footer-url">LazarusMethod.com</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TIME HELPERS ──
+function parseTime(str) {
+  // "6:00" -> minutes from midnight
+  var parts = str.split(':');
+  return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+}
+
+function fmtTime(mins) {
+  // minutes from midnight -> "10:30 PM"
+  while (mins < 0) mins += 1440;
+  mins = mins % 1440;
+  var h = Math.floor(mins / 60);
+  var m = mins % 60;
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12;
+  if (h12 === 0) h12 = 12;
+  return h12 + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+}
+
+function fmtTimeShort(mins) {
+  while (mins < 0) mins += 1440;
+  mins = mins % 1440;
+  var h = Math.floor(mins / 60);
+  var m = mins % 60;
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12;
+  if (h12 === 0) h12 = 12;
+  return h12 + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+}
+
+function slotRange(startMins) {
+  return fmtTime(startMins) + ' \u2013 ' + fmtTime(startMins + 30);
+}
+
+function calc() {
+  var name = document.getElementById('name').value;
+  var dateVal = document.getElementById('date').value;
+  var age = document.getElementById('age').value;
+  var wakeStr = document.getElementById('wakeTime').value;
+  var targetHrs = parseFloat(document.getElementById('targetSleep').value);
+  var currentHrs = parseFloat(document.getElementById('currentSleep').value);
+  var windDownMin = parseInt(document.getElementById('windDown').value);
+  var caffeineCutHrs = parseInt(document.getElementById('caffeineCut').value);
+  var screenCutMin = parseInt(document.getElementById('screenCut').value);
+
+  if (!currentHrs && currentHrs !== 0) {
+    document.getElementById('reportContent').innerHTML =
+      '<div class="empty-state">Complete all required fields, then click Generate Protocol.</div>';
+    document.getElementById('reportFooter').style.display = 'none';
+    document.getElementById('status').textContent = '';
+    return;
+  }
+
+  // ── CALCULATE KEY TIMES (all in minutes from midnight) ──
+  var wakeMins = parseTime(wakeStr);
+  var sleepMins = targetHrs * 60;
+  var bedMins = wakeMins - sleepMins;                  // lights out
+  var windStartMins = bedMins - windDownMin;            // wind-down begins
+  var screenOffMins = bedMins - screenCutMin;            // screens off
+  var caffeineOffMins = bedMins - (caffeineCutHrs * 60); // caffeine cutoff
+
+  // ── BUILD 30-MIN SLOT TIMELINE (8 PM to 8 AM = 20:00 to 32:00 = 1200 to 1920 mins) ──
+  // We'll use 1200 (8PM) to 1920 (8AM next day) as our range
+  // Normalize: minutes from midnight, with next-day times > 1440
+  var normBed = bedMins < 720 ? bedMins + 1440 : bedMins;       // if bed is past midnight, add 24h
+  var normWake = wakeMins < 720 ? wakeMins + 1440 : wakeMins;   // wake is always AM, so add
+  var normWindStart = windStartMins < 720 ? windStartMins + 1440 : windStartMins;
+  var normScreenOff = screenOffMins < 720 ? screenOffMins + 1440 : screenOffMins;
+
+  // Evening slots: 8 PM (1200) to midnight (1440) = 8 slots
+  // Night slots: midnight (1440) to wake
+  // Morning slots: wake to 8 AM (1920)
+
+  var eveningSlots = [];
+  var morningSlots = [];
+
+  // Wind-down activities (from RESTED protocol)
+  var windActivities = [
+    'Decompress: stop intense work, dim lights',
+    'Screen free: no devices, read or journal',
+    'Environment: cool, dark, quiet bedroom',
+    'Routine: shower or bath, breathing, into bed'
+  ];
+  var windIdx = 0;
+
+  // Morning activities (from PREPARE framework)
+  var morningActivities = [
+    { act: 'Apply the PREPARE Protocol', note: '' },
+    { act: 'Apply the PREPARE Protocol', note: '' },
+    { act: 'Apply the PREPARE Protocol', note: '' },
+    { act: 'Personal time', note: '' },
+    { act: 'Personal time', note: '' },
+    { act: 'Personal time', note: '' },
+    { act: 'Personal time', note: '' },
+    { act: 'Personal time', note: '' }
+  ];
+  var mornIdx = 0;
+
+  // Build Evening Routine (8 PM to 12 AM)
+  for (var t = 1200; t < 1440; t += 30) {
+    var slot = { time: slotRange(t % 1440), activity: '', note: '', rowClass: 'row-open' };
+
+    if (t >= normBed) {
+      slot.activity = 'SLEEP';
+      slot.note = '';
+      slot.rowClass = 'row-sleep';
+    } else {
+      slot.activity = 'Apply the RESTED Protocol';
+      slot.note = '';
+      slot.rowClass = 'row-wind';
+    }
+
+    // Mark screen cutoff
+    if (t === Math.floor(normScreenOff / 30) * 30 && normScreenOff >= 1200 && normScreenOff < 1440) {
+      if (slot.note) slot.note += ' \u00B7 ';
+      slot.note += 'Screens off';
+    }
+
+    eveningSlots.push(slot);
+  }
+
+  // Build Morning Routine (4 AM to 8 AM)
+  for (var t2 = 1680; t2 < 1920; t2 += 30) {
+    var actualMins = t2 % 1440;
+    var slot2 = { time: slotRange(actualMins), activity: '', note: '', rowClass: 'row-open' };
+
+    if (t2 < normWake) {
+      slot2.activity = 'SLEEP';
+      slot2.note = '';
+      slot2.rowClass = 'row-sleep';
+    } else {
+      var ma = morningActivities[mornIdx % morningActivities.length];
+      slot2.activity = ma.act;
+      slot2.note = mornIdx === 0 ? 'Wake up' : ma.note;
+      slot2.rowClass = ma.act === 'Personal time' ? 'row-open' : 'row-morning';
+      mornIdx++;
+    }
+
+    morningSlots.push(slot2);
+  }
+
+  // Sleep improvement
+  var sleepGain = +(targetHrs - currentHrs).toFixed(1);
+
+  // ── FORMAT ──
+  var dateStr = '';
+  if (dateVal) {
+    var d = new Date(dateVal + 'T12:00:00');
+    dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  var metaParts = [];
+  if (age) metaParts.push('Age ' + age);
+  metaParts.push('Target: ' + targetHrs + ' hrs sleep');
+  var metaItems = metaParts.join('  \u00B7  ');
+
+  // Count sleep slots (evening + implied midnight-4AM + morning)
+  var evSleepCount = eveningSlots.filter(function(s) { return s.activity === 'SLEEP'; }).length;
+  var moSleepCount = morningSlots.filter(function(s) { return s.activity === 'SLEEP'; }).length;
+  var midnightSlots = 8; // 12AM-4AM = always sleep
+  var totalSleepSlots = evSleepCount + midnightSlots + moSleepCount;
+  var totalSleepHrs = totalSleepSlots * 0.5;
+
+  // ── TABLE HTML ──
+  function buildTable(slots) {
+    var html = '<table class="routine-table"><tr><th>Time</th><th>Activity</th><th>Notes</th></tr>';
+    for (var i = 0; i < slots.length; i++) {
+      html += '<tr class="' + slots[i].rowClass + '"><td>' + slots[i].time + '</td><td>' + slots[i].activity + '</td><td>' + slots[i].note + '</td></tr>';
+    }
+    html += '</table>';
+    return html;
+  }
+
+  // ── FOOTER HTML ──
+  function footerHtml(pg, total) {
+    return '<div class="report-footer" style="display:block;">' +
+      '<hr class="footer-rule">' +
+      '<div class="footer-text">Reassess every 3 to 4 weeks.</div>' +
+      '<div class="footer-brand">' +
+        '<img class="footer-icon" alt="" src="' + document.querySelector('.footer-icon').src + '">' +
+        '<span class="footer-url">LazarusMethod.com</span>' +
+      '</div>' +
+      '<div style="text-align:center;font-family:-apple-system,sans-serif;font-size:9px;color:var(--subtle);margin-top:6px;letter-spacing:1px;">Page ' + pg + ' of ' + total + '</div>' +
+    '</div>';
+  }
+
+  // ── RENDER TWO PAGES ──
+  var page1 =
+    '<div class="patient-header">' +
+      '<div class="patient-name">' + (name || 'Patient').toUpperCase() + '</div>' +
+      '<div class="patient-date">' + dateStr + '</div>' +
+    '</div>' +
+    '<div class="patient-meta">' + metaItems + '</div>' +
+
+    '<div class="journey">' +
+      '<div class="journey-side">' +
+        '<div class="journey-label">WHERE YOU ARE</div>' +
+        '<div class="journey-hero">' + currentHrs + '<span class="unit"> hrs/night</span></div>' +
+        '<div class="journey-context">Current average sleep</div>' +
+      '</div>' +
+      '<div class="journey-arrow">\u2192</div>' +
+      '<div class="journey-side right">' +
+        '<div class="journey-label gold">WHERE YOU\u2019RE GOING</div>' +
+        '<div class="journey-hero gold">' + targetHrs + '<span class="unit"> hrs/night</span></div>' +
+        '<div class="journey-context gold">' + (sleepGain > 0 ? '+' + sleepGain + ' hours of restorative sleep' : 'Optimizing sleep quality') + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="journey-summary">' +
+      'Lights out by ' + fmtTime(bedMins) + '  \u00B7  Wake at ' + fmtTime(wakeMins) + '  \u00B7  ' +
+      targetHrs + ' hours in bed  \u00B7  ' + windDownMin + '-minute wind-down' +
+    '</div>' +
+
+    '<hr class="gold-rule-thin">' +
+
+    '<div class="section-title">YOUR KEY TIMES</div>' +
+
+    '<div class="key-times">' +
+      '<div class="key-time"><div class="key-time-label">Caffeine Cutoff</div><div class="key-time-value">' + fmtTime(caffeineOffMins) + '</div></div>' +
+      '<div class="key-time"><div class="key-time-label">Screens Off</div><div class="key-time-value">' + fmtTime(screenOffMins) + '</div></div>' +
+      '<div class="key-time"><div class="key-time-label">Wind-Down Starts</div><div class="key-time-value">' + fmtTime(windStartMins) + '</div></div>' +
+      '<div class="key-time"><div class="key-time-label">Lights Out</div><div class="key-time-value">' + fmtTime(bedMins) + '</div></div>' +
+      '<div class="key-time"><div class="key-time-label">Wake Time</div><div class="key-time-value">' + fmtTime(wakeMins) + '</div></div>' +
+    '</div>' +
+
+    '<hr class="section-divider">' +
+
+    '<div class="protocol-rules">' +
+      '<div class="protocol-rules-title">RESTED Protocol Guidelines</div>' +
+      '<p><strong>Routine:</strong> No caffeine after ' + fmtTime(caffeineOffMins) + '. No large meals or alcohol after ' + fmtTime(bedMins - 180) + '. Stick to the same bedtime and wake time seven days a week.</p>' +
+      '<p><strong>Environment:</strong> Keep your bedroom cool (65\u201368\u00B0F), dark, and quiet. Keep your phone at least 10 feet from your bed. Consider blackout curtains and white noise if needed.</p>' +
+      '<p><strong>Screen Free:</strong> All screens off by ' + fmtTime(screenOffMins) + '. Blue light suppresses melatonin and delays sleep onset. Use blue light blocking glasses if you must use a device after this time.</p>' +
+      '<p><strong>Time Outdoors:</strong> Aim for 10 to 60 minutes of direct sunlight exposure daily, ideally within the first hour of waking. This resets your circadian rhythm and improves sleep quality.</p>' +
+      '<p><strong>Exercise:</strong> Move in the morning or early afternoon. Avoid intense exercise within 3 hours of bedtime. A light evening walk is the exception and can actually improve sleep.</p>' +
+      '<p><strong>Decompress:</strong> Stop all intense work and stimulating activity at least 2 hours before bed. Use this time to read, shower or bathe, journal, practice breathing exercises, or do gentle stretching.</p>' +
+    '</div>' +
+
+    footerHtml(1, 2);
+
+  var page2 =
+    '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">' +
+      '<div style="font-family:-apple-system,sans-serif;font-size:11px;letter-spacing:2px;color:var(--subtle);text-transform:uppercase;font-weight:600;">' + (name || 'Patient').toUpperCase() + '</div>' +
+      '<div style="font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:700;">Optimal Sleep Protocol</div>' +
+    '</div>' +
+    '<hr style="border:none;border-top:1px solid var(--border);margin:0 0 18px;">' +
+
+    '<div class="routine-header">Evening Routine (8 PM \u2013 12 AM)</div>' +
+    buildTable(eveningSlots) +
+
+    '<div style="text-align:center;font-size:13px;color:var(--sleep-text);font-style:italic;padding:10px 0;background:var(--sleep-bg);border-bottom:1px solid #D0C8E0;">' +
+      '12:00 AM \u2013 4:00 AM  \u00B7  SLEEP' +
+    '</div>' +
+
+    '<div class="routine-header" style="border-radius:0;">Morning Routine (4 AM \u2013 8 AM)</div>' +
+    buildTable(morningSlots) +
+
+    '<div class="legend">' +
+      '<div class="legend-item"><div class="legend-swatch" style="background:var(--sleep-bg);"></div>Sleep</div>' +
+      '<div class="legend-item"><div class="legend-swatch" style="background:var(--wind-bg);"></div>Wind-Down (RESTED)</div>' +
+      '<div class="legend-item"><div class="legend-swatch" style="background:var(--morning-bg);"></div>Morning (PREPARE)</div>' +
+      '<div class="legend-item"><div class="legend-swatch" style="background:var(--white);border:1px solid var(--border);"></div>Personal Time</div>' +
+    '</div>' +
+
+    '<div class="protocol-rules" style="margin-top:14px;padding:10px 14px;">' +
+      '<div class="protocol-rules-title">PREPARE Protocol</div>' +
+      '<p style="margin-bottom:2px;font-size:11.5px;line-height:1.45;"><strong>P \u2013 Presence:</strong> 10 minutes of silence, no devices. Check in with yourself.</p>' +
+      '<p style="margin-bottom:2px;font-size:11.5px;line-height:1.45;"><strong>R \u2013 Reinforce:</strong> Affirmations and mental rehearsal. Direct your energy intentionally.</p>' +
+      '<p style="margin-bottom:2px;font-size:11.5px;line-height:1.45;"><strong>E \u2013 Envision:</strong> Visualize your path to your goals. See yourself succeeding.</p>' +
+      '<p style="margin-bottom:2px;font-size:11.5px;line-height:1.45;"><strong>P \u2013 Physical:</strong> Move your body. Gym, yoga, walk, stretch, or run.</p>' +
+      '<p style="margin-bottom:2px;font-size:11.5px;line-height:1.45;"><strong>A \u2013 Absorb:</strong> Read something inspiring for at least 4 minutes. No news, no work.</p>' +
+      '<p style="margin-bottom:2px;font-size:11.5px;line-height:1.45;"><strong>R \u2013 Reflect:</strong> Journal your thoughts, review your goals, clear your mind.</p>' +
+      '<p style="margin-bottom:0;font-size:11.5px;line-height:1.45;"><strong>E \u2013 Execute:</strong> Execute your intentions for the day.</p>' +
+    '</div>' +
+
+    footerHtml(2, 2);
+
+  // Build two-page layout
+  var logoSrc = document.querySelector('.report-logo').src;
+  var wrap = document.getElementById('reportWrap');
+  wrap.innerHTML =
+    '<div class="report">' +
+      '<img class="report-logo" alt="The Lazarus Method" src="' + logoSrc + '">' +
+      '<div class="report-subtitle">Optimal Sleep Protocol</div>' +
+      '<hr class="gold-rule">' +
+      page1 +
+    '</div>' +
+    '<div class="report">' +
+      page2 +
+    '</div>';
+
+  document.getElementById('status').textContent = 'Protocol generated. Click Print / Save PDF to export.';
+}
+
+document.getElementById('date').valueAsDate = new Date();
+</script>
+
+</body>
+</html>
