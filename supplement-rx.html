@@ -268,7 +268,7 @@
       <div class="instructions-title">How to Use This Tool</div>
       <p><span class="step-number">1</span> Enter the patient's name, date, and program tier. Select supplements from the Wellness Warrior catalog in each tier, then set the dosage, frequency, duration, and clinical message.</p>
       <p><span class="step-number">2</span> Click <strong>Generate Prescription</strong> to create a branded supplement protocol.</p>
-      <p><span class="step-number">3</span> Click <strong>Print / Save PDF</strong> to export the supplement protocol for the patient.</p>
+      <p><span class="step-number">3</span> Click <strong>Print / Save PDF</strong> to export. Order links are included for each product.</p>
     </div>
 
     <div class="actions">
@@ -298,54 +298,55 @@ var FOOTER_ICON = document.querySelector('.footer-icon').src;
 
 var PRODUCTS = {
   1: [
-    { name: 'Core D3', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-d3' },
-    { name: 'Core Essentials', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-essentials' },
-    { name: 'Core Multi', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-multi' },
-    { name: 'Core Omega', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-omega' },
-    { name: 'Core Probiotic', purpose: 'GI Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-probiotics' },
-    { name: 'Core Defense Greens', purpose: 'Inflammation Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/core-defense' },
-    { name: 'Hydration Support', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/hydration-support' }
+    { name: 'Core D3', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-d3' },
+    { name: 'Core Defense Greens', purpose: 'Inflammation Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/core-defense' },
+    { name: 'Core Essentials', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-essentials' },
+    { name: 'Core Multi', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-multi' },
+    { name: 'Core Omega', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-omega' },
+    { name: 'Core Probiotic', purpose: 'GI Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-probiotics' },
+    { name: 'Hydration Support', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/hydration-support' }
   ],
   2: [
-    { name: 'Adrenal Repair', purpose: 'Stress Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/products/adrenal-repair' },
-    { name: 'Beta Glucans', purpose: 'Immune Support', delivery: 'Capsule', link: '' },
-    { name: 'Collagen Restore', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/collagen-restore' },
-    { name: 'Core C Support', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-c-support' },
-    { name: 'Core Defense Greens', purpose: 'Inflammation Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/core-defense' },
-    { name: 'Core Detox', purpose: 'Detox Support', delivery: 'Scoop', link: '' },
-    { name: 'Core Mag', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/core-mag' },
-    { name: 'Core Protein', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/core-protein' },
-    { name: 'Detox Support', purpose: 'Detox Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/detox-support' },
-    { name: 'DGL Chew', purpose: 'GI Support', delivery: 'Capsule', link: '' },
-    { name: 'Digestive Repair', purpose: 'GI Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/digestive-repair' },
-    { name: 'Digestive Support', purpose: 'GI Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/digestive-support' },
-    { name: 'GI Restore', purpose: 'GI Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/gi-restore' },
-    { name: 'Hydration Support', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/hydration-support' },
-    { name: 'Immune Defense', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/immune-defense' },
-    { name: 'Immune Repair', purpose: 'Inflammation Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/immune-repair' },
-    { name: 'Lean Support', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/lean-support' },
-    { name: 'Liposomal Glutathione', purpose: 'Detox Support', delivery: 'Dropper', link: 'https://lazarusmethod.com/collections/all/products/liposomal-glutathione' },
-    { name: 'Metabolic Restore', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/metabolic-restore' },
-    { name: 'Metabolic Support', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/metabolic-support' },
-    { name: 'Muscle Repair', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/muscle-repair' },
-    { name: 'Muscle Support', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/muscle-support' },
-    { name: 'Neuro Restore', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/neuro-restore' },
-    { name: 'Neuro Support', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/neuro-support' },
-    { name: 'Pure Creatine Powder', purpose: 'Fitness Support', delivery: 'Scoop', link: '' },
-    { name: 'Sleep Support', purpose: 'Sleep Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/sleep-support' },
+    { name: 'Adrenal Repair', purpose: 'Stress Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/adrenal-repair' },
+    { name: 'Berberine Boost', purpose: 'Metabolism Support', delivery: 'Capsule', link: '' },
+    { name: 'Beta Glucans', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/bwh-85%E2%84%A2-beta-glucan' },
+    { name: 'Collagen Restore', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/collagen-restore' },
+    { name: 'Core C Support', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-c-support' },
+    { name: 'Core Defense Greens', purpose: 'Inflammation Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/core-defense' },
+    { name: 'Core Detox', purpose: 'Detox Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/core-detox' },
+    { name: 'Core Mag', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-mag' },
+    { name: 'Core Protein', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/core-protein' },
+    { name: 'Detox Support', purpose: 'Detox Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/detox-support' },
+    { name: 'DGL Chew', purpose: 'GI Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/dgl-chews' },
+    { name: 'Digestive Repair', purpose: 'GI Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/digestive-repair' },
+    { name: 'Digestive Support', purpose: 'GI Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/digestive-support' },
+    { name: 'GI Restore', purpose: 'GI Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/gi-restore' },
+    { name: 'Hydration Support', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/hydration-support' },
+    { name: 'Immune Defense', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/immune-defense' },
+    { name: 'Immune Repair', purpose: 'Inflammation Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/immune-repair' },
+    { name: 'Lean Support', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/lean-support' },
+    { name: 'Liposomal Glutathione', purpose: 'Detox Support', delivery: 'Dropper', link: 'https://shop.lazarusmethod.com/products/liposomal-glutathione' },
+    { name: 'Metabolic Restore', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/metabolic-restore' },
+    { name: 'Metabolic Support', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/metabolic-support' },
+    { name: 'Muscle Repair', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/muscle-repair' },
+    { name: 'Muscle Support', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/muscle-support' },
+    { name: 'Neuro Restore', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/neuro-restore' },
+    { name: 'Neuro Support', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/neuro-support' },
+    { name: 'Pure Creatine Powder', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/pure-creatine-powder' },
+    { name: 'Sleep Support', purpose: 'Sleep Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/sleep-support' },
     { name: 'SparkCell NAD+', purpose: 'Metabolism Support', delivery: 'Capsule', link: '' },
-    { name: 'Whey Protein', purpose: 'Fitness Support', delivery: 'Scoop', link: '' }
+    { name: 'Whey Protein', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/whey-protein' }
   ],
   3: [
-    { name: 'Collagen Restore', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://lazarusmethod.com/collections/all/products/collagen-restore' },
-    { name: 'Core Detox', purpose: 'Detox Support', delivery: 'Scoop', link: '' },
-    { name: 'Detox Support', purpose: 'Detox Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/detox-support' },
-    { name: 'Immune Repair', purpose: 'Inflammation Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/immune-repair' },
-    { name: 'Liposomal Glutathione', purpose: 'Detox Support', delivery: 'Dropper', link: 'https://lazarusmethod.com/collections/all/products/liposomal-glutathione' },
-    { name: 'Metabolic Restore', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/metabolic-restore' },
-    { name: 'Metabolic Support', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/metabolic-support' },
-    { name: 'Neuro Restore', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/neuro-restore' },
-    { name: 'Neuro Support', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://lazarusmethod.com/collections/all/products/neuro-support' },
+    { name: 'Collagen Restore', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/collagen-restore' },
+    { name: 'Core Detox', purpose: 'Detox Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/core-detox' },
+    { name: 'Detox Support', purpose: 'Detox Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/detox-support' },
+    { name: 'Immune Repair', purpose: 'Inflammation Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/immune-repair' },
+    { name: 'Liposomal Glutathione', purpose: 'Detox Support', delivery: 'Dropper', link: 'https://shop.lazarusmethod.com/products/liposomal-glutathione' },
+    { name: 'Metabolic Restore', purpose: 'Cellular Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/metabolic-restore' },
+    { name: 'Metabolic Support', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/metabolic-support' },
+    { name: 'Neuro Restore', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/neuro-restore' },
+    { name: 'Neuro Support', purpose: 'Brain Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/neuro-support' },
     { name: 'SparkCell NAD+', purpose: 'Metabolism Support', delivery: 'Capsule', link: '' }
   ]
 };
@@ -410,8 +411,8 @@ function updatePurpose(tier, row) {
 }
 
 // Initialize rows: 6 for T1, 8 for T2, 6 for T3
-buildTierRows(1, 'tier1Body', 6);
-buildTierRows(2, 'tier2Body', 8);
+buildTierRows(1, 'tier1Body', 7);
+buildTierRows(2, 'tier2Body', 10);
 buildTierRows(3, 'tier3Body', 6);
 
 // ═══ GENERATE ═══
@@ -458,8 +459,8 @@ function calc() {
     return items;
   }
 
-  var t1 = collectTier(1, 6);
-  var t2 = collectTier(2, 8);
+  var t1 = collectTier(1, 7);
+  var t2 = collectTier(2, 10);
   var t3 = collectTier(3, 6);
   var totalSupps = t1.length + t2.length + t3.length;
 
@@ -485,9 +486,10 @@ function calc() {
   function buildTierTable(items) {
     if (items.length === 0) return '';
     var h = '<table class="rx-table">' +
-      '<tr><th>Supplement</th><th>Purpose</th><th>Dosage</th><th>Frequency</th><th>Duration</th><th>Message</th></tr>';
+      '<tr><th>Supplement</th><th>Purpose</th><th>Dosage</th><th>Frequency</th><th>Duration</th><th>Message</th><th>Order</th></tr>';
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
+      var orderCell = it.link ? '<a href="' + it.link + '" target="_blank">Order</a>' : '';
       h += '<tr>' +
         '<td>' + it.name + '</td>' +
         '<td class="purpose-cell">' + it.purpose + '</td>' +
@@ -495,6 +497,7 @@ function calc() {
         '<td>' + (it.frequency || '\u2014') + '</td>' +
         '<td>' + (it.duration || '\u2014') + '</td>' +
         '<td class="message-cell">' + (it.message || '\u2014') + '</td>' +
+        '<td class="order-cell">' + orderCell + '</td>' +
       '</tr>';
     }
     h += '</table>';
@@ -532,7 +535,7 @@ function calc() {
       '<p><strong>Hydration:</strong> Drink a full glass of water with each supplement dose. Adequate hydration supports absorption and overall health.</p>' +
       '<p><strong>Storage:</strong> Store supplements in a cool, dry place away from direct sunlight. Probiotics may require refrigeration.</p>' +
       '<p><strong>Interactions:</strong> If you are taking prescription medications, consult your practitioner before starting any new supplement.</p>' +
-      '<p><strong>Reporting:</strong> If you experience any adverse reactions, discontinue the supplement and contact your Lazarus Method practitioner immediately.</p>' +
+      '<p><strong>Ordering:</strong> All Wellness Warrior supplements can be ordered directly at shop.lazarusmethod.com. Use the order links in your protocol above.</p>' +
       '<p style="margin-top:8px;"><strong>This supplement plan is a personalized prescription based on your labs, goals, and clinical assessment. Do not share or transfer your protocol. Reassess with your Lazarus Method practitioner every 60 to 90 days.</strong></p>' +
     '</div>' +
     footerHtml(1, 1);
