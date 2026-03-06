@@ -191,6 +191,7 @@
   .empty-state { text-align: center; padding: 70px 40px; color: var(--subtle); font-style: italic; font-size: 17px; }
 
   @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
     body { background: white !important; }
     .input-panel { display: none !important; }
     .report-wrap { padding: 0; gap: 0; }
@@ -210,7 +211,7 @@
     .gold-rule-thin { margin: 0 0 14px; }
     .section-title { font-size: 8px; letter-spacing: 4px; margin-bottom: 12px; }
     .rx-tier-block { margin-bottom: 12px; }
-    .rx-tier-header { font-size: 8px; padding: 4px 10px; }
+    .rx-tier-header { font-size: 8px; padding: 4px 10px; background-color: inherit !important; }
     .rx-tier-desc { font-size: 7px; padding: 4px 10px 1px; }
     .rx-table th { font-size: 6.5px; padding: 3px 6px; }
     .rx-table td { font-size: 10px; padding: 3px 6px; }
@@ -308,7 +309,7 @@ var PRODUCTS = {
   ],
   2: [
     { name: 'Adrenal Repair', purpose: 'Stress Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/adrenal-repair' },
-    { name: 'Berberine Boost', purpose: 'Metabolism Support', delivery: 'Capsule', link: '' },
+    { name: 'Berberine Boost', purpose: 'Metabolism Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/collections/metabolic/products/berberine-boost' },
     { name: 'Beta Glucans', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/bwh-85%E2%84%A2-beta-glucan' },
     { name: 'Collagen Restore', purpose: 'Fitness Support', delivery: 'Scoop', link: 'https://shop.lazarusmethod.com/products/collagen-restore' },
     { name: 'Core C Support', purpose: 'Immune Support', delivery: 'Capsule', link: 'https://shop.lazarusmethod.com/products/core-c-support' },
@@ -400,7 +401,7 @@ function updatePurpose(tier, row) {
   var customInput = document.getElementById(id + '_custom');
   if (sel.value === 'custom') {
     customInput.style.display = 'block';
-    purposeEl.textContent = 'Custom supplement \u2022 Enter name above';
+    purposeEl.textContent = 'Personalized Support \u2022 Enter name above';
     return;
   }
   customInput.style.display = 'none';
@@ -438,7 +439,7 @@ function calc() {
       if (prodIdx === 'custom') {
         itemName = document.getElementById(id + '_custom').value.trim();
         if (itemName === '') continue;
-        itemPurpose = '';
+        itemPurpose = 'Personalized Support';
         itemLink = '';
       } else {
         var prod = PRODUCTS[tier][parseInt(prodIdx)];
@@ -538,6 +539,28 @@ function calc() {
       '<p><strong>Ordering:</strong> All Wellness Warrior supplements can be ordered directly at shop.lazarusmethod.com. Use the order links in your protocol above.</p>' +
       '<p style="margin-top:8px;"><strong>This supplement plan is a personalized prescription based on your labs, goals, and clinical assessment. Do not share or transfer your protocol. Reassess with your Lazarus Method practitioner every 60 to 90 days.</strong></p>' +
     '</div>' +
+    (programTier === 'repair' ?
+      '<div class="rx-guidelines" style="margin-top:10px;border-left-color:var(--t1);">' +
+        '<div class="rx-guidelines-title" style="color:var(--t1);">Wholesale Access</div>' +
+        '<p>Patients enrolled in the <strong>Repair Plan</strong> are granted wholesale access. Use the discount code: <strong>REPAIR</strong></p>' +
+      '</div>' : '') +
+    (programTier === 'maintain' ?
+      '<div class="rx-guidelines" style="margin-top:10px;border-left-color:var(--t3);">' +
+        '<div class="rx-guidelines-title" style="color:var(--t3);">Wholesale Access</div>' +
+        '<p>Patients enrolled in the <strong>Maintain Plan</strong> are granted wholesale access. Use the discount code: <strong>MAINTAIN</strong></p>' +
+      '</div>' : '') +
+    (programTier === 'train' ?
+      '<div class="rx-guidelines" style="margin-top:10px;border-left-color:var(--t2);">' +
+        '<div class="rx-guidelines-title" style="color:var(--t2);">Train Program — Core Stack Included</div>' +
+        '<p>Patients enrolled in the <strong>Train Program</strong> receive the <strong>Core Stack</strong> for 12 weeks, which includes: <strong>Core Essentials, Core D3,</strong> and <strong>Core Probiotic.</strong></p>' +
+        '<p>All other formulas recommended by Dr. Lazarus based on medical necessity, lab results, or fitness goals must be purchased separately using the order links above.</p>' +
+      '</div>' : '') +
+    (programTier === 'master' ?
+      '<div class="rx-guidelines" style="margin-top:10px;border-left-color:var(--gold);">' +
+        '<div class="rx-guidelines-title" style="color:var(--gold);">Master Program — Full Supplement Protocol Included</div>' +
+        '<p>Patients enrolled in the <strong>Master Program</strong> receive the <strong>Full Supplement Protocol</strong> for 12 weeks, which includes all prescribed supplements in this plan with the exception of the fitness line (Muscle Support, Muscle Repair, Hydration Support, Core Protein, Collagen Restore, Pure Creatine Powder, and Whey Protein).</p>' +
+        '<p>Fitness line supplements must be purchased separately using the order links above.</p>' +
+      '</div>' : '') +
     footerHtml(1, 1);
 
   var wrap = document.getElementById('reportWrap');
