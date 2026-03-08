@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — Personal Health Gameplan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --gold:#96792F; --gold-soft:#B8975A; --gold-bg:#FAF6ED;
+    --navy:#1A1A2E; --charcoal:#3A3A3A; --med:#8A8A8A;
+    --cream:#FDFBF7; --white:#FFFFFF; --border:#E8E0D0;
+    --rust:#7A3A1E; --rust-light:#F5EDE8; --section-bar:#2C2C3E;
+    --green:#2D6A4F; --green-bg:#EAF4EE;
+    --q1:#C46210; --q2:#1A3A7A; --q3:#3A7A3A; --q4:#4A1A7A;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family:'EB Garamond', Georgia, serif;
+    background:#EDEBE5; color:var(--charcoal);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ─── INPUT PANEL ─── */
+  .input-panel { background:var(--white); border-bottom:2px solid var(--border); padding:24px 24px 20px; }
+  .input-inner { max-width:900px; margin:0 auto; }
+  .input-label { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; font-weight:700; margin-bottom:14px; }
+  .input-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; align-items:end; }
+  .field { display:flex; flex-direction:column; }
+  .field label { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:1.5px; color:var(--med); text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+  .field input { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:7px 10px; background:var(--cream); outline:none; transition:border-color .2s; }
+  .field input:focus { border-color:var(--gold); }
+  .print-btn { display:block; max-width:900px; margin:14px auto 0; text-align:right; }
+  .print-btn button { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--white); background:var(--gold); border:none; border-radius:2px; padding:9px 20px; cursor:pointer; }
+  .print-btn button:hover { background:var(--rust); }
+
+  /* ─── DOCUMENT ─── */
+  #document { max-width:900px; margin:24px auto 48px; background:var(--white); box-shadow:0 4px 40px rgba(0,0,0,.10); }
+
+  .doc-header { padding:34px 48px 26px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .header-badge { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:4px; font-weight:700; color:var(--gold); text-transform:uppercase; }
+  .header-title { font-size:30px; font-weight:600; color:var(--navy); letter-spacing:.5px; line-height:1.1; margin-top:4px; }
+  .header-quote { font-size:16px; font-style:italic; color:var(--gold-soft); margin-top:6px; }
+  .header-meta { text-align:right; display:flex; flex-direction:column; gap:8px; }
+  .meta-item { font-family:'DM Sans',sans-serif; font-size:10px; color:var(--med); }
+  .meta-value { font-size:14px; color:var(--navy); }
+
+  .intro-block { background:var(--gold-bg); border-left:3px solid var(--gold); margin:26px 48px 0; padding:14px 18px; }
+  .intro-block p { font-size:14px; line-height:1.75; color:var(--charcoal); }
+  .intro-block strong { color:var(--navy); font-weight:600; }
+
+  .doc-body { padding:26px 48px 40px; }
+  .section-bar { background:var(--section-bar); margin:0 -48px; padding:10px 48px; margin-bottom:30px; }
+  .section-bar h2 { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:3.5px; font-weight:700; color:var(--white); text-transform:uppercase; }
+
+  /* ─── SECTIONS ─── */
+  .gp-section { margin-bottom:28px; }
+  .gp-instructions { font-size:14px; line-height:1.7; color:var(--charcoal); margin-bottom:16px; }
+  .gp-instructions strong { color:var(--navy); font-weight:600; }
+
+  /* PRE-GAME HUDDLE */
+  .huddle-questions { display:flex; flex-direction:column; gap:14px; }
+  .huddle-q { display:flex; gap:14px; align-items:flex-start; }
+  .huddle-num { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; width:28px; height:28px; border-radius:50%; background:var(--gold); color:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .huddle-body { flex:1; }
+  .huddle-prompt { font-size:15px; font-weight:600; color:var(--navy); font-style:italic; margin-bottom:6px; }
+  .huddle-input { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:none; border-bottom:1.5px solid var(--border); padding:6px 0; background:transparent; outline:none; width:100%; transition:border-color .2s; line-height:1.5; }
+  .huddle-input:focus { border-color:var(--gold); }
+
+  /* RATING SELECTOR */
+  .rating-row { display:flex; align-items:center; gap:6px; margin-top:4px; }
+  .rating-dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--med); transition:all .15s; user-select:none; }
+  .rating-dot:hover { border-color:var(--gold-soft); background:var(--gold-bg); }
+  .rating-dot.active { border-color:var(--gold); background:var(--gold); color:var(--white); }
+  .rating-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1px; font-weight:600; color:var(--med); text-transform:uppercase; margin-left:8px; }
+
+  /* INTENTIONS WITH ELEMENT TAGS */
+  .intention-row { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid #f5f0e8; }
+  .intention-row:last-child { border-bottom:none; }
+  .int-num { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; color:var(--gold-soft); flex-shrink:0; width:20px; padding-top:8px; }
+  .int-body { flex:1; display:flex; flex-direction:column; gap:6px; }
+  .int-input { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:none; border-bottom:1.5px solid var(--border); padding:6px 0; background:transparent; outline:none; width:100%; transition:border-color .2s; }
+  .int-input:focus { border-color:var(--gold); }
+  .int-elem-row { display:flex; gap:5px; flex-wrap:wrap; }
+  .int-elem-btn { font-family:'DM Sans',sans-serif; font-size:7.5px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:3px 8px; border-radius:10px; border:1.5px solid var(--border); cursor:pointer; transition:all .15s; user-select:none; color:var(--med); background:transparent; }
+  .int-elem-btn:hover { border-color:var(--gold-soft); }
+  .int-elem-btn.active { color:var(--white); border-color:transparent; }
+
+  /* SCORECARD */
+  .scorecard { margin-bottom:20px; }
+  .sc-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #f5f0e8; }
+  .sc-row:last-child { border-bottom:none; }
+  .sc-num { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; width:24px; height:24px; border-radius:50%; background:var(--gold); color:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .sc-text { flex:1; font-size:14.5px; color:var(--navy); line-height:1.4; }
+  .sc-text-empty { color:var(--border); font-style:italic; }
+  .sc-elem-badge { font-family:'DM Sans',sans-serif; font-size:7.5px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:3px 8px; border-radius:10px; color:var(--white); flex-shrink:0; }
+  .sc-btns { display:flex; gap:6px; flex-shrink:0; }
+  .sc-btn { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:5px 12px; border-radius:20px; border:1.5px solid var(--border); cursor:pointer; transition:all .15s; user-select:none; color:var(--med); background:transparent; }
+  .sc-btn:hover { border-color:var(--gold-soft); }
+  .sc-btn.yes { border-color:var(--green); background:var(--green); color:var(--white); }
+  .sc-btn.partial { border-color:var(--q1); background:var(--q1); color:var(--white); }
+  .sc-btn.no { border-color:var(--rust); background:var(--rust); color:var(--white); }
+
+  /* QUARTERS */
+  .quarters { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .quarter-card { border:1.5px solid var(--border); border-radius:3px; overflow:hidden; transition:border-color .3s; }
+  .quarter-card:focus-within { border-color:var(--gold); }
+  .qc-header { padding:10px 14px; display:flex; align-items:center; gap:10px; }
+  .qc-badge { font-family:'DM Sans',sans-serif; font-size:8px; letter-spacing:1.5px; font-weight:700; text-transform:uppercase; padding:3px 10px; border-radius:10px; color:var(--white); flex-shrink:0; }
+  .qc-title { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--navy); letter-spacing:.5px; }
+  .qc-time { font-family:'DM Sans',sans-serif; font-size:9px; color:var(--med); font-weight:600; }
+  .qc-desc { padding:0 14px; font-size:12.5px; color:var(--med); line-height:1.5; font-style:italic; }
+  .qc-input { font-family:'EB Garamond',Georgia,serif; font-size:14px; color:var(--navy); border:none; border-top:1px solid var(--border); padding:10px 14px; background:var(--cream); outline:none; width:100%; resize:none; min-height:60px; line-height:1.6; margin-top:8px; }
+  .qc-input::placeholder { color:var(--border); }
+
+  /* JOURNAL */
+  .journal-prompts { display:flex; flex-direction:column; gap:20px; }
+  .journal-item { }
+  .journal-prompt { font-size:16px; font-weight:600; color:var(--navy); margin-bottom:8px; display:flex; align-items:center; gap:10px; }
+  .journal-num { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; width:24px; height:24px; border-radius:50%; background:var(--section-bar); color:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .journal-area { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:10px 14px; background:var(--cream); outline:none; width:100%; resize:none; min-height:70px; line-height:1.7; transition:border-color .2s; }
+  .journal-area:focus { border-color:var(--gold); }
+
+  .score-btn:hover { background:var(--rust) !important; }
+
+  /* AM/PM MODE TOGGLE */
+  .mode-toggle { display:flex; align-items:center; gap:0; border-radius:3px; overflow:hidden; border:1.5px solid var(--border); height:34px; }
+  .mode-btn { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:2px; font-weight:700; text-transform:uppercase; padding:0 18px; height:100%; border:none; cursor:pointer; transition:all .15s; background:transparent; color:var(--med); }
+  .mode-btn.active { background:var(--navy); color:var(--white); }
+  .mode-btn:not(.active):hover { background:var(--gold-bg); }
+  .mode-divider { width:1px; height:100%; background:var(--border); }
+
+  .pm-section { display:none; }
+  .pm-section.visible { display:block; }
+  .pm-transition { display:none; text-align:center; padding:20px 0 10px; }
+  .pm-transition.visible { display:block; }
+  .pm-transition-btn { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--white); background:var(--gold); border:none; border-radius:2px; padding:14px 28px; cursor:pointer; transition:background .2s; }
+  .pm-transition-btn:hover { background:var(--rust); }
+  .pm-transition-msg { font-size:14px; color:var(--med); font-style:italic; margin-top:10px; }
+  .am-saved-notice { display:none; text-align:center; padding:12px; background:var(--green-bg); border-radius:3px; margin-bottom:20px; font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:1.5px; font-weight:600; text-transform:uppercase; color:var(--green); }
+  .am-saved-notice.visible { display:block; }
+
+  /* FINAL SCORE */
+  .final-score { display:none; }
+  .final-score.visible { display:block; }
+  .fs-card { border:2px solid var(--border); border-radius:3px; overflow:hidden; }
+  .fs-top { padding:28px 28px 20px; text-align:center; }
+  .fs-score-ring { width:120px; height:120px; border-radius:50%; margin:0 auto 14px; position:relative; background:var(--border); }
+  .fs-score-ring-fill { position:absolute; inset:0; border-radius:50%; transition:background .6s ease; }
+  .fs-score-ring-inner { position:absolute; inset:6px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; flex-direction:column; }
+  .fs-score-num { font-family:'DM Sans',sans-serif; font-size:36px; font-weight:700; line-height:1; }
+  .fs-score-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--med); }
+  .fs-headline { font-size:22px; font-weight:600; color:var(--navy); margin-bottom:6px; }
+  .fs-message { font-size:15px; line-height:1.7; color:var(--charcoal); font-style:italic; max-width:600px; margin:0 auto; }
+
+  .fs-divider { height:1px; background:var(--border); margin:0 28px; }
+
+  .fs-recap { padding:20px 28px; }
+  .fs-recap-title { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:2.5px; font-weight:700; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
+  .fs-recap-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .fs-recap-col { }
+  .fs-recap-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1.5px; font-weight:700; color:var(--med); text-transform:uppercase; margin-bottom:6px; }
+  .fs-recap-item { font-size:14px; color:var(--navy); line-height:1.6; padding:4px 0; border-bottom:1px solid #f5f0e8; display:flex; align-items:center; gap:8px; }
+  .fs-recap-item:last-child { border-bottom:none; }
+  .fs-recap-score { font-family:'DM Sans',sans-serif; font-size:8px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:10px; color:var(--white); flex-shrink:0; }
+  .fs-recap-empty { font-size:13px; color:var(--med); font-style:italic; padding:6px 0; }
+
+  .fs-quarters-recap { padding:0 28px 20px; }
+  .fs-q-row { display:grid; grid-template-columns:auto 1fr; gap:10px; padding:6px 0; border-bottom:1px solid #f5f0e8; align-items:start; }
+  .fs-q-row:last-child { border-bottom:none; }
+  .fs-q-badge { font-family:'DM Sans',sans-serif; font-size:8px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:3px 10px; border-radius:10px; color:var(--white); flex-shrink:0; margin-top:2px; }
+  .fs-q-text { font-size:13.5px; color:var(--navy); line-height:1.5; }
+  .fs-q-empty { font-size:13px; color:var(--med); font-style:italic; }
+
+  /* ─── PROGRESS BAR ─── */
+  .prog-wrap { max-width:900px; margin:14px auto 0; display:flex; align-items:center; gap:14px; }
+  .prog-label { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; color:var(--gold); text-transform:uppercase; white-space:nowrap; }
+  .prog-track { flex:1; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .prog-fill { height:100%; background:var(--gold); border-radius:3px; width:0%; transition:width .5s ease; }
+  .prog-pct { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; color:var(--gold); }
+
+  .doc-footer { background:var(--navy); padding:14px 48px; display:flex; align-items:center; justify-content:space-between; }
+  .footer-brand { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:3px; font-weight:700; color:rgba(255,255,255,.5); text-transform:uppercase; }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,.3); font-style:italic; }
+
+  /* ─── PRINT ─── */
+  @media print {
+    body { background:white !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .input-panel, .print-btn, .prog-wrap { display:none !important; }
+    .pm-transition { display:none !important; }
+    .am-saved-notice { display:none !important; }
+    .browser-note { display:none !important; }
+    .pm-section.visible { display:block !important; }
+    .pm-section:not(.visible) { display:none !important; }
+    #document { margin:0; box-shadow:none; max-width:100%; }
+
+    /* Prevent awkward page breaks */
+    .gp-section { break-inside:avoid; }
+    .quarter-card { break-inside:avoid; }
+    .journal-item { break-inside:avoid; }
+    .huddle-q { break-inside:avoid; }
+    .intention-row { break-inside:avoid; }
+    .sc-row { break-inside:avoid; }
+    .section-bar { break-after:avoid; }
+    .intro-block { break-inside:avoid; }
+
+    /* Show input values clearly */
+    .qc-input, .journal-area { border:1px solid var(--border) !important; background:var(--cream) !important; min-height:50px; }
+    .huddle-input, .int-input { border-bottom:1.5px solid var(--border) !important; }
+
+    /* Ensure colors print */
+    .rating-dot.active { background:var(--gold) !important; color:var(--white) !important; border-color:var(--gold) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .rating-dot:not(.active) { opacity:.25; }
+    .section-bar { background:var(--section-bar) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .section-bar h2 { color:var(--white) !important; }
+    .huddle-num { background:var(--gold) !important; color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .journal-num { background:var(--section-bar) !important; color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .qc-badge { color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .qc-header { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-num { background:var(--gold) !important; color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-elem-badge { color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .int-elem-btn:not(.active) { display:none !important; }
+    .int-elem-btn.active { color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-btn:not(.yes):not(.partial):not(.no) { opacity:.25; }
+    .sc-btn.yes { background:var(--green) !important; color:var(--white) !important; border-color:var(--green) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-btn.partial { background:var(--q1) !important; color:var(--white) !important; border-color:var(--q1) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-btn.no { background:var(--rust) !important; color:var(--white) !important; border-color:var(--rust) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+
+    /* Alignment buttons */
+    #alignYes, #alignSome, #alignNo { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    #alignYes.active, #alignSome.active, #alignNo.active { background:var(--gold) !important; color:var(--white) !important; border-color:var(--gold) !important; }
+    #alignYes:not(.active), #alignSome:not(.active), #alignNo:not(.active) { opacity:.25; }
+
+    /* Footer */
+    .doc-footer { background:var(--navy) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .footer-brand, .footer-copy { color:rgba(255,255,255,.5) !important; }
+
+    /* Intro block */
+    .intro-block { background:var(--gold-bg) !important; border-left:3px solid var(--gold) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+
+    /* Final Score */
+    .final-score.visible { display:block !important; }
+    .final-score:not(.visible) { display:none !important; }
+    .score-btn { display:none !important; }
+    .fs-card { break-inside:avoid; }
+    .fs-score-ring { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-score-ring-fill { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-score-ring-inner { background:var(--white) !important; }
+    .fs-recap-score { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-q-badge { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-top { break-inside:avoid; }
+    .fs-recap { break-inside:avoid; }
+  }
+
+  @media (max-width:700px) {
+    .input-grid { grid-template-columns:1fr !important; }
+    .mode-toggle { width:100%; }
+    .doc-header { flex-direction:column; }
+    .header-meta { text-align:left; flex-direction:row; flex-wrap:wrap; gap:16px; }
+    .doc-body { padding:20px 24px 32px; }
+    .section-bar { margin:0 -24px; padding:10px 24px; }
+    .quarters { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="input-panel">
+  <div class="input-inner">
+    <div class="input-label">Your Details</div>
+    <div class="input-grid" style="grid-template-columns:2fr 1fr 1fr auto;">
+      <div class="field"><label>Name</label><input type="text" id="patientName" placeholder="Your name" oninput="syncDoc(); saveState()"/></div>
+      <div class="field"><label>Date</label><input type="date" id="docDate" onchange="syncDoc(); loadState()"/></div>
+      <div class="field"><label>Day of Week</label><input type="text" id="dayOfWeek" readonly/></div>
+      <div class="field">
+        <label>Mode</label>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeAM" onclick="setMode('am')">☀ AM</button>
+          <div class="mode-divider"></div>
+          <button class="mode-btn" id="modePM" onclick="setMode('pm')">☽ PM</button>
+        </div>
+      </div>
+    </div>
+    <div class="prog-wrap" style="margin-top:14px;">
+      <span class="prog-label" id="progLabel">Morning Gameplan</span>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <span class="prog-pct" id="progPct">0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="print-btn"><button onclick="window.print()">↓ Print / Save PDF</button></div>
+
+<div id="document">
+  <div class="doc-header">
+    <div>
+      <div class="header-badge">The Lazarus Method</div>
+      <div class="header-title">Personal Health Gameplan</div>
+      <div class="header-quote">Every great performance starts with a gameplan.</div>
+    </div>
+    <div class="header-meta">
+      <div><div class="meta-item">Name</div><div class="meta-value" id="dn">________________</div></div>
+      <div><div class="meta-item">Date</div><div class="meta-value" id="dd">________________</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block" style="margin:26px 48px 0;">
+    <p><strong>Objective:</strong> Wake up and create your personalized health gameplan for the day. This quick and easy framework will help you set clear intentions and establish routines that align with your goals and values.</p>
+    <p class="browser-note" style="margin-top:10px;font-size:12.5px;color:var(--rust);"><strong>* Important:</strong> This form saves your morning entries so they are available when you return for your evening review. For this to work, you must use the <strong>same browser</strong> on the <strong>same device</strong> and complete both your morning and evening sessions on the <strong>same day</strong>. If you switch browsers, devices, or clear your browser data, your morning entries will not carry over.</p>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- ═══ PRE-GAME HUDDLE ═══ -->
+    <div class="section-bar"><h2>The Pre-Game Huddle</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> Take at least 10 minutes of silence before plugging into any electronic devices. Reflect honestly on these questions.</div>
+      <div class="huddle-questions">
+        <div class="huddle-q">
+          <div class="huddle-num">1</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">How did I sleep?</div>
+            <div class="rating-row" id="sleepRating">
+              <div class="rating-dot" onclick="setRating('sleep',1)">1</div>
+              <div class="rating-dot" onclick="setRating('sleep',2)">2</div>
+              <div class="rating-dot" onclick="setRating('sleep',3)">3</div>
+              <div class="rating-dot" onclick="setRating('sleep',4)">4</div>
+              <div class="rating-dot" onclick="setRating('sleep',5)">5</div>
+              <div class="rating-dot" onclick="setRating('sleep',6)">6</div>
+              <div class="rating-dot" onclick="setRating('sleep',7)">7</div>
+              <div class="rating-dot" onclick="setRating('sleep',8)">8</div>
+              <div class="rating-dot" onclick="setRating('sleep',9)">9</div>
+              <div class="rating-dot" onclick="setRating('sleep',10)">10</div>
+              <span class="rating-label">Poor → Excellent</span>
+            </div>
+          </div>
+        </div>
+        <div class="huddle-q">
+          <div class="huddle-num">2</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">How do I feel?</div>
+            <div class="rating-row" id="feelRating">
+              <div class="rating-dot" onclick="setRating('feel',1)">1</div>
+              <div class="rating-dot" onclick="setRating('feel',2)">2</div>
+              <div class="rating-dot" onclick="setRating('feel',3)">3</div>
+              <div class="rating-dot" onclick="setRating('feel',4)">4</div>
+              <div class="rating-dot" onclick="setRating('feel',5)">5</div>
+              <div class="rating-dot" onclick="setRating('feel',6)">6</div>
+              <div class="rating-dot" onclick="setRating('feel',7)">7</div>
+              <div class="rating-dot" onclick="setRating('feel',8)">8</div>
+              <div class="rating-dot" onclick="setRating('feel',9)">9</div>
+              <div class="rating-dot" onclick="setRating('feel',10)">10</div>
+              <span class="rating-label">Rough → Great</span>
+            </div>
+          </div>
+        </div>
+        <div class="huddle-q">
+          <div class="huddle-num">3</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">Were the decisions I made yesterday in alignment with my health goals?</div>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <div class="rating-dot" id="alignYes" onclick="setAlign('yes')" style="width:auto;padding:0 14px;border-radius:20px;font-size:10px;letter-spacing:1px;">YES</div>
+              <div class="rating-dot" id="alignSome" onclick="setAlign('some')" style="width:auto;padding:0 14px;border-radius:20px;font-size:10px;letter-spacing:1px;">MOSTLY</div>
+              <div class="rating-dot" id="alignNo" onclick="setAlign('no')" style="width:auto;padding:0 14px;border-radius:20px;font-size:10px;letter-spacing:1px;">NOT REALLY</div>
+            </div>
+          </div>
+        </div>
+        <div class="huddle-q">
+          <div class="huddle-num">4</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">Based on yesterday, the one thing I want to do differently today is…</div>
+            <input class="huddle-input" type="text" id="diffToday" placeholder="e.g. Stop snacking after dinner — I gave in last night and it disrupted my sleep" oninput="updateProgress(); saveState()"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ YOUR PLAYBOOK ═══ -->
+    <div class="section-bar"><h2>Your Playbook</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> Spend at least 5 minutes using your PREPARE gameplan. Then write down at least one intention for the day. Tag each intention to the element it belongs to. These are the specific plays you are choosing to run today.</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:9.5px;letter-spacing:2px;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">Today's Intentions</div>
+      <div id="intentionsContainer"></div>
+    </div>
+
+    <!-- ═══ 4 QUARTERS ═══ -->
+    <div class="section-bar"><h2>Visualize Your Day — The 4 Quarters</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> Visualize yourself making the right health decisions in each quarter of your day. See yourself implementing your intentions in vivid detail: where you are, what it looks like, how it feels to follow through. The more clear and specific your visualization, the more effective it will be. When you have already seen yourself making the right choice, the real moment becomes a replay, not a decision.</div>
+      <div class="quarters">
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q1);">Q1</span>
+            <div><div class="qc-title">Morning</div><div class="qc-time">4 AM — 10 AM</div></div>
+          </div>
+          <div class="qc-desc">The opening quarter. You set the tone here. Visualize yourself executing your morning routine and making your first healthy decisions of the day.</div>
+          <textarea class="qc-input" id="q1" placeholder="What does a great morning look like today?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q2);">Q2</span>
+            <div><div class="qc-title">Midday</div><div class="qc-time">10 AM — 2 PM</div></div>
+          </div>
+          <div class="qc-desc">Halftime check-in. Visualize yourself staying locked in on your intentions through meals, meetings, and the middle of your day.</div>
+          <textarea class="qc-input" id="q2" placeholder="What healthy decisions will you see yourself making?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q3);">Q3</span>
+            <div><div class="qc-title">Afternoon</div><div class="qc-time">2 PM — 6 PM</div></div>
+          </div>
+          <div class="qc-desc">The stretch run. Energy shifts, routines get tested. Visualize yourself holding the line on your intentions when it would be easiest to let them slide.</div>
+          <textarea class="qc-input" id="q3" placeholder="Where might you be tested, and what will you choose instead?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q4);">Q4</span>
+            <div><div class="qc-title">Evening</div><div class="qc-time">6 PM — 10 PM</div></div>
+          </div>
+          <div class="qc-desc">The closing quarter. Visualize yourself winding down with purpose: a nourishing dinner, quality time, and a wind-down routine that sets up tomorrow.</div>
+          <textarea class="qc-input" id="q4" placeholder="What does a strong finish to the day look like?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ AM/PM TRANSITION ═══ -->
+    <div class="pm-transition" id="pmTransition">
+      <button class="pm-transition-btn" onclick="setMode('pm')">Start Your Post-Game Review →</button>
+      <div class="pm-transition-msg">Come back tonight to score your intentions and reflect on the day.</div>
+    </div>
+
+    <!-- ═══ PM SECTIONS ═══ -->
+    <div class="pm-section" id="pmBlock">
+
+    <div class="am-saved-notice" id="amNotice">✓ Your morning gameplan has been saved and is ready to review</div>
+
+    <!-- ═══ POST-GAME REVIEW ═══ -->
+    <div class="section-bar"><h2>Post-Game Review</h2></div>
+    <div class="gp-section">
+
+      <div class="gp-instructions"><strong>Intention Scorecard:</strong> Look at the intentions you set this morning. For each one, answer honestly: did you follow through?</div>
+      <div class="scorecard" id="scorecardContainer"></div>
+
+      <div class="gp-instructions"><strong>Reflect:</strong> Journal your thoughts, wins, and lessons. Honest reflection is where real growth happens.</div>
+      <div class="journal-prompts">
+
+        <div class="journal-item">
+          <div class="journal-prompt"><span class="journal-num">1</span> What plays worked well today?</div>
+          <textarea class="journal-area" id="j1" rows="3" placeholder="Think about the moments where you followed through on your intentions…" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="journal-item">
+          <div class="journal-prompt"><span class="journal-num">2</span> What was I grateful for today?</div>
+          <textarea class="journal-area" id="j2" rows="3" placeholder="Name specific people, moments, or outcomes you appreciate…" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="journal-item">
+          <div class="journal-prompt"><span class="journal-num">3</span> How can I improve my strategy tomorrow?</div>
+          <textarea class="journal-area" id="j3" rows="3" placeholder="What would you do differently? What will you carry forward?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ FINAL SCORE ═══ -->
+    <div class="section-bar"><h2>Final Score</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> When your day is done, hit the button below to see your final score. This is not about perfection. It is about awareness. Every game has a score, and the best players study theirs.</div>
+      <button class="score-btn" onclick="generateFinalScore()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--navy);border:none;border-radius:2px;padding:12px 24px;cursor:pointer;width:100%;transition:background .2s;">Show My Final Score</button>
+    </div>
+
+    <div class="final-score" id="finalScore">
+      <div class="fs-card" id="fsCard">
+        <div class="fs-top">
+          <div class="fs-score-ring" id="fsRing">
+            <div class="fs-score-ring-fill" id="fsRingFill"></div>
+            <div class="fs-score-ring-inner">
+              <div class="fs-score-num" id="fsNum">0</div>
+              <div class="fs-score-label">out of 10</div>
+            </div>
+          </div>
+          <div class="fs-headline" id="fsHeadline"></div>
+          <div class="fs-message" id="fsMessage"></div>
+        </div>
+        <div class="fs-divider"></div>
+        <div class="fs-recap">
+          <div class="fs-recap-title">Intention Recap</div>
+          <div class="fs-recap-grid">
+            <div class="fs-recap-col">
+              <div class="fs-recap-label">What You Set Out to Do</div>
+              <div id="fsIntentions"></div>
+            </div>
+            <div class="fs-recap-col">
+              <div class="fs-recap-label">How You Showed Up</div>
+              <div id="fsScores"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fs-divider"></div>
+        <div class="fs-quarters-recap">
+          <div class="fs-recap-title" style="margin-top:16px;">Your Day at a Glance</div>
+          <div id="fsQuarters"></div>
+        </div>
+        <div class="fs-divider"></div>
+        <div class="fs-recap" style="padding-bottom:24px;">
+          <div class="fs-recap-title">Reflection Highlights</div>
+          <div id="fsReflection"></div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- close pm-section -->
+
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-brand">The Lazarus Method</span>
+    <span class="footer-copy">© The Lazarus Method · All Rights Reserved</span>
+  </div>
+</div>
+
+<script>
+const ELEMENTS = [
+  { id:'nourish',   name:'Nourish',   emoji:'🥗', color:'#3A7A3A' },
+  { id:'move',      name:'Move',      emoji:'⚡', color:'#1A3A7A' },
+  { id:'rest',      name:'Rest',      emoji:'🌙', color:'#4A1A7A' },
+  { id:'challenge', name:'Challenge', emoji:'🧠', color:'#7A1A1A' },
+  { id:'connect',   name:'Connect',   emoji:'🤝', color:'#7A4A1A' },
+  { id:'learn',     name:'Learn',     emoji:'📖', color:'#1A5A6A' },
+  { id:'spark',     name:'Spark',     emoji:'✨', color:'#6A3A1A' }
+];
+
+const PLACEHOLDERS = [
+  'e.g. Eat a whole-food lunch with no processed ingredients',
+  'e.g. Take a 20-minute walk after dinner',
+  'e.g. Be in bed with screens off by 10 PM'
+];
+
+let ratings = { sleep:0, feel:0 };
+let alignment = '';
+let intentions = [
+  { text:'', element:'' },
+  { text:'', element:'' },
+  { text:'', element:'' }
+];
+let scores = ['','',''];
+let currentMode = 'am';
+
+// ═══ STORAGE KEY ═══
+function getStorageKey() {
+  const dateVal = document.getElementById('docDate').value;
+  return 'lazarus-gameplan-' + dateVal;
+}
+
+function saveState() {
+  const state = {
+    name: document.getElementById('patientName').value,
+    ratings: ratings,
+    alignment: alignment,
+    diffToday: document.getElementById('diffToday').value,
+    intentions: intentions,
+    q1: document.getElementById('q1').value,
+    q2: document.getElementById('q2').value,
+    q3: document.getElementById('q3').value,
+    q4: document.getElementById('q4').value,
+    scores: scores,
+    j1: document.getElementById('j1').value,
+    j2: document.getElementById('j2').value,
+    j3: document.getElementById('j3').value,
+    mode: currentMode
+  };
+  try {
+    localStorage.setItem(getStorageKey(), JSON.stringify(state));
+  } catch(e) { /* storage full or unavailable */ }
+}
+
+function loadState() {
+  syncDoc();
+  const key = getStorageKey();
+  let state;
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) { resetForm(); return; }
+    state = JSON.parse(raw);
+  } catch(e) { resetForm(); return; }
+
+  // Restore name
+  if (state.name) document.getElementById('patientName').value = state.name;
+
+  // Restore ratings
+  if (state.ratings) {
+    ratings = state.ratings;
+    if (ratings.sleep > 0) {
+      document.getElementById('sleepRating').querySelectorAll('.rating-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < ratings.sleep);
+      });
+    }
+    if (ratings.feel > 0) {
+      document.getElementById('feelRating').querySelectorAll('.rating-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < ratings.feel);
+      });
+    }
+  }
+
+  // Restore alignment
+  if (state.alignment) {
+    alignment = state.alignment;
+    document.getElementById('alignYes').classList.toggle('active', alignment === 'yes');
+    document.getElementById('alignSome').classList.toggle('active', alignment === 'some');
+    document.getElementById('alignNo').classList.toggle('active', alignment === 'no');
+  }
+
+  // Restore diffToday
+  if (state.diffToday) document.getElementById('diffToday').value = state.diffToday;
+
+  // Restore intentions
+  if (state.intentions) intentions = state.intentions;
+
+  // Restore quarters
+  if (state.q1) document.getElementById('q1').value = state.q1;
+  if (state.q2) document.getElementById('q2').value = state.q2;
+  if (state.q3) document.getElementById('q3').value = state.q3;
+  if (state.q4) document.getElementById('q4').value = state.q4;
+
+  // Restore scores
+  if (state.scores) scores = state.scores;
+
+  // Restore journal
+  if (state.j1) document.getElementById('j1').value = state.j1;
+  if (state.j2) document.getElementById('j2').value = state.j2;
+  if (state.j3) document.getElementById('j3').value = state.j3;
+
+  // Restore mode
+  if (state.mode) setMode(state.mode, true);
+
+  buildIntentions();
+  updateScorecard();
+  updateProgress();
+  syncDoc();
+}
+
+function resetForm() {
+  ratings = { sleep:0, feel:0 };
+  alignment = '';
+  intentions = [{ text:'', element:'' },{ text:'', element:'' },{ text:'', element:'' }];
+  scores = ['','',''];
+  document.getElementById('diffToday').value = '';
+  document.getElementById('q1').value = '';
+  document.getElementById('q2').value = '';
+  document.getElementById('q3').value = '';
+  document.getElementById('q4').value = '';
+  document.getElementById('j1').value = '';
+  document.getElementById('j2').value = '';
+  document.getElementById('j3').value = '';
+  document.querySelectorAll('.rating-dot').forEach(d => d.classList.remove('active'));
+  document.getElementById('alignYes').classList.remove('active');
+  document.getElementById('alignSome').classList.remove('active');
+  document.getElementById('alignNo').classList.remove('active');
+  document.getElementById('finalScore').classList.remove('visible');
+  setMode('am', true);
+  buildIntentions();
+  updateScorecard();
+  updateProgress();
+}
+
+// ═══ MODE TOGGLE ═══
+function setMode(mode, skipSave) {
+  currentMode = mode;
+  document.getElementById('modeAM').classList.toggle('active', mode === 'am');
+  document.getElementById('modePM').classList.toggle('active', mode === 'pm');
+
+  const pmBlock = document.getElementById('pmBlock');
+  const transition = document.getElementById('pmTransition');
+  const notice = document.getElementById('amNotice');
+
+  if (mode === 'pm') {
+    pmBlock.classList.add('visible');
+    transition.classList.remove('visible');
+    notice.classList.add('visible');
+    updateScorecard();
+    pmBlock.scrollIntoView({ behavior:'smooth', block:'start' });
+  } else {
+    pmBlock.classList.remove('visible');
+    transition.classList.add('visible');
+    notice.classList.remove('visible');
+    document.getElementById('finalScore').classList.remove('visible');
+  }
+
+  if (!skipSave) saveState();
+}
+
+// ═══ RATINGS ═══
+function setRating(type, val) {
+  ratings[type] = val;
+  const container = document.getElementById(type + 'Rating');
+  container.querySelectorAll('.rating-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i < val);
+  });
+  updateProgress();
+  saveState();
+}
+
+function setAlign(val) {
+  alignment = val;
+  document.getElementById('alignYes').classList.toggle('active', val === 'yes');
+  document.getElementById('alignSome').classList.toggle('active', val === 'some');
+  document.getElementById('alignNo').classList.toggle('active', val === 'no');
+  updateProgress();
+  saveState();
+}
+
+// ═══ INTENTIONS ═══
+function buildIntentions() {
+  const container = document.getElementById('intentionsContainer');
+  container.innerHTML = '';
+  intentions.forEach((int, i) => {
+    const row = document.createElement('div');
+    row.className = 'intention-row';
+
+    const numSpan = document.createElement('span');
+    numSpan.className = 'int-num';
+    numSpan.textContent = (i+1) + '.';
+
+    const body = document.createElement('div');
+    body.className = 'int-body';
+
+    const input = document.createElement('input');
+    input.className = 'int-input';
+    input.type = 'text';
+    input.placeholder = PLACEHOLDERS[i];
+    input.value = int.text;
+    input.addEventListener('input', function() {
+      intentions[i].text = this.value;
+      updateScorecard();
+      updateProgress();
+      saveState();
+    });
+
+    const elemRow = document.createElement('div');
+    elemRow.className = 'int-elem-row';
+
+    ELEMENTS.forEach(el => {
+      const btn = document.createElement('span');
+      btn.className = 'int-elem-btn';
+      btn.textContent = el.emoji + ' ' + el.name;
+      if (int.element === el.id) {
+        btn.classList.add('active');
+        btn.style.background = el.color;
+        btn.style.borderColor = el.color;
+      }
+      btn.addEventListener('click', function() {
+        intentions[i].element = (intentions[i].element === el.id) ? '' : el.id;
+        buildIntentions();
+        updateScorecard();
+        updateProgress();
+        saveState();
+      });
+      elemRow.appendChild(btn);
+    });
+
+    body.appendChild(input);
+    body.appendChild(elemRow);
+    row.appendChild(numSpan);
+    row.appendChild(body);
+    container.appendChild(row);
+  });
+}
+
+// ═══ SCORECARD ═══
+function updateScorecard() {
+  const container = document.getElementById('scorecardContainer');
+  container.innerHTML = '';
+
+  const hasAny = intentions.some(int => int.text.trim());
+  if (!hasAny) {
+    container.innerHTML = '<div style="font-size:14px;color:var(--med);font-style:italic;padding:8px 0;">Your intentions from this morning will appear here for scoring.</div>';
+    return;
+  }
+
+  intentions.forEach((int, i) => {
+    if (!int.text.trim()) return;
+    const el = ELEMENTS.find(e => e.id === int.element);
+    const row = document.createElement('div');
+    row.className = 'sc-row';
+
+    const num = document.createElement('div');
+    num.className = 'sc-num';
+    num.textContent = (i+1);
+
+    let badge = '';
+    if (el) {
+      badge = document.createElement('span');
+      badge.className = 'sc-elem-badge';
+      badge.style.background = el.color;
+      badge.textContent = el.emoji + ' ' + el.name;
+    }
+
+    const text = document.createElement('div');
+    text.className = 'sc-text';
+    text.textContent = int.text;
+
+    const btns = document.createElement('div');
+    btns.className = 'sc-btns';
+
+    ['Yes','Partially','No'].forEach((label, li) => {
+      const btn = document.createElement('span');
+      btn.className = 'sc-btn';
+      btn.textContent = label;
+      const val = ['yes','partial','no'][li];
+      if (scores[i] === val) btn.classList.add(val);
+      btn.addEventListener('click', function() {
+        scores[i] = (scores[i] === val) ? '' : val;
+        updateScorecard();
+        updateProgress();
+        saveState();
+      });
+      btns.appendChild(btn);
+    });
+
+    row.appendChild(num);
+    if (badge) row.appendChild(badge);
+    row.appendChild(text);
+    row.appendChild(btns);
+    container.appendChild(row);
+  });
+}
+
+// ═══ PROGRESS ═══
+function updateProgress() {
+  const amFields = [
+    ratings.sleep > 0,
+    ratings.feel > 0,
+    alignment !== '',
+    document.getElementById('diffToday').value.trim() !== '',
+    intentions[0].text.trim() !== '',
+    document.getElementById('q1').value.trim() !== '',
+    document.getElementById('q2').value.trim() !== '',
+    document.getElementById('q3').value.trim() !== '',
+    document.getElementById('q4').value.trim() !== ''
+  ];
+  const pmFields = [
+    scores.some(s => s !== ''),
+    document.getElementById('j1').value.trim() !== '',
+    document.getElementById('j2').value.trim() !== '',
+    document.getElementById('j3').value.trim() !== ''
+  ];
+
+  const fields = currentMode === 'am' ? amFields : [...amFields, ...pmFields];
+  const filled = fields.filter(Boolean).length;
+  const pct = Math.round(filled / fields.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progPct').textContent = pct + '%';
+  document.getElementById('progLabel').textContent = currentMode === 'am' ? 'Morning Gameplan' : 'Full Day Progress';
+}
+
+function syncDoc() {
+  const name = document.getElementById('patientName').value.trim() || '________________';
+  const dateVal = document.getElementById('docDate').value;
+  document.getElementById('dn').textContent = name;
+  if (dateVal) {
+    const d = new Date(dateVal + 'T00:00:00');
+    document.getElementById('dd').textContent = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+    document.getElementById('dayOfWeek').value = d.toLocaleDateString('en-US', { weekday:'long' });
+  }
+}
+
+// ═══ FINAL SCORE (unchanged logic) ═══
+function generateFinalScore() {
+  const fs = document.getElementById('finalScore');
+  fs.classList.add('visible');
+  fs.scrollIntoView({ behavior:'smooth', block:'start' });
+
+  let points = 0, maxPoints = 0;
+
+  if (ratings.sleep > 0) points += ratings.sleep / 10;
+  maxPoints += 1;
+  if (ratings.feel > 0) points += ratings.feel / 10;
+  maxPoints += 1;
+  maxPoints += 1;
+  if (alignment === 'yes') points += 1;
+  else if (alignment === 'some') points += 0.5;
+  maxPoints += 0.5;
+  if (document.getElementById('diffToday').value.trim()) points += 0.5;
+  maxPoints += 1;
+  const intSet = intentions.filter(i => i.text.trim()).length;
+  if (intSet >= 1) points += Math.min(intSet / 3, 1);
+  maxPoints += 1;
+  const qFilled = ['q1','q2','q3','q4'].filter(id => document.getElementById(id).value.trim()).length;
+  points += qFilled / 4;
+  const scoredCount = intentions.filter(i => i.text.trim()).length || 1;
+  maxPoints += 3;
+  scores.forEach((s, i) => {
+    if (!intentions[i].text.trim()) return;
+    if (s === 'yes') points += 3 / scoredCount;
+    else if (s === 'partial') points += 1.5 / scoredCount;
+  });
+  maxPoints += 1.5;
+  ['j1','j2','j3'].forEach(id => { if (document.getElementById(id).value.trim()) points += 0.5; });
+
+  const finalScore = Math.round(Math.min(points / maxPoints * 10, 10) * 10) / 10;
+
+  let color, headline, message, border;
+  if (finalScore >= 8) { color='#2D6A4F'; border='#2D6A4F'; headline='Dominant Performance.'; message='You came in with a plan, executed your intentions, and finished strong. Days like this are what separate the people who talk about getting healthy from the people who actually do it. Carry this momentum into tomorrow.'; }
+  else if (finalScore >= 6) { color='#1A3A7A'; border='#1A3A7A'; headline='Solid Game.'; message='You showed up, you competed, and you made more right decisions than wrong ones. That counts. The gap between where you are and where you want to be is not talent — it is consistency. Keep building on what worked today.'; }
+  else if (finalScore >= 4) { color='#C46210'; border='#C46210'; headline='A Tough Quarter.'; message='Not every game goes your way, and that is fine. What matters is that you are still on the field. Look at what pulled you off your plan today and name it. Awareness is the first play in tomorrow\'s gameplan.'; }
+  else { color='#7A3A1E'; border='#7A3A1E'; headline='Time to Regroup.'; message='Today was a loss. There is no way around it. But here is the thing about a loss: it only defines you if you let it. The best players study their worst games the hardest. Tomorrow is a new game. Come in with a sharper plan.'; }
+
+  document.getElementById('fsNum').textContent = finalScore;
+  document.getElementById('fsNum').style.color = color;
+  document.getElementById('fsHeadline').textContent = headline;
+  document.getElementById('fsHeadline').style.color = color;
+  document.getElementById('fsMessage').textContent = message;
+  document.getElementById('fsCard').style.borderColor = border;
+
+  const ringFill = document.getElementById('fsRingFill');
+  const deg = (finalScore / 10) * 360;
+  ringFill.style.background = 'conic-gradient('+color+' '+deg+'deg, var(--border) '+deg+'deg)';
+
+  const intWrap = document.getElementById('fsIntentions');
+  const scWrap = document.getElementById('fsScores');
+  intWrap.innerHTML = ''; scWrap.innerHTML = '';
+
+  if (intSet === 0) {
+    intWrap.innerHTML = '<div class="fs-recap-empty">No intentions were set.</div>';
+    scWrap.innerHTML = '<div class="fs-recap-empty">Nothing to score.</div>';
+  } else {
+    intentions.forEach((int, i) => {
+      if (!int.text.trim()) return;
+      const el = ELEMENTS.find(e => e.id === int.element);
+      const intItem = document.createElement('div'); intItem.className = 'fs-recap-item';
+      if (el) { const b = document.createElement('span'); b.className='fs-recap-score'; b.style.background=el.color; b.textContent=el.emoji+' '+el.name; intItem.appendChild(b); }
+      const t = document.createElement('span'); t.textContent = int.text; intItem.appendChild(t); intWrap.appendChild(intItem);
+      const scItem = document.createElement('div'); scItem.className = 'fs-recap-item';
+      const scB = document.createElement('span'); scB.className = 'fs-recap-score';
+      const s = scores[i];
+      if (s==='yes'){scB.style.background='#2D6A4F';scB.textContent='✓ Yes';}
+      else if(s==='partial'){scB.style.background='#C46210';scB.textContent='~ Partially';}
+      else if(s==='no'){scB.style.background='#7A3A1E';scB.textContent='✗ No';}
+      else{scB.style.background='var(--border)';scB.style.color='var(--med)';scB.textContent='Not scored';}
+      scItem.appendChild(scB); scWrap.appendChild(scItem);
+    });
+  }
+
+  const qWrap = document.getElementById('fsQuarters'); qWrap.innerHTML = '';
+  [{id:'q1',label:'Q1',color:'var(--q1)'},{id:'q2',label:'Q2',color:'var(--q2)'},{id:'q3',label:'Q3',color:'var(--q3)'},{id:'q4',label:'Q4',color:'var(--q4)'}].forEach(q => {
+    const val = document.getElementById(q.id).value.trim();
+    const row = document.createElement('div'); row.className = 'fs-q-row';
+    row.innerHTML = '<span class="fs-q-badge" style="background:'+q.color+';">'+q.label+'</span><span class="'+(val?'fs-q-text':'fs-q-empty')+'">'+(val||'Not filled in')+'</span>';
+    qWrap.appendChild(row);
+  });
+
+  const refWrap = document.getElementById('fsReflection'); refWrap.innerHTML = '';
+  let hasRef = false;
+  [{id:'j1',label:'What worked'},{id:'j2',label:'Grateful for'},{id:'j3',label:'Improve tomorrow'}].forEach(p => {
+    const val = document.getElementById(p.id).value.trim();
+    if (!val) return; hasRef = true;
+    const item = document.createElement('div'); item.className = 'fs-recap-item';
+    item.innerHTML = '<span class="fs-recap-score" style="background:var(--section-bar);">'+p.label+'</span><span>'+val+'</span>';
+    refWrap.appendChild(item);
+  });
+  if (!hasRef) refWrap.innerHTML = '<div class="fs-recap-empty">No reflections were added. The best players study their game film.</div>';
+
+  saveState();
+}
+
+// ═══ INIT ═══
+const today = new Date();
+document.getElementById('docDate').value = today.toISOString().split('T')[0];
+syncDoc();
+buildIntentions();
+updateScorecard();
+
+// Show AM transition button by default
+document.getElementById('pmTransition').classList.add('visible');
+
+// Try to load saved state for today
+loadState();
+</script>
+</body>
+</html>
