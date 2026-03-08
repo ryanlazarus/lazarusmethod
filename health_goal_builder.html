@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — Health Goal Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --gold:#96792F; --gold-soft:#B8975A; --gold-bg:#FAF6ED;
+    --navy:#1A1A2E; --charcoal:#3A3A3A; --med:#8A8A8A;
+    --cream:#FDFBF7; --white:#FFFFFF; --border:#E8E0D0;
+    --rust:#7A3A1E; --rust-light:#F5EDE8; --section-bar:#2C2C3E;
+    --green:#2D6A4F; --green-bg:#EAF4EE;
+    --nourish:#3A7A3A; --move:#1A3A7A; --rest:#4A1A7A;
+    --challenge:#7A1A1A; --connect:#7A4A1A; --learn:#1A5A6A; --spark:#6A3A1A;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family:'EB Garamond', Georgia, serif;
+    background:#EDEBE5; color:var(--charcoal);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ─── INPUT PANEL ─── */
+  .input-panel { background:var(--white); border-bottom:2px solid var(--border); padding:24px 24px 20px; }
+  .input-inner { max-width:900px; margin:0 auto; }
+  .input-label { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; font-weight:700; margin-bottom:14px; }
+  .input-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr auto; gap:12px; align-items:end; }
+  .field { display:flex; flex-direction:column; }
+  .field label { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:1.5px; color:var(--med); text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+  .field input, .field select { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:7px 10px; background:var(--cream); outline:none; transition:border-color .2s; }
+  .field input:focus, .field select:focus { border-color:var(--gold); }
+  .btn-gen { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--white); background:var(--navy); border:none; border-radius:2px; padding:9px 18px; cursor:pointer; white-space:nowrap; height:fit-content; }
+  .btn-gen:hover { background:var(--rust); }
+  .print-btn { display:block; max-width:900px; margin:14px auto 0; text-align:right; }
+  .print-btn button { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--white); background:var(--gold); border:none; border-radius:2px; padding:9px 20px; cursor:pointer; }
+  .print-btn button:hover { background:var(--rust); }
+
+  /* ─── PROGRESS BAR ─── */
+  .prog-wrap { max-width:900px; margin:14px auto 0; display:flex; align-items:center; gap:14px; }
+  .prog-label { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; color:var(--gold); text-transform:uppercase; white-space:nowrap; }
+  .prog-track { flex:1; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .prog-fill { height:100%; background:var(--gold); border-radius:3px; width:0%; transition:width .5s ease; }
+  .goal-dots { display:flex; gap:8px; }
+  .goal-dot { font-family:'DM Sans',sans-serif; font-size:9px; font-weight:700; padding:4px 10px; border-radius:20px; border:1.5px solid var(--border); color:var(--med); transition:all .3s; white-space:nowrap; }
+  .goal-dot.active { border-color:var(--gold-soft); color:var(--gold-soft); background:var(--gold-bg); }
+  .goal-dot.complete { border-color:var(--green); color:var(--white); background:var(--green); }
+
+  /* ─── DOCUMENT ─── */
+  #document { max-width:900px; margin:24px auto 48px; background:var(--white); box-shadow:0 4px 40px rgba(0,0,0,.10); }
+
+  .doc-header { padding:34px 48px 26px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .header-badge { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:4px; font-weight:700; color:var(--gold); text-transform:uppercase; }
+  .header-title { font-size:30px; font-weight:600; color:var(--navy); letter-spacing:.5px; line-height:1.1; margin-top:4px; }
+  .header-quote { font-size:16px; font-style:italic; color:var(--gold-soft); margin-top:6px; }
+  .header-meta { text-align:right; display:flex; flex-direction:column; gap:8px; }
+  .meta-item { font-family:'DM Sans',sans-serif; font-size:10px; color:var(--med); }
+  .meta-value { font-size:14px; color:var(--navy); }
+
+  .intro-block { background:var(--gold-bg); border-left:3px solid var(--gold); margin:26px 48px 0; padding:14px 18px; }
+  .intro-block p { font-size:14px; line-height:1.75; color:var(--charcoal); }
+  .intro-block p+p { margin-top:8px; }
+  .intro-block strong { color:var(--navy); font-weight:600; }
+
+  .doc-body { padding:26px 48px 40px; }
+  .section-bar { background:var(--section-bar); margin:0 -48px; padding:10px 48px; margin-bottom:22px; }
+  .section-bar h2 { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:3.5px; font-weight:700; color:var(--white); text-transform:uppercase; }
+
+  /* ─── GOAL BUILDER ACCORDION ─── */
+  .goal-builder { border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-bottom:16px; transition:border-color .3s; }
+  .goal-builder.active { border-color:var(--gold); }
+  .goal-builder.complete { border-color:var(--green); }
+
+  .gb-header { padding:12px 18px; display:flex; align-items:center; gap:14px; cursor:pointer; user-select:none; transition:background .2s; }
+  .gb-header:hover { background:#FAFAF8; }
+  .goal-builder.active .gb-header { background:var(--gold-bg); }
+  .goal-builder.complete .gb-header { background:var(--green-bg); }
+
+  .gb-num { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; width:26px; height:26px; border-radius:50%; background:var(--border); color:var(--med); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .3s; }
+  .goal-builder.active .gb-num { background:var(--gold); color:var(--white); }
+  .goal-builder.complete .gb-num { background:var(--green); color:var(--white); }
+  .gb-num svg { display:none; }
+  .goal-builder.complete .gb-num svg { display:block; }
+  .goal-builder.complete .gb-num span { display:none; }
+
+  .gb-title { font-size:16px; font-weight:600; color:var(--navy); flex:1; }
+  .gb-preview { font-size:13px; color:var(--med); font-style:italic; }
+  .goal-builder.active .gb-preview, .goal-builder.complete .gb-preview { display:none; }
+  .gb-chevron { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--med); transition:transform .2s; }
+  .goal-builder.active .gb-chevron { transform:rotate(180deg); color:var(--gold); }
+
+  .gb-body { display:none; padding:20px 20px 22px; border-top:1px solid var(--border); }
+  .goal-builder.active .gb-body { display:block; }
+
+  /* ─── STEP FLOW ─── */
+  .step-flow { display:flex; flex-direction:column; gap:22px; }
+
+  .step { display:flex; flex-direction:column; gap:10px; }
+  .step-label { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:2px; font-weight:700; color:var(--gold); text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+  .step-q { font-size:16px; color:var(--navy); font-weight:500; line-height:1.4; }
+  .step-hint { font-size:13px; color:var(--med); font-style:italic; }
+
+  /* ELEMENT SELECTOR */
+  .element-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+  .elem-btn { display:flex; flex-direction:column; align-items:center; gap:5px; padding:12px 6px 10px; border:1.5px solid var(--border); border-radius:3px; cursor:pointer; transition:all .15s; user-select:none; }
+  .elem-btn:hover { border-color:var(--gold-soft); background:var(--gold-bg); }
+  .elem-btn.selected { border-width:2px; color:var(--white); }
+  .elem-emoji { font-size:18px; }
+  .elem-name { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1px; font-weight:700; text-transform:uppercase; text-align:center; line-height:1.2; }
+
+  /* FROM → TO */
+  .from-to { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:start; }
+  .from-to-arrow { display:flex; align-items:center; justify-content:center; padding-top:28px; font-size:20px; color:var(--rust); }
+  .ft-field { display:flex; flex-direction:column; gap:5px; }
+  .ft-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1.5px; font-weight:700; color:var(--med); text-transform:uppercase; }
+  .ft-input { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:9px 12px; background:var(--cream); outline:none; width:100%; transition:border-color .2s; }
+  .ft-input:focus { border-color:var(--gold); }
+
+  /* WHY INPUT */
+  .why-input { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:9px 12px; background:var(--cream); outline:none; width:100%; resize:none; line-height:1.6; transition:border-color .2s; }
+  .why-input:focus { border-color:var(--gold); }
+
+  /* FIRST ACTION */
+  .action-row { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; }
+  .action-input { font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:9px 12px; background:var(--cream); outline:none; width:100%; transition:border-color .2s; }
+  .action-input:focus { border-color:var(--gold); }
+  .date-wrap { display:flex; flex-direction:column; gap:5px; }
+  .date-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1.5px; font-weight:700; color:var(--med); text-transform:uppercase; }
+  .date-input { font-family:'EB Garamond',Georgia,serif; font-size:14px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:9px 10px; background:var(--cream); outline:none; }
+  .date-input:focus { border-color:var(--gold); }
+
+  /* TARGET DATE */
+  .target-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* ADD GOAL BTN */
+  .add-goal-btn { display:flex; align-items:center; gap:8px; padding:12px 18px; border:1.5px dashed var(--border); border-radius:2px; cursor:pointer; color:var(--med); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:all .2s; background:transparent; width:100%; }
+  .add-goal-btn:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-bg); }
+  .add-goal-btn:disabled { opacity:.4; cursor:not-allowed; }
+
+  /* ─── GOAL SECTIONS (per-element) ─── */
+  .goal-section { border:1px solid var(--border); border-radius:2px; margin-bottom:16px; overflow:hidden; animation:fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .gs-header { padding:12px 18px; display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; transition:background .2s; }
+  .gs-header:hover { background:#FAFAF8; }
+  .goal-section.open .gs-header { background:var(--gold-bg); }
+  .goal-section.filled .gs-header { background:var(--green-bg); }
+  .gs-badge { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:2px; font-weight:700; text-transform:uppercase; padding:4px 12px; border-radius:20px; color:var(--white); white-space:nowrap; flex-shrink:0; }
+  .gs-title { font-size:16px; font-weight:600; color:var(--navy); flex:1; }
+  .gs-preview { font-size:13px; color:var(--med); font-style:italic; }
+  .goal-section.open .gs-preview { display:none; }
+  .gs-chevron { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--med); transition:transform .2s; }
+  .goal-section.open .gs-chevron { transform:rotate(180deg); color:var(--gold); }
+  .gs-body { display:none; padding:20px 20px 22px; border-top:1px solid var(--border); }
+  .goal-section.open .gs-body { display:block; }
+  .gs-step-label { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:2px; font-weight:700; color:var(--gold); text-transform:uppercase; margin-bottom:6px; }
+  .gs-step-q { font-size:16px; color:var(--navy); font-weight:500; line-height:1.4; margin-bottom:4px; }
+  .gs-step-hint { font-size:13px; color:var(--med); font-style:italic; margin-bottom:10px; }
+  .gs-divider { height:1px; background:var(--border); margin:18px 0; }
+
+  /* ─── GOAL CARDS ─── */
+  .goal-cards-wrap { display:flex; flex-direction:column; gap:16px; }
+
+  .goal-card { border-radius:2px; overflow:hidden; border:1px solid var(--border); }
+  .gc-top { padding:14px 20px 12px; display:flex; align-items:flex-start; gap:14px; }
+  .gc-elem-badge { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:2px; font-weight:700; text-transform:uppercase; padding:4px 12px; border-radius:20px; color:var(--white); white-space:nowrap; flex-shrink:0; margin-top:3px; }
+  .gc-goal-text { flex:1; }
+  .gc-from-to { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:1px; color:var(--med); text-transform:uppercase; margin-bottom:4px; }
+  .gc-headline { font-size:17px; font-weight:600; color:var(--navy); line-height:1.4; }
+  .gc-divider { height:1px; background:var(--border); margin:0 20px; }
+  .gc-bottom { padding:12px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .gc-field { display:flex; flex-direction:column; gap:3px; }
+  .gc-field-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:1.5px; font-weight:700; color:var(--med); text-transform:uppercase; }
+  .gc-field-value { font-size:13.5px; color:var(--navy); line-height:1.5; }
+
+  .placeholder-card { border:1.5px dashed var(--border); border-radius:2px; padding:28px 20px; text-align:center; color:var(--med); font-size:14px; font-style:italic; }
+
+  /* ─── COMMITMENT ─── */
+  .commitment-block { background:var(--gold-bg); border:1px solid var(--gold); border-radius:2px; padding:22px 22px 18px; }
+  .commitment-title { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:2.5px; font-weight:700; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
+  .commitment-body { font-size:15px; line-height:2; color:var(--navy); font-style:italic; margin-bottom:18px; }
+  .fill { font-weight:600; font-style:normal; color:var(--rust); }
+  .fill.empty { color:var(--border); }
+  .commitment-sig-row { display:grid; grid-template-columns:2fr 1fr; gap:24px; }
+  .sig-field { display:flex; flex-direction:column; }
+  .sig-label { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:2px; font-weight:700; color:var(--med); text-transform:uppercase; margin-bottom:6px; }
+  .sig-line { border:none; border-bottom:1.5px solid var(--gold); width:100%; padding:6px 2px; font-family:'EB Garamond',Georgia,serif; font-size:15px; color:var(--navy); background:transparent; outline:none; }
+
+  .doc-footer { background:var(--navy); padding:14px 48px; display:flex; align-items:center; justify-content:space-between; }
+  .footer-brand { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:3px; font-weight:700; color:rgba(255,255,255,.5); text-transform:uppercase; }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,.3); font-style:italic; }
+
+  @media print {
+    body { background:white; }
+    .input-panel, .print-btn, .prog-wrap, .gs-body, #mainElemGrid, #selectionCount, .step-hint, .step-q, .step-label { display:none !important; }
+    .goal-section { border:none !important; }
+    .gs-header { background:transparent !important; }
+    #document { margin:0; box-shadow:none; max-width:100%; }
+    .goal-card { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="input-panel">
+  <div class="input-inner">
+    <div class="input-label">Patient Details</div>
+    <div class="input-grid">
+      <div class="field"><label>Patient Name</label><input type="text" id="patientName" placeholder="Full name" oninput="syncDoc()"/></div>
+      <div class="field"><label>Program Tier</label><select id="tier" onchange="syncDoc()"><option value="">Select tier</option><option>Repair</option><option>Train</option><option>Master</option></select></div>
+      <div class="field"><label>Date</label><input type="date" id="docDate" onchange="syncDoc()"/></div>
+      <div class="field"><label>Provider</label><input type="text" id="provider" placeholder="Dr. Lazarus" oninput="syncDoc()"/></div>
+      <button class="btn-gen" onclick="syncDoc()">Generate</button>
+    </div>
+  </div>
+  <div class="prog-wrap">
+    <span class="prog-label">Goals Set</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <div class="goal-dots" id="goalDots"></div>
+  </div>
+</div>
+
+<div class="print-btn"><button onclick="window.print()">↓ Print / Save PDF</button></div>
+
+<div id="document">
+  <div class="doc-header">
+    <div>
+      <div class="header-badge">The Lazarus Method</div>
+      <div class="header-title">Health Goal Builder</div>
+      <div class="header-quote">Your goals. Your path. Your transformation.</div>
+    </div>
+    <div class="header-meta">
+      <div><div class="meta-item">Patient</div><div class="meta-value" id="dn">________________</div></div>
+      <div><div class="meta-item">Program Tier</div><div class="meta-value" id="dti">________________</div></div>
+      <div><div class="meta-item">Date</div><div class="meta-value" id="dd">________________</div></div>
+      <div><div class="meta-item">Provider</div><div class="meta-value" id="dp">________________</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block" style="margin:26px 48px 0;">
+    <p>There is something powerful about the moment you finally write down what you want for your health. It stops being a wish and becomes a plan. This is that moment.</p>
+    <p>The <strong>Health Goal Builder</strong> is designed to make goal-setting feel clear, personal, and achievable — not clinical or overwhelming. Three focused questions are all it takes to turn a vague intention into a real path forward. And with <strong>The Lazarus Method</strong> behind you, you are not doing this alone. Every goal you set here becomes part of the roadmap your practitioner uses to guide, support, and celebrate your progress with you.</p>
+  </div>
+
+  <div class="doc-body">
+
+    <div class="section-bar"><h2>Build Your Goals</h2></div>
+
+    <div class="step" style="margin-bottom:22px;">
+      <div class="step-label">Step 1 of 2</div>
+      <div class="step-q">Select your top three health priorities.</div>
+      <div class="step-hint">Choose up to three elements that matter most to you right now. These will become your goals.</div>
+      <div class="element-grid" id="mainElemGrid"></div>
+      <div id="selectionCount" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:1px;color:var(--med);text-transform:uppercase;font-weight:600;margin-top:8px;">0 of 3 selected</div>
+    </div>
+
+    <div id="goalSections"></div>
+
+    <div class="section-bar" style="margin-top:24px;"><h2>Your Goal Cards</h2></div>
+
+    <div class="goal-cards-wrap" id="goalCardsWrap">
+      <div class="placeholder-card" id="cardsPlaceholder">Complete a goal above to generate your first goal card.</div>
+    </div>
+
+    <div class="section-bar" style="margin-top:24px;"><h2>Your Health Commitment</h2></div>
+
+    <div class="commitment-block">
+      <div class="commitment-title">My Commitment Statement</div>
+      <div class="commitment-body" id="commitBody">
+        I, <span class="fill" id="commitName">_______________</span>, am committed to improving my health — not out of obligation, but because <span class="fill" id="commitWhy">_______________</span>. My first goal is to <span class="fill" id="commitGoal1">_______________</span>, and I will begin by <span class="fill" id="commitAction1">_______________</span> this week. I understand that small, consistent actions — not perfection — are what change a life.
+      </div>
+      <div class="commitment-sig-row">
+        <div class="sig-field">
+          <div class="sig-label">Signature</div>
+          <input class="sig-line" type="text" placeholder="Sign your name"/>
+        </div>
+        <div class="sig-field">
+          <div class="sig-label">Date</div>
+          <input class="sig-line" type="text" id="commitDateField" placeholder="________________"/>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-brand">The Lazarus Method</span>
+    <span class="footer-copy">© The Lazarus Method · All Rights Reserved</span>
+  </div>
+</div>
+
+<script>
+const ELEMENTS = [
+  { id:'nourish',   name:'Nourish',   emoji:'🥗', color:'#3A7A3A', hint:'e.g. eat processed food most days → cook whole-food meals 4 nights a week' },
+  { id:'move',      name:'Move',      emoji:'⚡', color:'#1A3A7A', hint:'e.g. sit all day with no exercise → walk 30 minutes 5 days a week' },
+  { id:'rest',      name:'Rest',      emoji:'🌙', color:'#4A1A7A', hint:'e.g. sleep 5 hours a night → consistently sleep 7–8 hours' },
+  { id:'challenge', name:'Challenge', emoji:'🧠', color:'#7A1A1A', hint:'e.g. avoid hard conversations → face one uncomfortable task daily' },
+  { id:'connect',   name:'Connect',   emoji:'🤝', color:'#7A4A1A', hint:'e.g. isolate most weekends → schedule one social activity per week' },
+  { id:'learn',     name:'Learn',     emoji:'📖', color:'#1A5A6A', hint:'e.g. never read anymore → read 20 minutes before bed each night' },
+  { id:'spark',     name:'Spark',     emoji:'✨', color:'#6A3A1A', hint:'e.g. feel stuck in routine → spend 30 minutes weekly on a creative hobby' }
+];
+
+let selectedElements = [];
+let goalData = {};
+
+function initElementGrid() {
+  const grid = document.getElementById('mainElemGrid');
+  ELEMENTS.forEach(el => {
+    const btn = document.createElement('div');
+    btn.className = 'elem-btn';
+    btn.id = 'elembtn-' + el.id;
+    btn.innerHTML = '<span class="elem-emoji">' + el.emoji + '</span><span class="elem-name">' + el.name + '</span>';
+    btn.addEventListener('click', () => toggleElement(el.id));
+    grid.appendChild(btn);
+  });
+}
+
+function toggleElement(elemId) {
+  const idx = selectedElements.indexOf(elemId);
+  const el = ELEMENTS.find(e => e.id === elemId);
+  const btn = document.getElementById('elembtn-' + elemId);
+
+  if (idx > -1) {
+    selectedElements.splice(idx, 1);
+    delete goalData[elemId];
+    btn.classList.remove('selected');
+    btn.style.background = '';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  } else {
+    if (selectedElements.length >= 3) return;
+    selectedElements.push(elemId);
+    goalData[elemId] = { from:'', to:'', why:'', action:'', actionDate:'', targetDate:'' };
+    btn.classList.add('selected');
+    btn.style.background = el.color;
+    btn.style.borderColor = el.color;
+    btn.style.color = '#fff';
+  }
+
+  document.getElementById('selectionCount').textContent = selectedElements.length + ' of 3 selected';
+  renderGoalSections();
+  updateGoalCards();
+  updateCommitment();
+  updateProgress();
+}
+
+function renderGoalSections() {
+  const container = document.getElementById('goalSections');
+  const existingIds = Array.from(container.querySelectorAll('.goal-section')).map(s => s.dataset.elem);
+
+  // Remove sections for deselected elements
+  existingIds.forEach(eid => {
+    if (!selectedElements.includes(eid)) {
+      const sec = container.querySelector('.goal-section[data-elem="'+eid+'"]');
+      if (sec) sec.remove();
+    }
+  });
+
+  // Add sections for newly selected elements
+  selectedElements.forEach((elemId, i) => {
+    if (container.querySelector('.goal-section[data-elem="'+elemId+'"]')) return;
+    const el = ELEMENTS.find(e => e.id === elemId);
+    const section = document.createElement('div');
+    section.className = 'goal-section open';
+    section.dataset.elem = elemId;
+
+    section.innerHTML = `
+      <div class="gs-header" onclick="toggleSection('${elemId}')">
+        <span class="gs-badge" style="background:${el.color}">${el.emoji} ${el.name}</span>
+        <div class="gs-title">${el.name} Goal</div>
+        <div class="gs-preview" id="gsprev-${elemId}">Not started</div>
+        <div class="gs-chevron">▾</div>
+      </div>
+      <div class="gs-body">
+        <div class="gs-step-label">Step 2 of 2 — ${el.name}</div>
+        <div class="gs-step-q">Where are you now with <strong>${el.name}</strong>, and where do you want to be?</div>
+        <div class="gs-step-hint">${el.hint}</div>
+        <div class="from-to">
+          <div class="ft-field">
+            <div class="ft-label">Right now I…</div>
+            <input class="ft-input" type="text" id="from-${elemId}" placeholder="Be honest — this is your starting point" oninput="updateData('${elemId}')"/>
+          </div>
+          <div class="from-to-arrow">→</div>
+          <div class="ft-field">
+            <div class="ft-label">I want to…</div>
+            <input class="ft-input" type="text" id="to-${elemId}" placeholder="Be specific — vague goals produce vague results" oninput="updateData('${elemId}')"/>
+          </div>
+        </div>
+
+        <div class="gs-divider"></div>
+
+        <div class="gs-step-q">Why does this ${el.name.toLowerCase()} goal matter to you personally?</div>
+        <div class="gs-step-hint">This is the most important question. Vague answers produce vague motivation.</div>
+        <textarea class="why-input" rows="2" id="why-${elemId}" placeholder="Because…" oninput="updateData('${elemId}')"></textarea>
+
+        <div class="gs-divider"></div>
+
+        <div class="gs-step-q">What is the one thing you will do this week to begin?</div>
+        <div class="gs-step-hint">One action, not five. Assign it a date so it gets done.</div>
+        <div class="action-row">
+          <input class="action-input" type="text" id="action-${elemId}" placeholder="e.g. Set a phone-off alarm at 9:30 PM starting Sunday" oninput="updateData('${elemId}')"/>
+          <div class="date-wrap">
+            <div class="date-label">By this date</div>
+            <input class="date-input" type="date" id="actiondate-${elemId}" onchange="updateData('${elemId}')"/>
+          </div>
+        </div>
+        <div class="target-row" style="margin-top:10px;">
+          <div class="date-wrap">
+            <div class="date-label">Goal Target Date</div>
+            <input class="date-input" type="date" id="targetdate-${elemId}" onchange="updateData('${elemId}')"/>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(section);
+  });
+
+  // Reorder sections to match selection order
+  selectedElements.forEach(elemId => {
+    const sec = container.querySelector('.goal-section[data-elem="'+elemId+'"]');
+    if (sec) container.appendChild(sec);
+  });
+}
+
+function toggleSection(elemId) {
+  const sec = document.querySelector('.goal-section[data-elem="'+elemId+'"]');
+  if (sec) sec.classList.toggle('open');
+}
+
+function updateData(elemId) {
+  const d = goalData[elemId];
+  if (!d) return;
+
+  d.from       = (document.getElementById('from-'+elemId)?.value || '').trim();
+  d.to         = (document.getElementById('to-'+elemId)?.value || '').trim();
+  d.why        = (document.getElementById('why-'+elemId)?.value || '').trim();
+  d.action     = (document.getElementById('action-'+elemId)?.value || '').trim();
+  d.actionDate = document.getElementById('actiondate-'+elemId)?.value || '';
+  d.targetDate = document.getElementById('targetdate-'+elemId)?.value || '';
+
+  const filled = d.from && d.to && d.why && d.action;
+  const sec = document.querySelector('.goal-section[data-elem="'+elemId+'"]');
+  if (sec) sec.classList.toggle('filled', !!filled);
+
+  const prev = document.getElementById('gsprev-'+elemId);
+  if (prev) prev.textContent = d.to || 'Not started';
+
+  updateGoalCards();
+  updateCommitment();
+  updateProgress();
+}
+
+function updateGoalCards() {
+  const wrap = document.getElementById('goalCardsWrap');
+  const ph   = document.getElementById('cardsPlaceholder');
+  const filled = selectedElements.filter(eid => {
+    const d = goalData[eid];
+    return d && (d.to || d.from);
+  });
+
+  if (filled.length === 0) {
+    if (ph) ph.style.display = '';
+    wrap.querySelectorAll('.goal-card').forEach(c => c.remove());
+    return;
+  }
+  if (ph) ph.style.display = 'none';
+
+  wrap.querySelectorAll('.goal-card').forEach(c => c.remove());
+  filled.forEach(eid => {
+    const el = ELEMENTS.find(e => e.id === eid);
+    const g  = goalData[eid];
+    const card = document.createElement('div');
+    card.className = 'goal-card';
+    card.style.borderColor = el ? el.color : 'var(--border)';
+
+    const actionDateFmt = g.actionDate ? fmtDate(g.actionDate) : '—';
+    const targetDateFmt = g.targetDate ? fmtDate(g.targetDate) : '—';
+
+    card.innerHTML = `
+      <div class="gc-top">
+        ${el ? '<span class="gc-elem-badge" style="background:'+el.color+'">'+el.emoji+' '+el.name+'</span>' : ''}
+        <div class="gc-goal-text">
+          <div class="gc-from-to">${g.from||'—'} → ${g.to||'—'}</div>
+          <div class="gc-headline">${g.to || 'Goal not yet defined'}</div>
+        </div>
+      </div>
+      <div class="gc-divider"></div>
+      <div class="gc-bottom">
+        <div class="gc-field">
+          <div class="gc-field-label">Why It Matters</div>
+          <div class="gc-field-value">${g.why||'—'}</div>
+        </div>
+        <div class="gc-field">
+          <div class="gc-field-label">First Action This Week</div>
+          <div class="gc-field-value">${g.action||'—'}</div>
+        </div>
+        <div class="gc-field">
+          <div class="gc-field-label">Dates</div>
+          <div class="gc-field-value">
+            <span style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;color:var(--rust);text-transform:uppercase;">Action by</span> ${actionDateFmt}<br>
+            <span style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;">Goal target</span> ${targetDateFmt}
+          </div>
+        </div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+}
+
+function updateCommitment() {
+  const name = document.getElementById('patientName')?.value.trim() || '_______________';
+  document.getElementById('commitName').textContent = name;
+  document.getElementById('commitName').className = name !== '_______________' ? 'fill' : 'fill empty';
+
+  const firstElem = selectedElements[0];
+  const firstData = firstElem ? goalData[firstElem] : null;
+
+  const why = firstData?.why || '_______________';
+  document.getElementById('commitWhy').textContent = why;
+  document.getElementById('commitWhy').className = why !== '_______________' ? 'fill' : 'fill empty';
+
+  const firstTo = firstData?.to || '_______________';
+  document.getElementById('commitGoal1').textContent = firstTo;
+  document.getElementById('commitGoal1').className = firstTo !== '_______________' ? 'fill' : 'fill empty';
+
+  const firstAction = firstData?.action || '_______________';
+  document.getElementById('commitAction1').textContent = firstAction;
+  document.getElementById('commitAction1').className = firstAction !== '_______________' ? 'fill' : 'fill empty';
+}
+
+function updateProgress() {
+  const complete = selectedElements.filter(eid => {
+    const d = goalData[eid];
+    return d && d.from && d.to && d.why && d.action;
+  }).length;
+  document.getElementById('progFill').style.width = (complete / 3 * 100) + '%';
+
+  const dots = document.getElementById('goalDots');
+  dots.innerHTML = '';
+  selectedElements.forEach((eid, i) => {
+    const el = ELEMENTS.find(e => e.id === eid);
+    const d = goalData[eid];
+    const done = d && d.from && d.to && d.why && d.action;
+    const dot = document.createElement('div');
+    dot.className = 'goal-dot' + (done ? ' complete' : ' active');
+    dot.textContent = el.name + (done ? ' ✓' : '');
+    dots.appendChild(dot);
+  });
+}
+
+function fmtDate(val) {
+  if (!val) return '—';
+  const d = new Date(val + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function syncDoc() {
+  const name = document.getElementById('patientName').value.trim() || '________________';
+  const tier = document.getElementById('tier').value || '________________';
+  const dateVal = document.getElementById('docDate').value;
+  const provider = document.getElementById('provider').value.trim() || '________________';
+  document.getElementById('dn').textContent = name;
+  document.getElementById('dti').textContent = tier;
+  document.getElementById('dp').textContent = provider;
+  if (dateVal) {
+    const d = new Date(dateVal + 'T00:00:00');
+    const fmt = d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+    document.getElementById('dd').textContent = fmt;
+    document.getElementById('commitDateField').placeholder = fmt;
+  }
+  updateCommitment();
+}
+
+// Init
+document.getElementById('docDate').value = new Date().toISOString().split('T')[0];
+syncDoc();
+initElementGrid();
+</script>
+</body>
+</html>
