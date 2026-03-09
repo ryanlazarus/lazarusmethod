@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lazarus Method — Your Perfect Day</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #96792F;
+    --gold-soft: #B8975A;
+    --gold-bg: #FAF6ED;
+    --navy: #1A1A2E;
+    --charcoal: #3A3A3A;
+    --med: #8A8A8A;
+    --subtle: #BBBBBB;
+    --cream: #FDFBF7;
+    --white: #FFFFFF;
+    --border: #E8E0D0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    background: #F0EDE6;
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    background: var(--navy);
+    padding: 28px 24px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .header-brand {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .header-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 28px;
+    color: var(--white);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .header-subtitle {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-top: 8px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  /* ═══ PATIENT INPUT ═══ */
+  .patient-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .patient-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .patient-field { display: flex; flex-direction: column; }
+
+  .patient-field label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .patient-field input,
+  .patient-field select {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .patient-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238A8A8A'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    cursor: pointer;
+  }
+
+  .patient-field input:focus,
+  .patient-field select:focus { border-color: var(--gold-soft); }
+  .patient-field input::placeholder { color: var(--subtle); font-style: italic; }
+
+  /* ═══ MAIN ═══ */
+  .main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  /* ═══ SECTIONS ═══ */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--gold-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-number {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--gold);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .section-body { padding: 20px; }
+
+  .section-intro {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  /* ═══ QUARTER CARDS ═══ */
+  .quarter {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .quarter-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .quarter-badge {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: 1.5px;
+    flex-shrink: 0;
+  }
+
+  .quarter-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .quarter-time {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  .q1 .quarter-header { background: #FFF8F0; }
+  .q1 .quarter-badge { background: #C4873B; }
+  .q1 .quarter-title { color: #9B6B3A; }
+
+  .q2 .quarter-header { background: #F0F7F0; }
+  .q2 .quarter-badge { background: #5A8A5A; }
+  .q2 .quarter-title { color: #4A7A4A; }
+
+  .q3 .quarter-header { background: #F0F0F8; }
+  .q3 .quarter-badge { background: #6A6A9A; }
+  .q3 .quarter-title { color: #5A5A8A; }
+
+  .q4 .quarter-header { background: #F5F0F5; }
+  .q4 .quarter-badge { background: #8A6A8A; }
+  .q4 .quarter-title { color: #7A5A7A; }
+
+  .quarter-body { padding: 20px; }
+
+  /* ═══ FORM FIELDS ═══ */
+  .field-group { margin-bottom: 16px; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  .field-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .field-input {
+    width: 100%;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field-input:focus { border-color: var(--gold-soft); }
+  .field-input::placeholder { color: var(--subtle); font-style: italic; }
+
+  .field-textarea {
+    width: 100%;
+    min-height: 60px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px;
+    background: var(--cream);
+    outline: none;
+    resize: vertical;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+
+  .field-textarea:focus { border-color: var(--gold-soft); }
+  .field-textarea::placeholder { color: var(--subtle); font-style: italic; }
+
+  /* Activities list */
+  .activities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .activity-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .activity-num {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--subtle);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .activity-row .field-input { flex: 1; }
+
+  /* Meal checkboxes */
+  .meal-options {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meal-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .meal-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .meal-check span {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    color: var(--charcoal);
+    letter-spacing: 0.5px;
+  }
+
+  .meal-other {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .meal-other .field-input {
+    font-size: 13px;
+    padding: 5px 8px;
+  }
+
+  /* Feel field */
+  .feel-field {
+    background: var(--gold-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 14px;
+  }
+
+  .feel-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .feel-input {
+    width: 100%;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--navy);
+    border: none;
+    border-bottom: 1px solid var(--gold-soft);
+    padding: 6px 0;
+    background: transparent;
+    outline: none;
+  }
+
+  .feel-input::placeholder { color: var(--gold-soft); opacity: 0.5; }
+
+  /* Element tags */
+  .element-tags {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .element-tags-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .tags-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag-btn {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--med);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .tag-btn:hover { border-color: var(--gold-soft); color: var(--gold); }
+
+  .tag-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--white);
+  }
+
+  /* ═══ ALIGNMENT SUMMARY ═══ */
+  .alignment-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .align-card {
+    text-align: center;
+    padding: 14px 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--cream);
+    transition: all 0.3s;
+  }
+
+  .align-card.covered {
+    background: var(--gold-bg);
+    border-color: var(--gold-soft);
+  }
+
+  .align-card.missing {
+    background: #FFF5F5;
+    border-color: #E8CCCC;
+  }
+
+  .align-icon { font-size: 18px; margin-bottom: 4px; }
+
+  .align-name {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .align-card.covered .align-name { color: var(--gold); }
+  .align-card.missing .align-name { color: #C0392B; }
+
+  .align-count {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    color: var(--med);
+  }
+
+  .align-card.covered .align-count { color: var(--gold-soft); }
+  .align-card.missing .align-count { color: #CC8888; }
+
+  .alignment-note {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--charcoal);
+    text-align: center;
+    margin-top: 16px;
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  /* ═══ REFLECTION ═══ */
+  .reflection-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .gap-track {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: nowrap;
+    margin-top: 4px;
+  }
+
+  .gap-dot {
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    min-height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--subtle);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .gap-dot:hover { border-color: var(--gold-soft); color: var(--gold); }
+
+  .gap-dot.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--white);
+  }
+
+  .gap-dot.active.far { background: #C0392B; border-color: #C0392B; }
+  .gap-dot.active.mid { background: var(--gold-soft); border-color: var(--gold-soft); }
+  .gap-dot.active.close { background: #27AE60; border-color: #27AE60; }
+
+  .gap-value {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    color: var(--med);
+    margin-left: 8px;
+    min-width: 80px;
+  }
+
+  /* ═══ CLOSING ═══ */
+  .closing-box {
+    background: var(--navy);
+    border-radius: 6px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .closing-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .closing-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.7;
+    color: var(--white);
+    font-style: italic;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .method-closer {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 20px;
+    padding: 0 20px;
+    font-style: italic;
+  }
+
+  /* ═══ ACTIONS ═══ */
+  .actions-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .btn {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--gold); color: var(--white); }
+  .btn-primary:hover { background: var(--gold-soft); }
+  .btn-secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+  .btn-secondary:hover { background: var(--gold-bg); }
+
+  /* ═══ FOOTER ═══ */
+  .footer {
+    text-align: center;
+    padding: 30px 24px;
+    margin-top: 10px;
+  }
+
+  .footer-text {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--subtle);
+    text-transform: uppercase;
+  }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    body { background: var(--white); }
+    @page { size: letter; margin: 0.5in 0.6in; }
+    .header { padding: 18px 20px; break-after: avoid; }
+    .header-title { font-size: 24px; }
+    .patient-bar { padding: 14px 20px; }
+    .main { padding: 0 0 20px; }
+    .section { break-inside: auto; margin-top: 16px; }
+    .section-header { break-after: avoid; page-break-after: avoid; }
+    .quarter { break-inside: avoid; page-break-inside: avoid; margin-top: 16px; }
+    .field-textarea, .field-input, .feel-input { border-color: #CCC; background: var(--white); }
+    .closing-box { padding: 22px 20px; }
+    .actions-bar { display: none !important; }
+    .align-card { padding: 10px 4px; }
+    .footer { padding: 16px; }
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 700px) {
+    .patient-inner { grid-template-columns: 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+    .alignment-grid { grid-template-columns: repeat(4, 1fr); }
+    .reflection-row { grid-template-columns: 1fr; }
+    .header-title { font-size: 22px; }
+    .closing-text { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">The Lazarus Method</div>
+  <div class="header-title">Your Perfect Day</div>
+  <div class="header-subtitle">Visualize the day that defines your healthiest, most fulfilling life</div>
+</div>
+
+<!-- PATIENT INFO -->
+<div class="patient-bar">
+  <div class="patient-inner">
+    <div class="patient-field">
+      <label>Name</label>
+      <input type="text" id="patientName" placeholder="Full name">
+    </div>
+    <div class="patient-field">
+      <label>Date</label>
+      <input type="date" id="patientDate">
+    </div>
+    <div class="patient-field">
+      <label>Program Tier</label>
+      <select id="patientTier">
+        <option value="" disabled selected>Select tier</option>
+        <option value="Repair">Repair</option>
+        <option value="Train">Train</option>
+        <option value="Master">Master</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">✦</div>
+      <div class="section-title">The Exercise</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        Visualize your perfect day from the moment you wake up until you go to sleep. Think about how you would feel, who you would be with, what you would do, and where you would be. This is not about what is realistic today. This is about what your healthiest, most fulfilled self looks like in motion. Use the four quarters below to map it out.
+      </div>
+    </div>
+  </div>
+
+  <!-- Q1: MORNING -->
+  <div class="quarter q1">
+    <div class="quarter-header">
+      <span class="quarter-badge">Q1</span>
+      <span class="quarter-title">Morning</span>
+      <span class="quarter-time">Wake Up to 11 AM</span>
+    </div>
+    <div class="quarter-body">
+      <div class="field-group">
+        <div class="field-label">Wake-Up Time</div>
+        <input type="time" class="field-input" style="max-width:160px;" value="06:00">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Breakfast &amp; Nutrition</div>
+        <div class="meal-options">
+          <label class="meal-check"><input type="checkbox"><span>Home-Cooked</span></label>
+          <label class="meal-check"><input type="checkbox"><span>Dining Out</span></label>
+          <label class="meal-check"><input type="checkbox"><span>Friends / Family</span></label>
+          <div class="meal-other"><input type="text" class="field-input" placeholder="Other..."></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Activities &amp; Goals for the Morning</div>
+        <div class="activities-list">
+          <div class="activity-row"><span class="activity-num">1</span><input type="text" class="field-input" placeholder="e.g. Morning walk, journaling, meditation..."></div>
+          <div class="activity-row"><span class="activity-num">2</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">3</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">4</span><input type="text" class="field-input" placeholder=""></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Location(s)</div>
+        <input type="text" class="field-input" placeholder="Where will you be in the first quarter of your day?">
+      </div>
+      <div class="field-group">
+        <div class="feel-field">
+          <div class="feel-label">How You Want to Feel</div>
+          <input type="text" class="feel-input" placeholder="e.g. Energized, clear-headed, grateful...">
+        </div>
+      </div>
+      <div class="element-tags">
+        <div class="element-tags-label">Which elements does this quarter serve?</div>
+        <div class="tags-row" data-quarter="q1">
+          <button class="tag-btn" data-el="nourish" onclick="toggleTag(this)">Nourish</button>
+          <button class="tag-btn" data-el="move" onclick="toggleTag(this)">Move</button>
+          <button class="tag-btn" data-el="rest" onclick="toggleTag(this)">Rest</button>
+          <button class="tag-btn" data-el="challenge" onclick="toggleTag(this)">Challenge</button>
+          <button class="tag-btn" data-el="connect" onclick="toggleTag(this)">Connect</button>
+          <button class="tag-btn" data-el="learn" onclick="toggleTag(this)">Learn</button>
+          <button class="tag-btn" data-el="spark" onclick="toggleTag(this)">Spark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2: MIDDAY -->
+  <div class="quarter q2">
+    <div class="quarter-header">
+      <span class="quarter-badge">Q2</span>
+      <span class="quarter-title">Midday</span>
+      <span class="quarter-time">11 AM to 3 PM</span>
+    </div>
+    <div class="quarter-body">
+      <div class="field-group">
+        <div class="field-label">Lunch &amp; Nutrition</div>
+        <div class="meal-options">
+          <label class="meal-check"><input type="checkbox"><span>Home-Cooked</span></label>
+          <label class="meal-check"><input type="checkbox"><span>Dining Out</span></label>
+          <label class="meal-check"><input type="checkbox"><span>Friends / Family</span></label>
+          <div class="meal-other"><input type="text" class="field-input" placeholder="Other..."></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Activities &amp; Goals for Midday</div>
+        <div class="activities-list">
+          <div class="activity-row"><span class="activity-num">1</span><input type="text" class="field-input" placeholder="e.g. Focused deep work, client sessions..."></div>
+          <div class="activity-row"><span class="activity-num">2</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">3</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">4</span><input type="text" class="field-input" placeholder=""></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Location(s)</div>
+        <input type="text" class="field-input" placeholder="Where will you be in the second quarter of your day?">
+      </div>
+      <div class="field-group">
+        <div class="feel-field">
+          <div class="feel-label">How You Want to Feel</div>
+          <input type="text" class="feel-input" placeholder="e.g. Productive, connected, in flow...">
+        </div>
+      </div>
+      <div class="element-tags">
+        <div class="element-tags-label">Which elements does this quarter serve?</div>
+        <div class="tags-row" data-quarter="q2">
+          <button class="tag-btn" data-el="nourish" onclick="toggleTag(this)">Nourish</button>
+          <button class="tag-btn" data-el="move" onclick="toggleTag(this)">Move</button>
+          <button class="tag-btn" data-el="rest" onclick="toggleTag(this)">Rest</button>
+          <button class="tag-btn" data-el="challenge" onclick="toggleTag(this)">Challenge</button>
+          <button class="tag-btn" data-el="connect" onclick="toggleTag(this)">Connect</button>
+          <button class="tag-btn" data-el="learn" onclick="toggleTag(this)">Learn</button>
+          <button class="tag-btn" data-el="spark" onclick="toggleTag(this)">Spark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3: AFTERNOON -->
+  <div class="quarter q3">
+    <div class="quarter-header">
+      <span class="quarter-badge">Q3</span>
+      <span class="quarter-title">Afternoon to Evening</span>
+      <span class="quarter-time">3 PM to 7 PM</span>
+    </div>
+    <div class="quarter-body">
+      <div class="field-group">
+        <div class="field-label">Dinner &amp; Nutrition</div>
+        <div class="meal-options">
+          <label class="meal-check"><input type="checkbox"><span>Home-Cooked</span></label>
+          <label class="meal-check"><input type="checkbox"><span>Dining Out</span></label>
+          <label class="meal-check"><input type="checkbox"><span>Friends / Family</span></label>
+          <div class="meal-other"><input type="text" class="field-input" placeholder="Other..."></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Activities &amp; Goals for the Afternoon</div>
+        <div class="activities-list">
+          <div class="activity-row"><span class="activity-num">1</span><input type="text" class="field-input" placeholder="e.g. Workout, family time, creative project..."></div>
+          <div class="activity-row"><span class="activity-num">2</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">3</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">4</span><input type="text" class="field-input" placeholder=""></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Location(s)</div>
+        <input type="text" class="field-input" placeholder="Where will you be in the third quarter of your day?">
+      </div>
+      <div class="field-group">
+        <div class="feel-field">
+          <div class="feel-label">How You Want to Feel</div>
+          <input type="text" class="feel-input" placeholder="e.g. Accomplished, present, recharged...">
+        </div>
+      </div>
+      <div class="element-tags">
+        <div class="element-tags-label">Which elements does this quarter serve?</div>
+        <div class="tags-row" data-quarter="q3">
+          <button class="tag-btn" data-el="nourish" onclick="toggleTag(this)">Nourish</button>
+          <button class="tag-btn" data-el="move" onclick="toggleTag(this)">Move</button>
+          <button class="tag-btn" data-el="rest" onclick="toggleTag(this)">Rest</button>
+          <button class="tag-btn" data-el="challenge" onclick="toggleTag(this)">Challenge</button>
+          <button class="tag-btn" data-el="connect" onclick="toggleTag(this)">Connect</button>
+          <button class="tag-btn" data-el="learn" onclick="toggleTag(this)">Learn</button>
+          <button class="tag-btn" data-el="spark" onclick="toggleTag(this)">Spark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4: EVENING -->
+  <div class="quarter q4">
+    <div class="quarter-header">
+      <span class="quarter-badge">Q4</span>
+      <span class="quarter-title">Evening</span>
+      <span class="quarter-time">7 PM to Sleep</span>
+    </div>
+    <div class="quarter-body">
+      <div class="field-group">
+        <div class="field-label">Activities &amp; Goals for the Evening</div>
+        <div class="activities-list">
+          <div class="activity-row"><span class="activity-num">1</span><input type="text" class="field-input" placeholder="e.g. Family time, reading, wind-down routine..."></div>
+          <div class="activity-row"><span class="activity-num">2</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">3</span><input type="text" class="field-input" placeholder=""></div>
+          <div class="activity-row"><span class="activity-num">4</span><input type="text" class="field-input" placeholder=""></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Location(s)</div>
+        <input type="text" class="field-input" placeholder="Where will you be in the fourth quarter of your day?">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Bedtime</div>
+        <input type="time" class="field-input" style="max-width:160px;" value="22:00">
+      </div>
+      <div class="field-group">
+        <div class="feel-field">
+          <div class="feel-label">How You Want to Feel</div>
+          <input type="text" class="feel-input" placeholder="e.g. At peace, fulfilled, ready for rest...">
+        </div>
+      </div>
+      <div class="element-tags">
+        <div class="element-tags-label">Which elements does this quarter serve?</div>
+        <div class="tags-row" data-quarter="q4">
+          <button class="tag-btn" data-el="nourish" onclick="toggleTag(this)">Nourish</button>
+          <button class="tag-btn" data-el="move" onclick="toggleTag(this)">Move</button>
+          <button class="tag-btn" data-el="rest" onclick="toggleTag(this)">Rest</button>
+          <button class="tag-btn" data-el="challenge" onclick="toggleTag(this)">Challenge</button>
+          <button class="tag-btn" data-el="connect" onclick="toggleTag(this)">Connect</button>
+          <button class="tag-btn" data-el="learn" onclick="toggleTag(this)">Learn</button>
+          <button class="tag-btn" data-el="spark" onclick="toggleTag(this)">Spark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALIGNMENT SUMMARY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">✦</div>
+      <div class="section-title">Perfect Day Element Coverage</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        This summary shows which of the seven essential health elements are represented in your perfect day and which are missing. A truly balanced day touches all seven. If an element is absent from your vision, ask yourself why.
+      </div>
+      <div class="alignment-grid" id="alignmentGrid">
+        <div class="align-card" data-el="nourish"><div class="align-icon">🍃</div><div class="align-name">Nourish</div><div class="align-count" id="count-nourish">0 quarters</div></div>
+        <div class="align-card" data-el="move"><div class="align-icon">🏃</div><div class="align-name">Move</div><div class="align-count" id="count-move">0 quarters</div></div>
+        <div class="align-card" data-el="rest"><div class="align-icon">🌙</div><div class="align-name">Rest</div><div class="align-count" id="count-rest">0 quarters</div></div>
+        <div class="align-card" data-el="challenge"><div class="align-icon">⛰️</div><div class="align-name">Challenge</div><div class="align-count" id="count-challenge">0 quarters</div></div>
+        <div class="align-card" data-el="connect"><div class="align-icon">🤝</div><div class="align-name">Connect</div><div class="align-count" id="count-connect">0 quarters</div></div>
+        <div class="align-card" data-el="learn"><div class="align-icon">📖</div><div class="align-name">Learn</div><div class="align-count" id="count-learn">0 quarters</div></div>
+        <div class="align-card" data-el="spark"><div class="align-icon">✨</div><div class="align-name">Spark</div><div class="align-count" id="count-spark">0 quarters</div></div>
+      </div>
+      <div class="alignment-note" id="alignmentNote">Tag elements in each quarter above to see your coverage.</div>
+    </div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">✦</div>
+      <div class="section-title">Reflection</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        Now compare this vision to your current reality. The distance between the two is not a judgment. It is a map.
+      </div>
+      <div class="field-group">
+        <div class="field-label">How close is your current typical day to this perfect day?</div>
+        <div class="gap-track" id="gapTrack"></div>
+      </div>
+      <div class="field-group" style="margin-top:16px;">
+        <div class="field-label">What is the single biggest difference between your current day and this one?</div>
+        <textarea class="field-textarea" placeholder="Be specific. Name the gap you see most clearly..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="section">
+    <div class="section-body" style="padding:0;">
+      <div class="closing-box">
+        <div class="closing-label">Your Perfect Day</div>
+        <div class="closing-text">
+          "The distance between your current day and your perfect day is not a problem to solve. It is a path to walk. Every element you strengthen brings you closer."
+        </div>
+      </div>
+      <div class="method-closer">
+        The Lazarus Method gives you the framework, the accountability, and the seven elements to close the gap between where you are and the day you just described.
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions-bar">
+    <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+    <button class="btn btn-secondary" onclick="resetAll()">Reset All Fields</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-text">©The Lazarus Method · All Rights Reserved</div>
+</div>
+
+<script>
+// ═══ ELEMENT TAGS ═══
+function toggleTag(btn) {
+  btn.classList.toggle('active');
+  updateAlignment();
+}
+
+function updateAlignment() {
+  const els = ['nourish','move','rest','challenge','connect','learn','spark'];
+  const counts = {};
+  els.forEach(el => counts[el] = 0);
+
+  document.querySelectorAll('.tag-btn.active').forEach(btn => {
+    const el = btn.dataset.el;
+    if (counts[el] !== undefined) counts[el]++;
+  });
+
+  let covered = 0;
+  let missing = 0;
+
+  els.forEach(el => {
+    const card = document.querySelector(`.align-card[data-el="${el}"]`);
+    const countEl = document.getElementById(`count-${el}`);
+    const c = counts[el];
+    countEl.textContent = c === 1 ? '1 quarter' : c + ' quarters';
+
+    card.classList.remove('covered','missing');
+    if (c > 0) { card.classList.add('covered'); covered++; }
+    else { card.classList.add('missing'); missing++; }
+  });
+
+  const noteEl = document.getElementById('alignmentNote');
+  const totalTags = Object.values(counts).reduce((a,b) => a+b, 0);
+
+  if (totalTags === 0) {
+    noteEl.textContent = 'Tag elements in each quarter above to see your coverage.';
+  } else if (missing === 0) {
+    noteEl.textContent = 'All seven elements are represented in your perfect day. That is a balanced vision.';
+  } else if (missing === 1) {
+    const missingEl = els.find(el => counts[el] === 0);
+    const name = missingEl.charAt(0).toUpperCase() + missingEl.slice(1);
+    noteEl.textContent = `${name} is missing from your perfect day. Consider where it fits.`;
+  } else {
+    const missingNames = els.filter(el => counts[el] === 0).map(el => el.charAt(0).toUpperCase() + el.slice(1));
+    const last = missingNames.pop();
+    noteEl.textContent = `${missingNames.join(', ')} and ${last} are missing from your perfect day. Where could they fit?`;
+  }
+}
+
+// ═══ GAP RATING ═══
+const gapTrack = document.getElementById('gapTrack');
+let gapRating = 0;
+
+for (let i = 1; i <= 10; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'gap-dot';
+  dot.textContent = i;
+  dot.dataset.value = i;
+  dot.addEventListener('click', () => {
+    gapRating = i;
+    const dots = gapTrack.querySelectorAll('.gap-dot');
+    dots.forEach(d => {
+      const v = parseInt(d.dataset.value);
+      d.classList.remove('active','far','mid','close');
+      if (v <= i) {
+        d.classList.add('active');
+        if (i <= 3) d.classList.add('far');
+        else if (i <= 6) d.classList.add('mid');
+        else d.classList.add('close');
+      }
+    });
+    const valSpan = document.getElementById('gapValue');
+    if (i <= 3) valSpan.textContent = 'Far from it';
+    else if (i <= 6) valSpan.textContent = 'Getting closer';
+    else if (i <= 8) valSpan.textContent = 'Nearly there';
+    else valSpan.textContent = 'Living it';
+  });
+  gapTrack.appendChild(dot);
+}
+
+const gapVal = document.createElement('span');
+gapVal.className = 'gap-value';
+gapVal.id = 'gapValue';
+gapTrack.appendChild(gapVal);
+
+// ═══ RESET ═══
+function resetAll() {
+  if (!confirm('Clear all fields and start over?')) return;
+  document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
+  document.querySelectorAll('.feel-input').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  document.querySelectorAll('.tag-btn').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.gap-dot').forEach(el => el.classList.remove('active','far','mid','close'));
+  document.getElementById('gapValue').textContent = '';
+  gapRating = 0;
+  updateAlignment();
+}
+
+// ═══ INIT ═══
+document.getElementById('patientDate').valueAsDate = new Date();
+updateAlignment();
+</script>
+</body>
+</html>
