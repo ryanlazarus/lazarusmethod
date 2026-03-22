@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intellectual Property Terms of Use | The Lazarus Method</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1B2A4A;
+            --navy-deep: #0F1A2E;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --cream: #FAF7F0;
+            --cream-dark: #F0EBE0;
+            --text-primary: #1B2A4A;
+            --text-secondary: #4A5568;
+            --border: #E2DDD3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-header {
+            background-color: var(--navy);
+            padding: 48px 24px 44px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(201, 168, 76, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .header-badge {
+            display: inline-block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(201, 168, 76, 0.35);
+            padding: 6px 18px;
+            border-radius: 2px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 500;
+            color: #FFFFFF;
+            letter-spacing: -0.3px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .page-header .subtitle {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            font-weight: 400;
+        }
+
+        .gold-rule {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 20px auto 16px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        .effective-date {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gold);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .intro-block {
+            font-family: 'EB Garamond', serif;
+            font-size: 19px;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 40px;
+            padding-bottom: 36px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section {
+            margin-bottom: 36px;
+        }
+
+        .section-number {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .section h2 {
+            font-family: 'EB Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 16px;
+            letter-spacing: -0.2px;
+        }
+
+        .section p {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .highlight-box {
+            background: var(--navy);
+            color: #FFFFFF;
+            padding: 32px 36px;
+            border-radius: 4px;
+            margin: 44px 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gold);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .highlight-box p {
+            font-family: 'EB Garamond', serif;
+            font-size: 18px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0;
+        }
+
+        .highlight-box strong {
+            color: var(--gold-light);
+        }
+
+        .definitions {
+            background: var(--cream-dark);
+            padding: 28px 32px;
+            border-radius: 4px;
+            margin: 20px 0 28px;
+            border: 1px solid var(--border);
+        }
+
+        .definitions p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .definitions p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin: 40px 0;
+        }
+
+        .footer-block {
+            margin-top: 56px;
+            padding-top: 36px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-block .brand {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .footer-block .legal-entity {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .footer-block .contact {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--gold);
+        }
+
+        .footer-block .contact a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .footer-block .contact a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 32px 20px 60px;
+            }
+
+            .highlight-box {
+                padding: 24px 22px;
+            }
+
+            .definitions {
+                padding: 20px 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="header-badge">Legal Agreement</div>
+        <h1>Intellectual Property Terms of Use</h1>
+        <div class="gold-rule"></div>
+        <p class="subtitle">The Lazarus Method Program &amp; Community</p>
+    </div>
+
+    <div class="container">
+        <p class="effective-date">Effective Date: January 2026</p>
+
+        <div class="intro-block">
+            By enrolling in and accessing any program, course, community, or content offered by The Lazarus Method, you acknowledge that you have read, understood, and agree to be bound by the following Intellectual Property Terms of Use. These terms are a binding legal agreement between you and Lazarus Wellness Inc.
+        </div>
+
+        <div class="section">
+            <div class="section-number">Section 1</div>
+            <h2>Ownership of Intellectual Property</h2>
+            <p>All content, materials, frameworks, tools, assessments, scoring systems, and proprietary methodologies presented within The Lazarus Method program are the exclusive intellectual property of Lazarus Wellness Inc., d/b/a The Lazarus Method, and its founder, Dr. Ryan Lazarus. This intellectual property is protected under applicable United States copyright and trademark law and, where applicable, international intellectual property treaties.</p>
+            <div class="definitions">
+                <p>Protected materials include, but are not limited to: the Seven Element Framework (Nourish, Move, Rest, Challenge, Connect, Learn, Spark); the Functional Age scoring system and reports; the belt progression system; all interactive tools, worksheets, trackers, and challenge protocols; all program curriculum, lesson content, slide decks, and supplemental documents; all branding, logos, design assets, terminology, and proprietary naming conventions; all audio, video, and written content delivered through the program; and the book <em>The Essential Health Playbook</em> and all related published materials.</p>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+            <div class="section-number">Section 2</div>
+            <h2>No Reproduction or Distribution</h2>
+            <p>You may not copy, reproduce, screenshot, record, download, redistribute, or share any program content, in whole or in part, with any individual or entity not actively enrolled in The Lazarus Method. This prohibition applies to all formats and all channels, including social media, email, messaging platforms, cloud storage, printed materials, and any digital or physical medium.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+            <div class="section-number">Section 3</div>
+            <h2>No Commercial Use or Derivative Works</h2>
+            <p>You may not use any Lazarus Method content, terminology, frameworks, systems, or methodologies to create, develop, market, or sell your own programs, courses, coaching services, consulting offerings, digital products, or educational materials. You may not adapt, rename, rebrand, or repackage any element of this program for personal or commercial use. This includes using Lazarus Method concepts as the structural or conceptual foundation for competing or adjacent offerings, even if the specific language is altered.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+            <div class="section-number">Section 4</div>
+            <h2>Personal Use License</h2>
+            <p>Your enrollment grants you a limited, non-exclusive, non-transferable, revocable license to access and use program materials solely for your personal health optimization. This license does not confer ownership of any intellectual property. This license terminates automatically upon the conclusion of your enrollment period or upon violation of any term in this agreement, whichever occurs first.</p>
+        </div>
+
+        <div class="highlight-box">
+            <p><strong>Notice:</strong> Lazarus Wellness Inc. actively monitors for unauthorized use of its intellectual property. This includes the use of proprietary terminology, framework structures, scoring methodologies, and branded content in any external context, whether commercial or non-commercial.</p>
+        </div>
+
+        <div class="section">
+            <div class="section-number">Section 5</div>
+            <h2>Enforcement and Remedies</h2>
+            <p>Any violation of these terms will result in immediate termination of your program access without refund. Lazarus Wellness Inc. reserves the right to pursue all available legal remedies, including but not limited to claims for actual and statutory damages, injunctive relief, disgorgement of profits derived from unauthorized use, and recovery of attorneys' fees and litigation costs.</p>
+            <p>You acknowledge that unauthorized use of the intellectual property described herein would cause irreparable harm to Lazarus Wellness Inc. for which monetary damages alone would be an insufficient remedy, and that Lazarus Wellness Inc. shall be entitled to seek equitable relief, including injunction, without the necessity of posting bond.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+            <div class="section-number">Section 6</div>
+            <h2>Acknowledgment</h2>
+            <p>By proceeding with enrollment and accessing any Lazarus Method program content, you confirm that you have read and understood these Intellectual Property Terms of Use in their entirety, that you agree to be legally bound by all provisions contained herein, and that you understand the consequences of violation as described above.</p>
+        </div>
+
+        <div class="footer-block">
+            <p class="brand">The Lazarus Method</p>
+            <p class="legal-entity">Lazarus Wellness Inc. All Rights Reserved.</p>
+            <p class="contact"><a href="mailto:info@lazarusmethod.com">info@lazarusmethod.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
