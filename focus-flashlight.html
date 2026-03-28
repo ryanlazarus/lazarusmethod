@@ -127,6 +127,58 @@ body{max-width:100%!important;width:100%!important}
 .takeaway-section{break-inside:avoid!important}
 .btn-row,.save-confirm{display:none!important}
 }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
 </style>
 </head>
 <body>
