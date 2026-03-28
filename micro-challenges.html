@@ -119,54 +119,144 @@
     .ht{font-size:24px}
   }
 
-  /* ============================================
+  /* ══════════════════════════════════════════
      MOBILE RESPONSIVE OVERRIDES
-     Auto-patched for vertical mobile viewing
-     ============================================ */
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Common container selectors — constrain to viewport width */
-  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
-  .container, .shell, .prog-wrap, #document, #doc,
-  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
-  .section-wrap, .inner, .wrapper {
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
+     Targeted fix for micro-challenges.html
+  ══════════════════════════════════════════ */
   @media (max-width: 640px) {
 
-    /* Prevent iOS from zooming on input focus */
-    input, select, textarea, button {
-      font-size: 16px !important;
+    /* ── Patient input bar: stack to single column ── */
+    .ig {
+      grid-template-columns: 1fr !important;
     }
-
-    /* Stack any side-by-side layouts */
-    .grid, .two-col, .three-col, .columns,
-    [style*="display:flex"], [style*="display: flex"] {
-      flex-direction: column !important;
-    }
-
-    /* Make tables scroll rather than overflow */
-    table {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+    .gbtn {
       width: 100%;
+      padding: 12px;
     }
 
-    /* Ensure padding on body for breathing room */
+    /* ── Progress strip: 3-4 columns instead of 7 ── */
+    .pstrip {
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 5px !important;
+    }
+    .pc-elem {
+      font-size: 8px !important;
+      letter-spacing: 1px !important;
+    }
+    .pc-count {
+      font-size: 9px !important;
+    }
+
+    /* ── Document header: stack title and meta ── */
+    .dh {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      padding: 24px 20px 18px !important;
+      gap: 16px !important;
+    }
+    .hm {
+      text-align: left !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+
+    /* ── Kill the 48px side padding — replace with mobile-safe padding ── */
+    .ib {
+      margin: 20px 16px 0 !important;
+      padding: 14px 16px !important;
+    }
+    .db {
+      padding: 20px 16px 28px !important;
+    }
+    .df {
+      padding: 14px 16px !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+    }
+
+    /* ── Weekly plan wrapper (inline style uses 48px padding) ── */
+    #doc > div[style*="padding:0 48px"] {
+      padding: 0 16px 28px !important;
+    }
+
+    /* ── Intake rating rows: stack element name above ratings ── */
+    .intake-row {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .intake-elem {
+      gap: 8px;
+    }
+    .rating-track {
+      gap: 5px !important;
+    }
+    .rating-btn {
+      width: 44px !important;
+      height: 44px !important;
+      font-size: 14px !important;
+    }
+    .rating-label {
+      white-space: normal !important;
+      min-width: unset !important;
+      text-align: left !important;
+      font-size: 10px !important;
+    }
+
+    /* ── Challenges grid: single column on mobile ── */
+    .challenges-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* ── Weekly plan: scroll horizontally or stack days ── */
+    .wgrid {
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 6px !important;
+    }
+    .wday-hdr {
+      font-size: 8px !important;
+      padding: 5px 4px !important;
+    }
+    .wday-body {
+      min-height: 60px !important;
+      padding: 5px !important;
+    }
+    .wtask {
+      font-size: 10.5px !important;
+    }
+
+    /* ── Intake panel padding ── */
+    .intake-panel {
+      padding: 18px 16px 16px !important;
+    }
+
+    /* ── Document heading text ── */
+    .ht {
+      font-size: 24px !important;
+    }
+
+    /* ── Prevent any remaining overflow ── */
     body {
-      padding-left: 12px !important;
-      padding-right: 12px !important;
+      overflow-x: hidden !important;
     }
+    #doc {
+      overflow-x: hidden !important;
+    }
+  }
 
-    /* Override any remaining fixed-width elements */
-    [style*="width:"] {
-      max-width: 100% !important;
+  @media (max-width: 390px) {
+    .pstrip {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+    .wgrid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .rating-btn {
+      width: 40px !important;
+      height: 40px !important;
     }
   }
 
