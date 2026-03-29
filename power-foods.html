@@ -67,62 +67,23 @@ body{font-family:'EB Garamond',serif;background:var(--white);color:var(--charcoa
 .footer-line{width:50px;height:1px;background:var(--gold-soft);opacity:0.35;margin:0 auto 16px}
 .footer-text{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--med)}
 
-@media(max-width:768px){.header-title{font-size:26px}.header-logo{width:55px;height:55px}.header-tag{letter-spacing:3px}.topics-grid{gap:12px}.food-emoji{font-size:34px;width:48px}}
-@media(max-width:480px){.header{padding:36px 20px 32px}.header-title{font-size:22px}.header-logo{width:48px;height:48px}.header-tag{letter-spacing:2.5px;font-size:8px}.topics-grid{grid-template-columns:1fr}.checklist-grid{grid-template-columns:1fr}.intro p{font-size:16px}.checklist-panel{padding:24px 20px 20px}.checklist-heading{font-size:20px}.topics-label,.checklist-label,.intro-label{letter-spacing:2.5px}.food-emoji{font-size:36px}}
-@media(max-width:360px){.header-title{font-size:20px}.header-logo{width:42px;height:42px}.header-tag{letter-spacing:2px;font-size:8px}.topics-label,.checklist-label,.intro-label{letter-spacing:2px}}
-@media print{body{max-width:8.5in;margin:0 auto}.topic-card-body{max-height:none!important}.topic-card-icon{display:none}.btn-save{display:none}}
-
-  /* ============================================
-     MOBILE RESPONSIVE OVERRIDES
-     Auto-patched for vertical mobile viewing
-     ============================================ */
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Common container selectors — constrain to viewport width */
-  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
-  .container, .shell, .prog-wrap, #document, #doc,
-  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
-  .section-wrap, .inner, .wrapper {
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  @media (max-width: 640px) {
-
-    /* Prevent iOS from zooming on input focus */
-    input, select, textarea, button {
-      font-size: 16px !important;
-    }
-
-    /* Stack any side-by-side layouts */
-    .grid, .two-col, .three-col, .columns,
-    [style*="display:flex"], [style*="display: flex"] {
-      flex-direction: column !important;
-    }
-
-    /* Make tables scroll rather than overflow */
-    table {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-    }
-
-    /* Ensure padding on body for breathing room */
-    body {
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-    }
-
-    /* Override any remaining fixed-width elements */
-    [style*="width:"] {
-      max-width: 100% !important;
-    }
-  }
-
+.benefits-section{max-width:680px;margin:0 auto;padding:44px 24px 20px}
+.benefits-panel{background:var(--cream);border-top:3px solid var(--nourish-color);border-radius:0 0 2px 2px;padding:36px 32px 32px;display:none}
+.benefits-panel.visible{display:block}
+.benefits-label{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;font-weight:700;color:var(--nourish-color);margin-bottom:12px}
+.benefits-heading{font-family:'EB Garamond',serif;font-size:22px;font-weight:500;color:var(--navy);margin-bottom:8px}
+.benefits-sub{font-family:'EB Garamond',serif;font-size:15px;color:var(--med);font-style:italic;margin-bottom:24px;line-height:1.6}
+.benefit-row{margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.benefit-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.benefit-row-title{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--nourish-color);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.benefit-row-icon{font-size:16px;line-height:1;flex-shrink:0}
+.benefit-row-desc{font-family:'EB Garamond',serif;font-size:14.5px;color:var(--charcoal);line-height:1.7;margin-bottom:4px}
+.benefit-row-sources{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--med);font-style:italic}
+.benefits-summary{font-family:'EB Garamond',serif;font-size:15.5px;color:var(--charcoal);line-height:1.8;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+@media(max-width:768px){.header-title{font-size:26px}.header-logo{width:55px;height:55px}.header-tag{letter-spacing:3px}.topics-grid{gap:12px}.food-emoji{font-size:34px;width:48px}.benefit-row-desc{font-size:14px}}
+@media(max-width:480px){.header{padding:36px 20px 32px}.header-title{font-size:22px}.header-logo{width:48px;height:48px}.header-tag{letter-spacing:2.5px;font-size:8px}.topics-grid{grid-template-columns:1fr}.checklist-grid{grid-template-columns:1fr}.intro p{font-size:16px}.checklist-panel{padding:24px 20px 20px}.benefits-panel{padding:24px 18px 20px}.benefits-section{padding:32px 16px 16px}.checklist-heading{font-size:20px}.benefits-heading{font-size:19px}.benefits-sub{font-size:14px;margin-bottom:18px}.benefit-row{margin-bottom:14px;padding-bottom:12px}.benefit-row-title{font-size:10px;letter-spacing:1.5px;gap:5px}.benefit-row-icon{font-size:14px}.benefit-row-desc{font-size:13.5px;line-height:1.65}.benefit-row-sources{font-size:9px}.benefits-summary{font-size:14px;line-height:1.7;margin-top:18px;padding-top:16px}.topics-label,.checklist-label,.intro-label,.benefits-label{letter-spacing:2.5px}.food-emoji{font-size:36px}}
+@media(max-width:360px){.header-title{font-size:20px}.header-logo{width:42px;height:42px}.header-tag{letter-spacing:2px;font-size:8px}.benefits-heading{font-size:18px}.benefit-row-desc{font-size:13px}.topics-label,.checklist-label,.intro-label,.benefits-label{letter-spacing:2px}}
+@media print{body{max-width:8.5in;margin:0 auto}.topic-card-body{max-height:none!important}.topic-card-icon{display:none}.btn-save{display:none}.benefits-panel{display:block!important}}
 </style>
 </head>
 <body>
@@ -329,6 +290,18 @@ body{font-family:'EB Garamond',serif;background:var(--white);color:var(--charcoa
   </div>
 </div>
 
+<div style="padding:20px 0"><div class="section-divider"></div></div>
+
+<div class="benefits-section">
+  <div class="benefits-panel" id="benefitsPanel">
+    <div class="benefits-label">Your Nutritional Profile</div>
+    <div class="benefits-heading">What Your Selections Deliver</div>
+    <div class="benefits-sub">Based on the Power Foods you selected above, here is what you are feeding your body this week.</div>
+    <div id="benefitsContent"></div>
+    <div class="benefits-summary" id="benefitsSummary"></div>
+  </div>
+</div>
+
 <div class="footer">
   <div class="footer-line"></div>
   <div class="footer-text">The Lazarus Method &mdash; Dr. Ryan Lazarus</div>
@@ -349,6 +322,79 @@ function saveChecklist(){
   const c=document.getElementById('saveConfirm');c.classList.add('visible');setTimeout(()=>c.classList.remove('visible'),2000);
 }
 try{const saved=JSON.parse(localStorage.getItem('lm_power_foods'));if(saved&&saved.length){const items=document.querySelectorAll('.check-item');saved.forEach(i=>{if(items[i])items[i].classList.add('checked')});updateCount()}}catch(e){}
+
+const foodData={
+  0:{name:'Salmon',cats:['fats','protein','antiox','brain','antiinflam']},
+  1:{name:'Avocado',cats:['fats','antiox','brain','gut']},
+  2:{name:'Bison',cats:['protein','antiinflam','antiox']},
+  3:{name:'Almonds',cats:['fats','antiox','brain','minerals']},
+  4:{name:'Berries',cats:['antiox','brain','gut']},
+  5:{name:'Cruciferous Vegetables',cats:['antiox','brain','gut','detox']},
+  6:{name:'Coconut Oil',cats:['fats','brain','immune']},
+  7:{name:'Seaweed',cats:['minerals','immune','antiox']},
+  8:{name:'Olive Oil',cats:['fats','antiinflam','antiox']},
+  9:{name:'Green Tea',cats:['brain','antiox','antiinflam']}
+};
+
+const catInfo={
+  fats:{icon:'\uD83E\uDDC8',title:'Healthy Fats',desc:'Monounsaturated and medium-chain fats that support cell membrane integrity, nutrient absorption, cholesterol balance, and provide ketone-based brain fuel.'},
+  protein:{icon:'\uD83E\uDD69',title:'Clean Protein',desc:'Complete amino acid profiles from grass-fed and wild-caught sources, delivering heme iron, CLA, and the building blocks for tissue repair and muscle maintenance.'},
+  antiox:{icon:'\uD83D\uDEE1\uFE0F',title:'Antioxidant Defense',desc:'Glutathione, vitamin E, polyphenols, anthocyanins, EGCG, and sulforaphane working together to neutralize free radicals and protect cells from oxidative damage.'},
+  brain:{icon:'\uD83E\uDDE0',title:'Brain, Cognition & Mitochondrial Support',desc:'DHA, ketones, L-theanine, and neuroprotective compounds that fuel mitochondria, support memory and focus, and defend neurons against age-related decline.'},
+  antiinflam:{icon:'\uD83D\uDD25',title:'Anti-Inflammatory Support',desc:'Omega-3 fats, oleocanthal, catechins, and polyphenols that reduce systemic inflammation and modulate the body\u2019s inflammatory response at the cellular level.'},
+  gut:{icon:'\uD83C\uDF31',title:'Gut Health, Fiber & Detox',desc:'Prebiotic fiber, tannins, and indole-3-carbinol that feed beneficial gut bacteria, support healthy elimination, regulate blood sugar, and activate detoxification pathways.'},
+  minerals:{icon:'\uD83E\uDEA8',title:'Essential Minerals',desc:'Concentrated sources of magnesium, selenium, iodine, calcium, and trace minerals critical for thyroid function, enzyme activity, and nervous system signaling.'},
+  immune:{icon:'\uD83D\uDCAA',title:'Immune Support',desc:'Lauric acid, fucoidan, selenium, and immune-modulating compounds that strengthen the body\u2019s innate defense systems.'},
+  detox:{icon:'\u267B\uFE0F',title:'Detoxification Pathways',desc:'Sulforaphane and indole-3-carbinol that activate Nrf2 signaling, upregulate glutathione production, and support estrogen metabolism and liver detox pathways.'}
+};
+
+function updateBenefits(){
+  const panel=document.getElementById('benefitsPanel');
+  const content=document.getElementById('benefitsContent');
+  const summary=document.getElementById('benefitsSummary');
+  const checkedItems=document.querySelectorAll('.check-item.checked');
+  if(checkedItems.length===0){panel.classList.remove('visible');return;}
+  panel.classList.add('visible');
+
+  const activeCats={};
+  checkedItems.forEach(el=>{
+    const idx=Array.from(document.querySelectorAll('.check-item')).indexOf(el);
+    const food=foodData[idx];
+    if(!food)return;
+    food.cats.forEach(cat=>{
+      if(!activeCats[cat])activeCats[cat]=[];
+      if(!activeCats[cat].includes(food.name))activeCats[cat].push(food.name);
+    });
+  });
+
+  // Merge gut+detox into one row if both present
+  if(activeCats.gut||activeCats.detox){
+    const merged=[...new Set([...(activeCats.gut||[]),...(activeCats.detox||[])])];
+    activeCats.gut=merged;
+    delete activeCats.detox;
+  }
+
+  let html='';
+  const order=['fats','protein','antiox','brain','antiinflam','gut','minerals','immune','detox'];
+  order.forEach(cat=>{
+    if(!activeCats[cat])return;
+    const info=catInfo[cat];
+    html+='<div class="benefit-row">';
+    html+='<div class="benefit-row-title"><span class="benefit-row-icon">'+info.icon+'</span>'+info.title+'</div>';
+    html+='<div class="benefit-row-desc">'+info.desc+'</div>';
+    html+='<div class="benefit-row-sources">From: '+activeCats[cat].join(', ')+'</div>';
+    html+='</div>';
+  });
+  content.innerHTML=html;
+
+  const count=checkedItems.length;
+  const catCount=Object.keys(activeCats).length;
+  summary.innerHTML='Your <strong>'+count+' Power Food'+(count>1?'s':'')+'</strong> deliver'+(count===1?'s':'')+' targeted nutrition across <strong>'+catCount+' functional categor'+(catCount>1?'ies':'y')+'</strong>. Every selection sends a specific signal to your cells \u2014 to repair, protect, and perform.';
+}
+
+const origToggle=toggleCheck;
+toggleCheck=function(el){origToggle(el);updateBenefits()};
+updateBenefits();
 </script>
 </body>
 </html>
