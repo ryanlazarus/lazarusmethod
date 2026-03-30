@@ -558,74 +558,119 @@
      PRINT
      ═══════════════════════════════════════════ */
   @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
     body { background: white !important; }
+
     .input-panel { display: none !important; }
     .disclaimer-wrap { display: none !important; }
-    .report-wrap { padding: 0; }
+
+    .report-wrap {
+      padding: 0 !important;
+      display: block !important;
+    }
+
     .report {
-      box-shadow: none;
-      width: 100%;
-      min-height: auto;
-      padding: 0.45in 0.7in;
+      box-shadow: none !important;
+      width: 100% !important;
+      min-height: auto !important;
+      padding: 0.3in 0.5in !important;
+      display: block !important;
+      position: static !important;
     }
+
+    .report-logo {
+      margin-bottom: 6px !important;
+    }
+
+    .report-subtitle {
+      margin-bottom: 4px !important;
+    }
+
+    .gold-rule {
+      margin-bottom: 14px !important;
+    }
+
+    .patient-meta {
+      margin-bottom: 14px !important;
+    }
+
+    .journey {
+      break-inside: avoid;
+    }
+
+    .journey-bf-hero {
+      font-size: 36px !important;
+    }
+
+    .journey-summary {
+      margin: 10px 0 16px !important;
+    }
+
+    .gold-rule-thin {
+      margin-bottom: 14px !important;
+    }
+
+    .section-title {
+      margin-bottom: 12px !important;
+    }
+
+    .metrics {
+      break-inside: avoid;
+    }
+
+    .metric {
+      background: #FAF6ED !important;
+      border-radius: 5px !important;
+    }
+
+    .section-divider {
+      margin: 16px auto 14px !important;
+    }
+
+    .meal-section-title {
+      margin-bottom: 10px !important;
+    }
+
+    .meal-metrics {
+      break-inside: avoid;
+    }
+
+    .meal-metric {
+      background: #FAF6ED !important;
+      border: 1px solid #E8E0D0 !important;
+    }
+
+    .plan-summary {
+      break-inside: avoid;
+      margin-top: 18px !important;
+      padding: 14px 18px !important;
+      background: #FAF6ED !important;
+      border-left: 3px solid #B8975A !important;
+    }
+
+    .plan-summary p {
+      font-size: 13px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .warning {
+      break-inside: avoid;
+    }
+
     .report-footer {
-      position: relative;
-      bottom: auto; left: auto; right: auto;
-      margin-top: 36px;
+      margin-top: 20px !important;
+      padding-top: 14px !important;
+      position: static !important;
+    }
+
+    .lean-callout {
+      margin: -6px 0 8px !important;
     }
   }
-
-  /* ============================================
-     MOBILE RESPONSIVE OVERRIDES
-     Auto-patched for vertical mobile viewing
-     ============================================ */
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Common container selectors — constrain to viewport width */
-  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
-  .container, .shell, .prog-wrap, #document, #doc,
-  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
-  .section-wrap, .inner, .wrapper {
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  @media (max-width: 640px) {
-
-    /* Prevent iOS from zooming on input focus */
-    input, select, textarea, button {
-      font-size: 16px !important;
-    }
-
-    /* Stack any side-by-side layouts */
-    .grid, .two-col, .three-col, .columns,
-    [style*="display:flex"], [style*="display: flex"] {
-      flex-direction: column !important;
-    }
-
-    /* Make tables scroll rather than overflow */
-    table {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-    }
-
-    /* Ensure padding on body for breathing room */
-    body {
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-    }
-
-    /* Override any remaining fixed-width elements */
-    [style*="width:"] {
-      max-width: 100% !important;
-    }
-  }
-
 </style>
 </head>
 <body>
