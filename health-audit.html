@@ -363,7 +363,9 @@
     justify-content: center;
   }
   canvas#radarCanvas {
+    display: block;
     max-width: 100%;
+    height: auto;
   }
 
   /* SCORE BREAKDOWN */
@@ -671,64 +673,11 @@
     .leverage-desc { font-size: 15px; }
     .results-header-title { font-size: 22px; }
     .chart-wrap { padding: 16px 8px; }
-    canvas#radarCanvas { max-width: 100%; }
     .input-bar { grid-template-columns: 1fr; gap: 12px; }
     .input-field input { font-size: 18px; width: 100%; }
     .screenshot-tip { font-size: 12px; }
     .leverage-hook { font-size: 12px; }
   }
-
-  /* ============================================
-     MOBILE RESPONSIVE OVERRIDES
-     Auto-patched for vertical mobile viewing
-     ============================================ */
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Common container selectors — constrain to viewport width */
-  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
-  .container, .shell, .prog-wrap, #document, #doc,
-  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
-  .section-wrap, .inner, .wrapper {
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  @media (max-width: 640px) {
-
-    /* Prevent iOS from zooming on input focus */
-    input, select, textarea, button {
-      font-size: 16px !important;
-    }
-
-    /* Stack any side-by-side layouts */
-    .grid, .two-col, .three-col, .columns,
-    [style*="display:flex"], [style*="display: flex"] {
-      flex-direction: column !important;
-    }
-
-    /* Make tables scroll rather than overflow */
-    table {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-    }
-
-    /* Ensure padding on body for breathing room */
-    body {
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-    }
-
-    /* Override any remaining fixed-width elements */
-    [style*="width:"] {
-      max-width: 100% !important;
-    }
-  }
-
 </style>
 </head>
 <body>
@@ -791,7 +740,7 @@
         <div class="results-header-tag">Your Results</div>
       </div>
       <div class="chart-wrap">
-        <canvas id="radarCanvas" width="520" height="520"></canvas>
+        <canvas id="radarCanvas"></canvas>
       </div>
       <div class="scores-grid" id="scoresGrid"></div>
     </div>
@@ -1090,15 +1039,18 @@ function drawRadar(scores) {
   const canvas = document.getElementById('radarCanvas');
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = 520 * dpr;
-  canvas.height = 520 * dpr;
-  canvas.style.width = '520px';
-  canvas.style.height = '520px';
+
+  const container = canvas.parentElement;
+  const size = Math.min(container.clientWidth - 16, 520);
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width = size + 'px';
+  canvas.style.height = size + 'px';
   ctx.scale(dpr, dpr);
 
-  const W = 520, H = 520;
+  const W = size, H = size;
   const cx = W / 2, cy = H / 2;
-  const maxR = 190;
+  const maxR = size * (190 / 520);
   const n = ELEMENTS.length;
   const angleStep = (2 * Math.PI) / n;
   const startAngle = -Math.PI / 2;
@@ -1120,7 +1072,7 @@ function drawRadar(scores) {
     ctx.lineWidth = ring === 5 ? 1.5 : 1;
     ctx.stroke();
 
-    ctx.font = '16px DM Sans, sans-serif';
+    ctx.font = Math.round(16 * size / 520) + 'px DM Sans, sans-serif';
     ctx.fillStyle = '#CCCCCC';
     ctx.textAlign = 'center';
     ctx.fillText(ring * 2, cx + 14, cy - r + 5);
@@ -1169,7 +1121,7 @@ function drawRadar(scores) {
     else color = '#1A8A4A';
 
     ctx.beginPath();
-    ctx.arc(x, y, 7, 0, 2 * Math.PI);
+    ctx.arc(x, y, Math.max(4, 7 * size / 520), 0, 2 * Math.PI);
     ctx.fillStyle = color;
     ctx.fill();
     ctx.strokeStyle = '#FFFFFF';
@@ -1180,19 +1132,21 @@ function drawRadar(scores) {
   // Labels
   ELEMENTS.forEach((el, i) => {
     const a = startAngle + i * angleStep;
-    const labelR = maxR + 34;
+    const labelR = maxR + (34 * size / 520);
     const x = cx + labelR * Math.cos(a);
     const y = cy + labelR * Math.sin(a);
 
-    ctx.font = '700 13px DM Sans, sans-serif';
+    const labelFs = Math.round(13 * size / 520);
+    const scoreFs = Math.round(14 * size / 520);
+    ctx.font = '700 ' + labelFs + 'px DM Sans, sans-serif';
     ctx.fillStyle = ELEMENT_META[el].color;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(ELEMENT_META[el].label.toUpperCase(), x, y);
 
-    ctx.font = '600 14px DM Sans, sans-serif';
+    ctx.font = '600 ' + scoreFs + 'px DM Sans, sans-serif';
     ctx.fillStyle = '#8A8A8A';
-    ctx.fillText(scores[el] + '/10', x, y + 17);
+    ctx.fillText(scores[el] + '/10', x, y + Math.round(17 * size / 520));
   });
 }
 
