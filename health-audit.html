@@ -1019,16 +1019,16 @@ function showResults() {
   document.getElementById('leverageElement').style.color = lMeta.color;
   document.getElementById('leverageDesc').textContent = lMeta.desc;
 
-  // Draw radar
-  drawRadar(scores);
-
-  // Show results
+  // Show results first so container has measurable width
   document.getElementById('resultsSection').style.display = 'block';
   document.querySelector('.questions-section').style.display = 'none';
   document.querySelector('.submit-wrap').style.display = 'none';
   document.querySelector('.progress-wrap').style.display = 'none';
   document.querySelector('.intro-card').style.display = 'none';
   document.querySelector('.input-bar').style.display = 'none';
+
+  // Draw radar after layout is established
+  drawRadar(scores);
 
   setTimeout(() => {
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
