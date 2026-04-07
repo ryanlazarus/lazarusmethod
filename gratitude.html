@@ -111,6 +111,31 @@ body { font-family:'EB Garamond',serif; background:var(--cream); color:var(--cha
 .reset-link a { font-family:'DM Sans',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--med); cursor:pointer; text-decoration:none; }
 .reset-link a:hover { color:var(--gold); }
 
+.name-bar { display:flex; align-items:center; gap:12px; margin-bottom:20px; background:var(--white); border:1px solid var(--border); border-radius:6px; padding:14px 20px; }
+.name-bar .name-label { font-family:'DM Sans',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--med); flex-shrink:0; }
+.name-bar .name-input { flex:1; border:none; border-bottom:1px solid var(--border); font-family:'EB Garamond',serif; font-size:18px; color:var(--navy); background:transparent; outline:none; padding:4px 0; -webkit-appearance:none; }
+.name-bar .name-input:focus { border-bottom-color:var(--gold-soft); }
+.name-display { font-family:'EB Garamond',serif; font-size:20px; font-weight:600; color:var(--navy); text-align:center; margin-bottom:16px; }
+
+.journal-review { margin-top:20px; }
+.journal-day { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+.journal-day:last-child { border-bottom:none; }
+.journal-day-title { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:2px; color:var(--gold); margin-bottom:8px; }
+.journal-day-entry { font-family:'EB Garamond',serif; font-size:16px; color:var(--charcoal); line-height:1.5; padding:3px 0; display:flex; gap:8px; }
+.journal-day-entry .jidx { color:var(--gold); font-weight:600; flex-shrink:0; }
+
+.btn-row { display:flex; gap:10px; margin-top:16px; }
+.btn-row .btn { flex:1; }
+
+@media print {
+  body { background:white; }
+  .header, .milestone-banner, .streak-bar, .progress-wrapper, #entryForm, #editBtn, .teaser-box, .rule-box, .reset-link, .btn-row, .name-bar, .no-print { display:none !important; }
+  .card { break-inside:avoid; page-break-inside:avoid; }
+  .container { max-width:100%; padding:0; }
+  .footer { border:none; }
+  .name-display { display:block !important; }
+}
+
 @media (max-width:600px) {
   .header { padding:22px 16px 20px; }
   .header-logo { width:56px; height:56px; }
@@ -128,6 +153,9 @@ body { font-family:'EB Garamond',serif; background:var(--cream); color:var(--cha
   .entry-date { font-size:19px; }
   .entry-input { padding:11px 12px; font-size:16px; }
   .btn { padding:13px 20px; font-size:11px; }
+  .btn-row { flex-direction:column; }
+  .name-bar { padding:12px 14px; }
+  .name-bar .name-input { font-size:16px; }
   .cal-grid { gap:3px; }
   .cal-day { aspect-ratio:1/0.75; border-radius:4px; }
   .cal-day .cal-date { font-size:10px; }
@@ -164,6 +192,12 @@ body { font-family:'EB Garamond',serif; background:var(--cream); color:var(--cha
 </div>
 
 <div class="container">
+
+  <div class="name-display" id="nameDisplay" style="display:none;"></div>
+  <div class="name-bar" id="nameBar">
+    <span class="name-label">Your Name</span>
+    <input class="name-input" id="nameInput" placeholder="Enter your name to begin..." maxlength="60">
+  </div>
 
   <div class="card">
     <div class="card-header">
@@ -248,6 +282,20 @@ body { font-family:'EB Garamond',serif; background:var(--cream); color:var(--cha
     </div>
   </div>
 
+  <div class="card" id="journalCard" style="display:none;">
+    <div class="card-header">
+      <div class="num">3</div>
+      <div class="label">Your Gratitude Journal</div>
+    </div>
+    <div class="card-body">
+      <div class="journal-review" id="journalReview"></div>
+      <div class="btn-row">
+        <button class="btn" onclick="printJournal()">Print Journal</button>
+        <button class="btn btn-outline" onclick="saveJournalText()">Copy as Text</button>
+      </div>
+    </div>
+  </div>
+
   <div class="reset-link"><a onclick="resetAll()">Reset Challenge</a></div>
 </div>
 
@@ -283,7 +331,7 @@ function loadState() {
 }
 function initState() {
   const t = new Date(); t.setHours(0,0,0,0);
-  return { startDate: t.toISOString(), entries: {}, dismissedMilestones: [] };
+  return { startDate: t.toISOString(), entries: {}, dismissedMilestones: [], name: '' };
 }
 function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 function getStartDate() { return new Date(state.startDate); }
@@ -480,7 +528,53 @@ function dismissMilestone() {
   setTimeout(checkMilestone,300);
 }
 
-function renderAll(){renderProgress();renderStreak();renderCalendar();}
+function renderAll(){renderProgress();renderStreak();renderCalendar();renderName();renderJournal();}
+
+function renderName() {
+  const inp = document.getElementById('nameInput');
+  const disp = document.getElementById('nameDisplay');
+  if (state.name) {
+    inp.value = state.name;
+    disp.textContent = state.name + '\u2019s 30 Days of Gratitude';
+  }
+  disp.style.display = state.name ? 'block' : 'none';
+}
+
+function renderJournal() {
+  const card = document.getElementById('journalCard');
+  const container = document.getElementById('journalReview');
+  const keys = Object.keys(state.entries).map(Number).sort((a,b)=>a-b);
+  if (keys.length === 0) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  container.innerHTML = '';
+  keys.forEach(day => {
+    const d = document.createElement('div');
+    d.className = 'journal-day';
+    const date = getDateForDay(day);
+    d.innerHTML = '<div class="journal-day-title">Day ' + day + ' \u2014 ' + formatDate(date) + '</div>';
+    state.entries[day].forEach((t,i) => {
+      const e = document.createElement('div');
+      e.className = 'journal-day-entry';
+      e.innerHTML = '<span class="jidx">' + (i+1) + '.</span><span>' + escapeHtml(t) + '</span>';
+      d.appendChild(e);
+    });
+    container.appendChild(d);
+  });
+}
+
+function printJournal() { window.print(); }
+
+function saveJournalText() {
+  const keys = Object.keys(state.entries).map(Number).sort((a,b)=>a-b);
+  let text = (state.name ? state.name + '\u2019s ' : '') + '30 Days of Gratitude \u2014 The Lazarus Method\n\n';
+  keys.forEach(day => {
+    const date = getDateForDay(day);
+    text += 'Day ' + day + ' \u2014 ' + formatDate(date) + '\n';
+    state.entries[day].forEach((t,i) => { text += '  ' + (i+1) + '. ' + t + '\n'; });
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => { alert('Journal copied to clipboard.'); }).catch(() => { alert('Could not copy. Try printing instead.'); });
+}
 
 function resetAll() {
   if(confirm('This will erase all 30 days of gratitude entries. Are you sure?')){
@@ -490,11 +584,18 @@ function resetAll() {
     document.getElementById('entryForm').style.display='block';
     document.getElementById('savedView').style.display='none';
     ['g1','g2','g3'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('nameInput').value='';
     renderAll(); selectDay(todayDayNum());
   }
 }
 
 ['g1','g2','g3'].forEach(id=>{document.getElementById(id).addEventListener('input',checkDuplicatesLive);});
+
+document.getElementById('nameInput').addEventListener('input', function() {
+  state.name = this.value.trim();
+  saveState();
+  renderName();
+});
 
 renderAll();
 const tdn=todayDayNum();
