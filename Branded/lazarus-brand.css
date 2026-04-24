@@ -432,8 +432,12 @@ button, .btn, .top-btn, .trend-tab, .log-submit,
 .form-tip-icon { color: var(--text-primary) !important; }
 .form-tip { font-size: 14px !important; line-height: 1.5 !important; }
 
-/* Buttons */
-.btn, .top-btn, .log-submit, .start-btn, .complete-btn, .checkpoint-btn {
+/* Buttons — added all variant class names found across 68 files */
+.btn, .top-btn, .log-submit, .start-btn, .complete-btn, .checkpoint-btn,
+.btn-generate, .btn-print, .btn-reset, .btn-save, .btn-export,
+.generate-btn, .print-btn, .reset-btn, .save-btn, .submit-btn,
+.cta-btn, .action-btn, .copy-btn, .share-btn,
+[class$="-btn"]:not(.diff-btn):not(.checkpoint-btn) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -445,6 +449,31 @@ button, .btn, .top-btn, .trend-tab, .log-submit,
   cursor: pointer !important;
   transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease !important;
   text-decoration: none !important;
+}
+
+/* Generate / Submit / primary action variants → lime CTA */
+.btn-generate, .generate-btn,
+.btn-save, .save-btn,
+.btn-submit, .submit-btn,
+.cta-btn, .action-btn {
+  background: var(--accent-lime) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+
+/* Secondary action variants (Print, Export, Share) → white outline */
+.btn-print, .print-btn,
+.btn-export, .copy-btn, .share-btn {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+
+/* Reset / destructive variants → red outline */
+.btn-reset, .reset-btn {
+  background: var(--bg-surface) !important;
+  color: var(--danger) !important;
+  border-color: var(--danger) !important;
 }
 
 .top-btn { padding: 8px 16px !important; font-size: 11px !important; }
