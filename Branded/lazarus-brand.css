@@ -809,6 +809,140 @@ input[type="date"], textarea, select {
 }
 
 /* ═════════════════════════════════════════════════════════════════════
+   v1.3 ICON + EYEBROW LAYOUT (HOW IT WORKS pattern)
+   Icon-prefixed cards (e.g., 🍽 + HOW IT WORKS + body) get clean
+   vertical alignment. Icon stays inline with eyebrow, body wraps
+   below at the same x-position as the eyebrow text. */
+.intro-card,
+.intro-box,
+.form-box,
+.how-it-works,
+[class*="intro-"],
+[class*="how-it-"] {
+  display: block !important;
+  text-align: left !important;
+}
+
+/* When an eyebrow has a leading icon (img / span / emoji), inline them */
+.intro-card > .section-label,
+.intro-card > [class*="-label"],
+.intro-box > .section-label,
+.intro-box > [class*="-label"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: var(--space-2) !important;
+  margin-bottom: var(--space-4) !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   BADGES / PILLS / TAGS
+   These have their own backgrounds and need their own text colors.
+   They must beat the broad .input-inner * / .card * rules above.
+   Use doubled-class trick + !important for guaranteed specificity. */
+
+/* Priority tier badges (EAT Plan, similar tools) */
+.priority-badge,
+.priority-badge.priority-badge {
+  font-family: var(--font-body) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  border-radius: var(--radius-pill) !important;
+  display: inline-block !important;
+  border: 1px solid transparent !important;
+}
+
+/* ALWAYS = highest priority — solid black with white text */
+.always.always,
+.priority-badge.always,
+.priority-badge.always.always {
+  background: var(--bg-surface-dark) !important;
+  color: var(--text-on-dark) !important;
+  border-color: var(--bg-surface-dark) !important;
+}
+
+/* OFTEN = mid priority — solid muted gray with white text */
+.often.often,
+.priority-badge.often,
+.priority-badge.often.often {
+  background: var(--text-secondary) !important;
+  color: var(--text-on-dark) !important;
+  border-color: var(--text-secondary) !important;
+}
+
+/* SOMETIMES = lowest priority — light bg + black border + dark text */
+.sometimes.sometimes,
+.priority-badge.sometimes,
+.priority-badge.sometimes.sometimes {
+  background: var(--bg-surface-muted) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+
+/* EAT framework tags (E / A / T) — colored pills per letter */
+.typical-lever-tag,
+.typical-lever-tag.typical-lever-tag {
+  font-family: var(--font-body) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 3px 9px !important;
+  border-radius: var(--radius-pill) !important;
+  display: inline-block !important;
+}
+
+.tag-e.tag-e {
+  background: var(--bg-surface-muted) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+}
+.tag-a.tag-a {
+  background: var(--danger-bg) !important;
+  color: var(--danger) !important;
+  border: 1px solid var(--danger) !important;
+}
+.tag-t.tag-t {
+  background: var(--accent-lime) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-strong) !important;
+}
+
+/* Closing tag (decorative) — neutral muted */
+.closing-tag.closing-tag {
+  font-family: var(--font-body) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  color: var(--text-secondary) !important;
+}
+
+/* Generic badge / pill / tag class catch-all
+   For any element with these in their class name, normalize the look */
+[class*="-badge"]:not(.priority-badge),
+[class*="-pill"],
+[class*="-chip"] {
+  border-radius: var(--radius-pill) !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   CONTRAST GUARANTEE — explicit white text on known dark badges
+   Prevents the "dark text on dark badge" bug class permanently.
+   Any element with a known dark background gets white text via !important. */
+
+/* Catch any element that explicitly sets a dark background via inline style
+   pattern (rare) — or that uses one of the brand dark surface classes */
+.bg-dark, .bg-dark *,
+.dark-badge, .dark-badge *,
+[class*="dark-pill"],
+[class*="-dark"][class*="badge"] {
+  color: var(--text-on-dark) !important;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
    INTERACTIONS
    ═════════════════════════════════════════════════════════════════════ */
 
@@ -871,9 +1005,16 @@ input:disabled, select:disabled, textarea:disabled {
    LAYOUT — width constraints
    ═════════════════════════════════════════════════════════════════════ */
 
+/* v1.3 WIDTH STRATEGY:
+   - Broader templates (.shell, .container) — multi-column layouts,
+     gallery patterns, Plank/Sleep — get full 1200px
+   - Form-heavy templates (.input-inner, .patient-inner, .main-wrap,
+     .main, .main-container) — capped at 880px so forms don't bloat
+   - Inner section wrappers — match parent
+   This respects original tool design intent while still constraining
+   the previously-broken full-width cases. */
+
 .shell, .container,
-.input-inner, .patient-inner,
-.main, .main-wrap, .main-container,
 .ip, .ii, .intro, .intro-section, .intro-block, .intro-text,
 .content, .detail-inner, .topics-section, .reflection-section,
 .quiz-section, .categories-section, .summary-section,
@@ -887,6 +1028,26 @@ main, body > main {
   margin-right: auto !important;
   padding-left: var(--content-pad-x) !important;
   padding-right: var(--content-pad-x) !important;
+}
+
+/* Form-heavy template wrappers — narrower for readability + premium feel */
+.input-inner,
+.patient-inner,
+.main, .main-wrap, .main-container {
+  max-width: 880px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--content-pad-x) !important;
+  padding-right: var(--content-pad-x) !important;
+}
+
+/* Cards inside form-heavy templates — match parent for visual consistency */
+.main-wrap > *,
+.main > *,
+.main-container > * {
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 [class$="-section"]:not(.header):not(.top-bar):not(.card-header):not(.summary-header):not(.daily-header):not(.score-section),
