@@ -208,6 +208,137 @@ body::before {
   padding: 32px var(--content-pad-x) 56px !important;
 }
 
+/* v0.13 COMPREHENSIVE WRAPPER + TYPOGRAPHY COVERAGE.
+   Re-audited all 68 files for content wrappers (any class with
+   max-width >=600px + auto margin in original CSS). Found 30+ unique
+   wrapper class names. Listed exhaustively below + safety-net attribute
+   selectors for any I missed. */
+
+/* All known content-bearing wrappers across the 68 files */
+.input-inner,
+.patient-inner,
+.main,
+.main-wrap,
+.main-container,
+.ip,
+.ii,
+.intro,
+.intro-section,
+.intro-block,
+.intro-text,
+.content,
+.detail-inner,
+.topics-section,
+.reflection-section,
+.quiz-section,
+.categories-section,
+.summary-section,
+.spinner-section,
+.session-section,
+.debrief-section,
+.draw-section,
+.checklist-section,
+.benefits-section,
+.closing-text,
+.outcome-text,
+.acronym-bar,
+.statement-text,
+.iam-text,
+.fs-message,
+.page-header > *,
+main,
+body > main {
+  max-width: var(--content-max) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--content-pad-x) !important;
+  padding-right: var(--content-pad-x) !important;
+  box-sizing: border-box !important;
+}
+
+/* Safety-net attribute selectors — catch any -section, -wrap,
+   -container suffix wrappers I might have missed in audit. Excludes
+   known full-width banner/nav classes. */
+[class$="-section"]:not(.header):not(.top-bar):not(.card-header):not(.summary-header):not(.daily-header):not(.score-section),
+[class$="-wrap"]:not(.header):not(.top-bar):not(.progress-wrap),
+[class$="-container"]:not(.level-bar-container):not(.chart-bar-container) {
+  max-width: var(--content-max) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--content-pad-x) !important;
+  padding-right: var(--content-pad-x) !important;
+  box-sizing: border-box !important;
+}
+
+/* Outer panels with intentional full-width backgrounds — keep
+   full-width bg, but ensure box-sizing is sane */
+.input-panel,
+.patient-bar {
+  box-sizing: border-box !important;
+}
+
+/* v0.13 UNIVERSAL HEADING + EYEBROW COVERAGE.
+   Catches any class ending in -title, -heading, -name etc. so
+   tool-specific class names get brand typography even if I didn't
+   enumerate them. */
+
+/* Headings — anything that's clearly a title gets General Sans display */
+[class$="-title"]:not(.daily-day-label):not(.input-title),
+[class$="-heading"],
+[class*=" -heading"],
+.input-title,
+.field-title,
+.quiz-title,
+.section-title,
+.box-title,
+.modal-title {
+  font-family: 'General Sans', 'Inter', -apple-system, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.2 !important;
+  color: #0f0f0f !important;
+}
+
+/* Eyebrow labels — anything ending in -label gets eyebrow treatment
+   (small caps, tracking, near-black) */
+[class$="-label"]:not(.input-label),
+.field-label,
+.input-label,
+.form-label,
+.tier-label,
+.option-label,
+.choice-label {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.10em !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  color: #0f0f0f !important;
+  line-height: 1.4 !important;
+}
+
+/* v0.13 LIGHT-SURFACE TEXT GUARANTEE.
+   For tools with light-bg outer panels (input-panel, patient-bar),
+   force readable dark text. Prevents inherited white text on light bg. */
+.input-panel,
+.input-panel *,
+.patient-bar,
+.patient-bar *,
+.input-inner,
+.input-inner *,
+.patient-inner,
+.patient-inner * {
+  color: #0f0f0f;
+}
+
+/* But preserve the eyebrow-tracked muted gray where appropriate */
+.input-panel [class$="-label"],
+.input-panel .input-label,
+.patient-bar [class$="-label"],
+.patient-bar .input-label {
+  color: #0f0f0f !important;
+}
+
 /* Template B header banner: keep full-width background,
    constrain inner content to match body width */
 .header {
