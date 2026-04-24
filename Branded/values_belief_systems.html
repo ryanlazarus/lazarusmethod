@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — Your Values & Top Priorities</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+  :root{--gold:#96792F;--gold-soft:#B8975A;--gold-bg:#FAF6ED;--navy:#1A1A2E;--charcoal:#3A3A3A;--med:#8A8A8A;--cream:#FDFBF7;--white:#FFFFFF;--border:#E8E0D0;--rust:#7A3A1E;--rust-light:#F5EDE8;--section-bar:#2C2C3E;--subtle:#BBBBBB}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'EB Garamond',Georgia,serif;background:#EDEBE5;color:var(--charcoal);-webkit-font-smoothing:antialiased}
+  .ip{background:var(--white);border-bottom:2px solid var(--border);padding:28px 24px 22px}
+  .ii{max-width:940px;margin:0 auto}
+  .il{font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:16px}
+  .ig{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:14px;align-items:end}
+  .fd{display:flex;flex-direction:column}
+  .fd label{font-family:-apple-system,sans-serif;font-size:9.5px;letter-spacing:1.5px;color:var(--med);text-transform:uppercase;font-weight:600;margin-bottom:4px}
+  .fd input,.fd select{font-family:'EB Garamond',Georgia,serif;font-size:15px;color:var(--navy);border:1px solid var(--border);border-radius:2px;padding:7px 10px;background:var(--cream);outline:none;transition:border-color .2s}
+  .fd input:focus,.fd select:focus{border-color:var(--gold)}
+  .gbtn{font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--navy);border:none;border-radius:2px;padding:9px 18px;cursor:pointer;white-space:nowrap;height:fit-content}
+  .gbtn:hover{background:var(--rust)}
+  .pb{max-width:940px;margin:14px auto 0;text-align:right}
+  .pb button{font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--gold);border:none;border-radius:2px;padding:9px 20px;cursor:pointer}
+  #doc{max-width:940px;margin:24px auto 48px;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.1)}
+  .dh{padding:36px 48px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .hb{font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:4px;font-weight:700;color:var(--gold);text-transform:uppercase}
+  .ht{font-size:32px;font-weight:600;color:var(--navy);letter-spacing:1px;line-height:1.1}
+  .hs{font-size:15px;color:var(--med);font-style:italic}
+  .hm{text-align:right;display:flex;flex-direction:column;gap:8px}
+  .mi{font-family:-apple-system,sans-serif;font-size:10px;color:var(--med)}
+  .mv{font-size:14px;color:var(--navy)}
+  .ib{background:var(--gold-bg);border-left:3px solid var(--gold);margin:28px 48px 0;padding:16px 20px}
+  .ib p{font-size:14.5px;line-height:1.75;color:var(--charcoal)}
+  .db{padding:28px 48px 40px}
+  .sh{background:var(--section-bar);margin:0 -48px;padding:10px 48px;margin-bottom:20px}
+  .sh h2{font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:3.5px;font-weight:700;color:var(--white);text-transform:uppercase}
+  .legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .vp{font-family:-apple-system,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:20px;border:1.5px solid;cursor:default}
+  table.qt{width:100%;border-collapse:collapse;margin-bottom:28px}
+  table.qt th{font-family:-apple-system,sans-serif;font-size:9.5px;letter-spacing:2px;font-weight:700;color:var(--med);text-transform:uppercase;padding:8px 10px;border-bottom:2px solid var(--border);text-align:left}
+  table.qt th:not(:first-child){text-align:center;width:155px}
+  table.qt td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:14.5px;vertical-align:middle}
+  table.qt tr:last-child td{border-bottom:none}
+  .qn{font-family:-apple-system,sans-serif;font-size:9px;font-weight:700;color:var(--gold);margin-right:6px}
+  .vs{font-family:-apple-system,sans-serif;font-size:12px;font-weight:700;border:1.5px solid var(--border);border-radius:2px;padding:5px 8px;background:var(--cream);color:var(--med);cursor:pointer;outline:none;width:130px;transition:all .2s;-webkit-appearance:none}
+  .hg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .hs2{border:1.5px solid var(--border);border-radius:2px;padding:14px 12px;text-align:center;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .3s}
+  .hs2.ranked{border-color:var(--gold);background:var(--gold-bg)}
+  .hr{font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:var(--subtle);text-transform:uppercase}
+  .hs2.ranked .hr{color:var(--gold)}
+  .hv{font-size:20px;font-weight:700}
+  .hc{font-size:12px;color:var(--med);font-style:italic}
+  .inbox{background:var(--rust-light);border:1px solid #D4956A;border-radius:2px;padding:18px 20px;margin-bottom:24px;display:none}
+  .inbox.on{display:block}
+  .ibt{font-family:-apple-system,sans-serif;font-size:9.5px;letter-spacing:2.5px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:10px}
+  .ibtx{font-size:14.5px;color:var(--charcoal);line-height:1.8}
+  .lg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+  .lc{border:1px solid var(--border);border-radius:2px;overflow:hidden}
+  .lch{padding:10px 14px;font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;color:var(--white);text-transform:uppercase}
+  .lcn{font-size:13px;padding:8px 14px 6px;color:var(--med);font-style:italic;border-bottom:1px solid var(--border)}
+  .li2{padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+  .litem{display:flex;gap:8px;align-items:flex-start}
+  .ln{font-family:-apple-system,sans-serif;font-size:10px;font-weight:700;color:var(--gold);min-width:14px}
+  .linp{flex:1;font-family:'EB Garamond',Georgia,serif;font-size:13.5px;color:var(--navy);border:none;border-bottom:1px solid var(--border);background:transparent;outline:none;padding:2px 0}
+  .linp:focus{border-bottom-color:var(--gold)}
+  .df{background:var(--navy);padding:16px 48px;display:flex;align-items:center;justify-content:space-between}
+  .dfb{font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:3px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase}
+  .dfc{font-size:12px;color:rgba(255,255,255,.3);font-style:italic}
+  @media print{body{background:white}.ip,.pb{display:none!important}#doc{margin:0;box-shadow:none;max-width:100%}.inbox{display:block!important}}
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+<div class="ip"><div class="ii">
+  <div class="il">Patient Details</div>
+  <div class="ig">
+    <div class="fd"><label>Patient Name</label><input type="text" id="pn" placeholder="Full name" oninput="gen()"/></div>
+    <div class="fd"><label>Program Tier</label><select id="pt" onchange="gen()"><option value="">Select tier</option><option>Repair</option><option>Train</option><option>Master</option></select></div>
+    <div class="fd"><label>Date</label><input type="date" id="pd" onchange="gen()"/></div>
+    <div class="fd"><label>Provider</label><input type="text" id="pv" placeholder="Dr. Lazarus" oninput="gen()"/></div>
+    <button class="gbtn" onclick="gen()">Generate</button>
+  </div>
+</div></div>
+<div class="pb"><button onclick="window.print()">↓ Print / Save PDF</button></div>
+
+<div id="doc">
+  <div class="dh">
+    <div><div class="hb">The Lazarus Method</div><div class="ht">Your Values &amp; Top Priorities</div><div class="hs">Hierarchy of Values Assessment</div></div>
+    <div class="hm">
+      <div><div class="mi">Patient</div><div class="mv" id="dn">________________</div></div>
+      <div><div class="mi">Program Tier</div><div class="mv" id="dti">________________</div></div>
+      <div><div class="mi">Date</div><div class="mv" id="dd">________________</div></div>
+      <div><div class="mi">Provider</div><div class="mv" id="dp">________________</div></div>
+    </div>
+  </div>
+  <div class="ib" style="margin:28px 48px 0"><p>Answer the twelve questions below by selecting your top three values per area. Your hierarchy is calculated automatically. Values: <strong>FAM</strong> = Family · <strong>R</strong> = Relationship · <strong>C</strong> = Career · <strong>FIN</strong> = Finance · <strong>SE</strong> = Social &amp; Entertainment · <strong>HWB</strong> = Health &amp; Wellbeing · <strong>S</strong> = Spirituality · <strong>PD</strong> = Personal Development.</p></div>
+  <div class="db">
+    <div class="sh" style="margin-top:28px"><h2>Determine Your Hierarchy of Values</h2></div>
+    <div class="legend" id="legend"></div>
+    <table class="qt"><thead><tr><th>Question</th><th>Most Important</th><th>2nd</th><th>3rd</th></tr></thead><tbody id="qtbody"></tbody></table>
+    <div class="sh"><h2>Hierarchy of Value Structure</h2></div>
+    <p style="font-size:14px;color:var(--med);font-style:italic;margin-bottom:16px">Ranked automatically by frequency across all twelve questions.</p>
+    <div class="hg" id="hgrid"></div>
+    <div class="inbox" id="inbox"><div class="ibt">Your Values Health Insight</div><div class="ibtx" id="inbtx"></div></div>
+    <div class="sh" style="margin-top:8px"><h2>Linking Your Values to Your Health</h2></div>
+    <p style="font-size:14px;color:var(--charcoal);margin-bottom:18px;line-height:1.65">For each of your Top 3 Values, write down 2 specific ways that improving your health will directly benefit that value. Keep it personal and concrete — vague answers produce vague motivation.</p>
+    <div class="lg" id="lgrid"></div>
+
+    <div class="sh" style="margin-top:8px"><h2>Your Personal Health Motivation Statement</h2></div>
+    <div id="motivationWrap">
+      <p style="font-size:13px;font-style:italic;color:var(--med);margin-bottom:0" id="motivPlaceholder">Complete the linking section above to generate your personal statement.</p>
+      <div id="motivStatement" style="display:none;background:var(--gold-bg);border:1px solid var(--gold);border-radius:2px;padding:22px 24px;">
+        <div style="font-family:-apple-system,sans-serif;font-size:9.5px;letter-spacing:2.5px;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px">Why Your Health Matters — In Your Own Words</div>
+        <div id="motivText" style="font-size:17px;line-height:1.95;color:var(--navy);font-style:italic;"></div>
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);display:grid;grid-template-columns:2fr 1fr;gap:24px;">
+          <div style="display:flex;flex-direction:column;">
+            <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:var(--med);text-transform:uppercase;margin-bottom:6px">Signature</div>
+            <input style="border:none;border-bottom:1.5px solid var(--gold);width:100%;padding:6px 2px;font-family:'EB Garamond',Georgia,serif;font-size:15px;color:var(--navy);background:transparent;outline:none;" type="text" placeholder="Sign your name"/>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:var(--med);text-transform:uppercase;margin-bottom:6px">Date</div>
+            <input id="motivDate" style="border:none;border-bottom:1.5px solid var(--gold);width:100%;padding:6px 2px;font-family:'EB Garamond',Georgia,serif;font-size:15px;color:var(--navy);background:transparent;outline:none;" type="text" placeholder="________________"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="df"><span class="dfb">The Lazarus Method</span><span class="dfc">© The Lazarus Method · All Rights Reserved</span></div>
+</div>
+
+<script>
+const Qs=['How you spend your time?','How you spend your energy?','How you spend your money?','Where you are most organized?','Where you are most disciplined?','What you think about most?','What you dream / visualize most?','What you talk to yourself about?','What you talk to friends about?','What you are inspired about?','What do you set goals towards?'];
+const Vs=['FAM','R','C','FIN','SE','HWB','S','PD'];
+const VC={FAM:'#4A90D9',R:'#C0392B',C:'#8B6914',FIN:'#2D6A4F',SE:'#9B5DE5',HWB:'#7A3A1E',S:'#E67E22',PD:'#1A1A2E'};
+const VN={FAM:'Family',R:'Relationship',C:'Career',FIN:'Finance',SE:'Social & Entertainment',HWB:'Health & Wellbeing',S:'Spirituality',PD:'Personal Development'};
+const INS={
+  FAM:'Your family is the core of your motivation. Every health improvement — more energy, greater longevity, sharper presence — is a direct investment in the people who matter most. When discipline feels hard, reconnect the action to them.',
+  R:'Relationships drive you. Better health means more vitality, emotional stability, and presence for the people in your life. Your wellbeing is relational — when you thrive, so do your connections.',
+  C:'Career ranks highest in your hierarchy. Optimizing health is optimizing performance. Energy management, cognitive function, and stress resilience are your true competitive advantages.',
+  FIN:'You are financially motivated. Frame every health investment as ROI — reduced healthcare costs, higher earning capacity, fewer sick days. Health is your most important long-term asset.',
+  SE:'Community and enjoyment matter deeply to you. Health enables full participation — more energy, more confidence, the physical capacity to show up at your best in every social setting.',
+  HWB:'Health and wellbeing rank as your top value. This is rare. Your challenge is not motivation — it is consistency and structure. Build systems, not willpower alone.',
+  S:'Spirituality tops your hierarchy. Your health practice is a form of stewardship — caring for the vessel that allows you to pursue your deeper purpose.',
+  PD:'Personal development leads your values. Health is the infrastructure for all growth. Without physical vitality and cognitive sharpness, every other development goal becomes harder to reach.'
+};
+let ans={};
+
+function buildLegend(){
+  const l=document.getElementById('legend');
+  Vs.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='vp';
+    d.style.borderColor=VC[v];d.style.color=VC[v];
+    d.textContent=v+' — '+VN[v];
+    l.appendChild(d);
+  });
+}
+
+function buildTable(){
+  const tb=document.getElementById('qtbody');
+  // example row
+  const ex=document.createElement('tr');
+  ex.style.color='var(--med)';ex.style.fontStyle='italic';
+  ex.innerHTML=`<td><span class="qn">EX</span>How you spend your time? <em>(Example)</em></td>
+    <td style="text-align:center"><span style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:700;color:#4A90D9;background:#EBF4FF;padding:4px 10px;border-radius:2px">FAM</span></td>
+    <td style="text-align:center"><span style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:700;color:#8B6914;background:#FBF6EA;padding:4px 10px;border-radius:2px">C</span></td>
+    <td style="text-align:center"><span style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:700;color:#9B5DE5;background:#F5EEF8;padding:4px 10px;border-radius:2px">SE</span></td>`;
+  tb.appendChild(ex);
+  Qs.forEach((q,qi)=>{
+    const tr=document.createElement('tr');
+    let c=`<td><span class="qn">${qi+1}.</span>${q}</td>`;
+    [1,2,3].forEach(r=>{
+      c+=`<td style="text-align:center"><select class="vs" id="q${qi}r${r}" onchange="onSel(${qi},${r},this)"><option value="">—</option>${Vs.map(v=>`<option value="${v}">${VN[v]}</option>`).join('')}</select></td>`;
+    });
+    tr.innerHTML=c;tb.appendChild(tr);
+  });
+}
+
+function onSel(qi,r,sel){
+  if(!ans[qi])ans[qi]={};
+  ans[qi][r]=sel.value;
+  const c=VC[sel.value]||'';
+  if(sel.value){sel.style.background=c;sel.style.color='white';sel.style.borderColor=c;}
+  else{sel.style.background='var(--cream)';sel.style.color='var(--med)';sel.style.borderColor='var(--border)';}
+  updateH();
+}
+
+function updateH(){
+  const cnt={};Vs.forEach(v=>cnt[v]=0);
+  Object.values(ans).forEach(row=>Object.values(row).forEach(v=>{if(v)cnt[v]=(cnt[v]||0)+1;}));
+  const ranked=Object.entries(cnt).filter(([,c])=>c>0).sort((a,b)=>b[1]-a[1]);
+  const g=document.getElementById('hgrid');g.innerHTML='';
+  for(let i=0;i<8;i++){
+    const s=document.createElement('div');
+    s.className='hs2'+(ranked[i]?' ranked':'');
+    if(ranked[i]){
+      const[v,c]=ranked[i];
+      s.innerHTML=`<div class="hr">Rank ${i+1}</div><div class="hv" style="color:${VC[v]}">${v}</div><div class="hc">${VN[v]} · ${c} mention${c!==1?'s':''}</div>`;
+    }else{
+      s.innerHTML=`<div class="hr">Rank ${i+1}</div><div class="hc" style="color:var(--subtle)">—</div>`;
+    }
+    g.appendChild(s);
+  }
+  updateInsight(ranked);updateLinking(ranked);
+}
+
+function updateInsight(ranked){
+  const box=document.getElementById('inbox');const txt=document.getElementById('inbtx');
+  if(ranked.length<3){box.classList.remove('on');return;}
+  const top=ranked[0][0];
+  const msg=INS[top]||'Your top value is driving your daily decisions. Connecting every health action to this value will dramatically increase your consistency.';
+  txt.innerHTML=`Your highest-ranked value is <strong>${VN[top]} (${top})</strong>. ${msg}<br><br>Your full hierarchy — <strong>${ranked.slice(0,3).map(r=>VN[r[0]]).join(', ')}</strong> — should frame every health conversation and program goal. The most effective health plan for you is one built around these priorities, not discipline alone.`;
+  box.classList.add('on');
+}
+
+function buildLinking(){
+  const g=document.getElementById('lgrid');g.innerHTML='';
+  ['v1','v2','v3'].forEach((cls,i)=>{
+    const col=document.createElement('div');col.className='lc';col.id='lc'+(i+1);
+    const bgColors=['var(--rust)','var(--navy)','var(--gold)'];
+    col.innerHTML=`<div class="lch" id="lh${i+1}" style="background:${bgColors[i]}">Value #${i+1}</div>
+      <div class="lcn" id="ln${i+1}">Complete the hierarchy above</div>
+      <div class="li2">${[1,2].map(n=>`<div class="litem"><span class="ln">${n}.</span><input class="linp" id="link${i+1}_${n}" type="text" placeholder="How does better health benefit this value?" oninput="updateMotivation()"/></div>`).join('')}</div>`;
+    g.appendChild(col);
+  });
+}
+
+function updateLinking(ranked){
+  [0,1,2].forEach(i=>{
+    const h=document.getElementById('lh'+(i+1));const n=document.getElementById('ln'+(i+1));
+    if(ranked[i]){const[v]=ranked[i];h.textContent='Value #'+(i+1)+' — '+v;n.textContent=VN[v]+' ('+v+')';}
+    else{h.textContent='Value #'+(i+1);n.textContent='Complete the hierarchy above';}
+    updateMotivation();
+  });
+}
+
+function updateMotivation(){
+  const ranked=getTop3();
+  const answers=[];
+  for(let i=1;i<=3;i++){
+    const a1=(document.getElementById('link'+i+'_1')||{}).value||'';
+    const a2=(document.getElementById('link'+i+'_2')||{}).value||'';
+    if(a1.trim()||a2.trim()) answers.push({val:ranked[i-1]||null,a1:a1.trim(),a2:a2.trim()});
+  }
+  const ph=document.getElementById('motivPlaceholder');
+  const st=document.getElementById('motivStatement');
+  const tx=document.getElementById('motivText');
+  if(answers.length===0){ph.style.display='';st.style.display='none';return;}
+  ph.style.display='none';st.style.display='block';
+
+  // Build the sentence from the answers they actually wrote
+  const parts=[];
+  answers.forEach(({val,a1,a2})=>{
+    const label=val?VN[val]:'this value';
+    const items=[a1,a2].filter(Boolean);
+    if(items.length===2){
+      parts.push(`Improving my health means <em>${items[0].toLowerCase().replace(/\.$/,'')}</em> and <em>${items[1].toLowerCase().replace(/\.$/,'')}</em> — both of which strengthen my commitment to ${label}`);
+    } else if(items.length===1){
+      parts.push(`Improving my health means <em>${items[0].toLowerCase().replace(/\.$/,'')}</em>, which directly serves what I value most in ${label}`);
+    }
+  });
+
+  let sentence='';
+  if(parts.length===1){
+    sentence=parts[0]+'.';
+  } else if(parts.length===2){
+    sentence=parts[0]+'. '+parts[1]+'.';
+  } else if(parts.length===3){
+    sentence=parts[0]+'. '+parts[1]+'. '+parts[2]+'.';
+  }
+
+  // Determine the name for the signed version
+  const name=document.getElementById('pn').value.trim();
+  const namePrefix=name?`<strong>${name}</strong> invests in health because: `:'I invest in health because: ';
+  tx.innerHTML=namePrefix+sentence;
+
+  // Also set the date field if available
+  const dv=document.getElementById('pd').value;
+  if(dv){const d=new Date(dv+'T00:00:00');document.getElementById('motivDate').placeholder=d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
+}
+
+function getTop3(){
+  const cnt={};Vs.forEach(v=>cnt[v]=0);
+  Object.values(ans).forEach(row=>Object.values(row).forEach(v=>{if(v)cnt[v]=(cnt[v]||0)+1;}));
+  return Object.entries(cnt).filter(([,c])=>c>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([v])=>v);
+}
+
+function gen(){
+  const name=document.getElementById('pn').value.trim()||'________________';
+  const tier=document.getElementById('pt').value||'________________';
+  const dv=document.getElementById('pd').value;
+  const prov=document.getElementById('pv').value.trim()||'________________';
+  document.getElementById('dn').textContent=name;document.getElementById('dti').textContent=tier;document.getElementById('dp').textContent=prov;
+  if(dv){const d=new Date(dv+'T00:00:00');document.getElementById('dd').textContent=d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
+  updateMotivation();
+}
+
+buildLegend();buildTable();buildLinking();
+document.getElementById('pd').value=new Date().toISOString().split('T')[0];gen();
+</script>
+</body>
+</html>

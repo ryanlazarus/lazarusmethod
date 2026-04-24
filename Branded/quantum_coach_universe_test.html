@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — Quantum Coach Universe Test</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+  :root{--gold:#96792F;--gold-soft:#B8975A;--gold-bg:#FAF6ED;--navy:#1A1A2E;--charcoal:#3A3A3A;--med:#8A8A8A;--cream:#FDFBF7;--white:#FFFFFF;--border:#E8E0D0;--rust:#7A3A1E;--rust-light:#F5EDE8;--section-bar:#2C2C3E;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'EB Garamond',Georgia,serif;background:#EDEBE5;color:var(--charcoal);-webkit-font-smoothing:antialiased;}
+
+  .input-panel{background:var(--white);border-bottom:2px solid var(--border);padding:24px 24px 20px;}
+  .input-inner{max-width:900px;margin:0 auto;}
+  .input-label{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:14px;}
+  .input-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:12px;align-items:end;}
+  .field{display:flex;flex-direction:column;}
+  .field label{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9.5px;letter-spacing:1.5px;color:var(--med);text-transform:uppercase;font-weight:600;margin-bottom:4px;}
+  .field input,.field select{font-family:'EB Garamond',Georgia,serif;font-size:15px;color:var(--navy);border:1px solid var(--border);border-radius:2px;padding:7px 10px;background:var(--cream);outline:none;transition:border-color .2s;}
+  .field input:focus,.field select:focus{border-color:var(--gold);}
+  .btn{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--navy);border:none;border-radius:2px;padding:9px 18px;cursor:pointer;white-space:nowrap;height:fit-content;}
+  .btn:hover{background:var(--rust);}
+  .print-btn{display:block;max-width:900px;margin:14px auto 0;text-align:right;}
+  .print-btn button{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--gold);border:none;border-radius:2px;padding:9px 20px;cursor:pointer;}
+  .print-btn button:hover{background:var(--rust);}
+
+  #document{max-width:900px;margin:24px auto 48px;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.10);}
+  .doc-header{padding:34px 48px 26px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .header-badge{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9px;letter-spacing:4px;font-weight:700;color:var(--gold);text-transform:uppercase;}
+  .header-title{font-size:28px;font-weight:600;color:var(--navy);letter-spacing:1px;line-height:1.1;margin-top:4px;}
+  .header-sub{font-size:15px;color:var(--med);font-style:italic;margin-top:4px;}
+  .header-meta{text-align:right;display:flex;flex-direction:column;gap:8px;}
+  .meta-item{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;color:var(--med);}
+  .meta-value{font-size:14px;color:var(--navy);}
+
+  .intro-block{background:var(--gold-bg);border-left:3px solid var(--gold);margin:26px 48px 0;padding:14px 18px;}
+  .intro-block p{font-size:14px;line-height:1.75;color:var(--charcoal);}
+  .intro-block p+p{margin-top:8px;}
+  .intro-block strong{color:var(--navy);font-weight:600;}
+
+  .doc-body{padding:26px 48px 40px;}
+  .section-header{background:var(--section-bar);margin:0 -48px;padding:10px 48px;margin-bottom:20px;}
+  .section-header h2{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;letter-spacing:3.5px;font-weight:700;color:var(--white);text-transform:uppercase;}
+  .section-desc{font-size:14px;color:var(--charcoal);line-height:1.7;margin-bottom:20px;}
+  .section-desc strong{color:var(--navy);font-weight:600;}
+
+  /* CHALLENGE CARDS */
+  .challenge-set{margin-bottom:28px;}
+  .challenge-card{border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:16px;transition:border-color .3s;}
+  .challenge-card.filled{border-color:var(--gold);}
+  .challenge-card-header{background:var(--rust);padding:9px 16px;display:flex;align-items:center;gap:10px;}
+  .challenge-card.filled .challenge-card-header{background:var(--gold);}
+  .challenge-num{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;}
+  .challenge-card-header span:last-child{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;color:var(--white);text-transform:uppercase;}
+  .challenge-card-body{padding:16px 18px;}
+  .card-row{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;margin-bottom:12px;}
+  .card-row:last-child{margin-bottom:0;}
+  .card-field{display:flex;flex-direction:column;gap:4px;}
+  .card-field-label{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:var(--gold);text-transform:uppercase;}
+  .card-textarea{font-family:'EB Garamond',Georgia,serif;font-size:14.5px;color:var(--navy);border:1px solid var(--border);border-radius:2px;padding:8px 10px;background:var(--cream);outline:none;resize:none;width:100%;line-height:1.6;transition:border-color .2s;}
+  .card-textarea:focus{border-color:var(--gold);}
+  .arrow-col{display:flex;align-items:center;justify-content:center;padding-top:24px;}
+  .arrow{font-size:20px;color:var(--rust);}
+
+  /* EMOTION PILLS */
+  .emotion-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+  .emotion-pill{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9px;letter-spacing:1px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);color:var(--med);cursor:pointer;transition:all .15s;user-select:none;}
+  .emotion-pill:hover{border-color:var(--rust);color:var(--rust);}
+  .emotion-pill.selected{background:var(--rust);border-color:var(--rust);color:var(--white);}
+  .emotion-custom{font-family:'EB Garamond',Georgia,serif;font-size:13.5px;color:var(--navy);border:none;border-bottom:1px solid var(--border);padding:4px 0;background:transparent;outline:none;width:100%;margin-top:6px;}
+  .emotion-custom:focus{border-bottom-color:var(--gold);}
+
+  /* REFRAME PROMPT */
+  .reframe-prompt{background:var(--gold-bg);border:1px solid var(--border);border-radius:2px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:var(--med);font-style:italic;line-height:1.6;display:none;}
+  .reframe-prompt.visible{display:block;}
+  .reframe-prompt strong{color:var(--navy);font-style:normal;}
+
+  /* RESILIENCE SCORE */
+  .resilience-panel{background:var(--rust-light);border:1px solid #D4956A;border-radius:2px;padding:20px 22px;margin-top:8px;display:none;}
+  .resilience-panel.visible{display:block;}
+  .rp-title{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9.5px;letter-spacing:2.5px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:14px;}
+  .rp-score-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+  .rp-score{font-size:40px;font-weight:600;color:var(--navy);}
+  .rp-score-label{font-size:14px;color:var(--charcoal);line-height:1.65;}
+  .rp-score-label strong{color:var(--navy);}
+  .rp-affirmations{display:flex;flex-direction:column;gap:8px;}
+  .rp-affirmation{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--charcoal);line-height:1.55;}
+  .rp-bullet{color:var(--gold);font-weight:700;flex-shrink:0;}
+
+  /* GAMEPLAN */
+  .gameplan-block{background:var(--gold-bg);border:1px solid var(--gold);border-radius:2px;padding:20px 22px;margin-top:20px;}
+  .gp-title{font-family:-apple-system,'Segoe UI',sans-serif;font-size:9.5px;letter-spacing:2.5px;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+  .gp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .gp-card{border:1px solid var(--border);border-radius:2px;overflow:hidden;}
+  .gp-card-header{background:var(--navy);padding:7px 12px;font-family:-apple-system,'Segoe UI',sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:rgba(255,255,255,.9);text-transform:uppercase;}
+  .gp-card-body{padding:12px;display:flex;flex-direction:column;gap:8px;}
+  .gp-field{font-size:13px;color:var(--charcoal);line-height:1.5;}
+  .gp-field strong{color:var(--navy);font-size:12px;font-family:-apple-system,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;}
+
+  .doc-footer{background:var(--navy);padding:14px 48px;display:flex;align-items:center;justify-content:space-between;}
+  .footer-brand{font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;letter-spacing:3px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;}
+  .footer-copy{font-size:12px;color:rgba(255,255,255,.3);font-style:italic;}
+
+  @media print{
+    body{background:white;}.input-panel,.print-btn{display:none!important;}
+    #document{margin:0;box-shadow:none;max-width:100%;}
+    .resilience-panel{display:block!important;}.challenge-card{break-inside:avoid;}
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+<div class="input-panel">
+  <div class="input-inner">
+    <div class="input-label">Patient Details</div>
+    <div class="input-grid">
+      <div class="field"><label>Patient Name</label><input type="text" id="patientName" placeholder="Full name" oninput="generateDoc()"/></div>
+      <div class="field"><label>Program Tier</label><select id="tier" onchange="generateDoc()"><option value="">Select tier</option><option>Repair</option><option>Train</option><option>Master</option></select></div>
+      <div class="field"><label>Date</label><input type="date" id="docDate" onchange="generateDoc()"/></div>
+      <div class="field"><label>Provider</label><input type="text" id="provider" placeholder="Dr. Lazarus" oninput="generateDoc()"/></div>
+      <button class="btn" onclick="generateDoc()">Generate</button>
+    </div>
+  </div>
+</div>
+<div class="print-btn"><button onclick="window.print()">↓ Print / Save PDF</button></div>
+
+<div id="document">
+  <div class="doc-header">
+    <div>
+      <div class="header-badge">The Lazarus Method</div>
+      <div class="header-title">Quantum Coach Universe Test</div>
+      <div class="header-sub">Reframe Challenges as Opportunities for Growth</div>
+    </div>
+    <div class="header-meta">
+      <div><div class="meta-item">Patient</div><div class="meta-value" id="display-name">________________</div></div>
+      <div><div class="meta-item">Program Tier</div><div class="meta-value" id="display-tier">________________</div></div>
+      <div><div class="meta-item">Date</div><div class="meta-value" id="display-date">________________</div></div>
+      <div><div class="meta-item">Provider</div><div class="meta-value" id="display-provider">________________</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block" style="margin:26px 48px 0;">
+    <p>Your <strong>Quantum Coach</strong> is your personal coach who is strategically presenting you with challenges so you can successfully execute your defensive gameplan. By viewing life's inevitable setbacks as purposefully designed tests, this mindset allows you to approach difficulties with a proactive and positive attitude.</p>
+    <p>Complete this worksheet to develop the mental tenacity needed to triumph over adversity. Your reframes and strategies will build into a personalized resilience gameplan.</p>
+  </div>
+
+  <div class="doc-body">
+
+    <div class="section-header"><h2>Section 1 — Identify Your Challenge</h2></div>
+    <p class="section-desc"><strong>Describe one recent challenge, problem, or setback you have faced.</strong> Then select or write the emotions it triggered. Naming the emotion is the first step to depersonalizing the challenge.</p>
+
+    <div id="challengeCards1"></div>
+
+    <div class="section-header" style="margin-top:8px;"><h2>Section 2 — Reframe as a Universe Test</h2></div>
+    <p class="section-desc"><strong>Now reframe this challenge as a Universe Test from your Quantum Coach.</strong> The challenge carries over automatically. Choose how you see it — then write your intentional response.</p>
+
+    <div id="challengeCards2"></div>
+
+    <div class="section-header" style="margin-top:8px;"><h2>Your Resilience Profile</h2></div>
+    <div class="resilience-panel" id="resiliencePanel">
+      <div class="rp-title">Defensive Gameplan — Full Summary</div>
+      <div id="rpSummaryCards" style="display:flex;flex-direction:column;gap:16px;margin-bottom:16px;"></div>
+      <div id="rpNarrative" style="background:var(--white);border:1px solid #D4956A;border-radius:2px;padding:16px 18px;display:none;">
+        <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:10px;">Your Resilience Statement</div>
+        <div id="rpNarrativeText" style="font-size:15px;line-height:1.95;color:var(--navy);font-style:italic;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-brand">The Lazarus Method</span>
+    <span class="footer-copy">© The Lazarus Method · All Rights Reserved</span>
+  </div>
+</div>
+
+<script>
+const EMOTIONS=['Frustrated','Anxious','Overwhelmed','Angry','Helpless','Disappointed','Stressed','Defeated','Confused','Rushed','Embarrassed','Resentful'];
+const REFRAME_PROMPTS=[
+  'Consider: What skill or quality is this challenge asking you to develop?',
+  'Consider: How would the version of you who has already solved this respond?',
+  'Consider: What would you tell a close friend facing this exact challenge?'
+];
+const AFFIRMATIONS=[
+  'You have named what happened — that is the first act of ownership.',
+  'Every challenge you documented is a pattern your Quantum Coach has identified. Watch for it again.',
+  'Reframing is not denial. It is the deliberate choice to direct your attention toward what you can control.',
+  'The gap between challenge and response is where character is built. Your gameplan lives in that gap.'
+];
+
+const RESPONSE_WORDS=['Opportunity','Gift','Lesson','Invitation','Catalyst','Breakthrough','Signal','Test'];
+
+let challengeData={1:{text:'',emotions:new Set()}};
+let reframeData={1:{test:'',strategy:'',responseWord:''}};
+
+function buildCards(){
+  const c1=document.getElementById('challengeCards1');
+  const c2=document.getElementById('challengeCards2');
+  [1].forEach(n=>{
+    // Section 1 card
+    const card1=document.createElement('div');
+    card1.className='challenge-card';card1.id='card1-'+n;
+    card1.innerHTML=`<div class="challenge-card-header"><span class="challenge-num">Challenge</span><span># ${n}</span></div>
+    <div class="challenge-card-body">
+      <div class="card-row">
+        <div class="card-field">
+          <div class="card-field-label">Describe the Challenge</div>
+          <textarea class="card-textarea" rows="3" id="ch-text-${n}" placeholder="Describe a recent challenge, setback, or obstacle…" oninput="updateCardState(${n})"></textarea>
+        </div>
+        <div class="arrow-col"><span class="arrow">→</span></div>
+        <div class="card-field">
+          <div class="card-field-label">How it Made You Feel</div>
+          <div class="emotion-pills" id="pills-${n}"></div>
+          <input class="emotion-custom" type="text" id="emotion-custom-${n}" placeholder="Or type your own emotion…" oninput="updateCardState(${n})"/>
+        </div>
+      </div>
+    </div>`;
+    c1.appendChild(card1);
+
+    // build pills
+    const pillsContainer=card1.querySelector('#pills-'+n);
+    EMOTIONS.forEach(em=>{
+      const pill=document.createElement('div');
+      pill.className='emotion-pill';pill.textContent=em;
+      pill.addEventListener('click',()=>{
+        pill.classList.toggle('selected');
+        if(pill.classList.contains('selected'))challengeData[n].emotions.add(em);
+        else challengeData[n].emotions.delete(em);
+        updateCardState(n);
+      });
+      pillsContainer.appendChild(pill);
+    });
+
+    // Section 2 card
+    const card2=document.createElement('div');
+    card2.className='challenge-card';card2.id='card2-'+n;
+    card2.innerHTML=`<div class="challenge-card-header"><span class="challenge-num">Universe Test</span><span># ${n}</span></div>
+    <div class="challenge-card-body">
+      <div class="carryover-block" id="carryover-${n}" style="display:none;background:#F5F3EF;border:1px solid var(--border);border-radius:2px;padding:12px 14px;margin-bottom:14px;">
+        <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;color:var(--med);text-transform:uppercase;margin-bottom:8px;">From Challenge #${n}</div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;">
+          <div>
+            <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:4px;">The Challenge</div>
+            <div id="co-challenge-${n}" style="font-size:14px;color:var(--navy);line-height:1.6;font-style:italic;">—</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;padding-top:18px;font-size:18px;color:var(--rust);">→</div>
+          <div>
+            <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:4px;">How It Felt</div>
+            <div id="co-emotions-${n}" style="font-size:14px;color:var(--navy);line-height:1.6;font-style:italic;">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="reframe-prompt visible" id="prompt-${n}" style="display:block;">${REFRAME_PROMPTS[n-1]}</div>
+      <div class="card-row">
+        <div class="card-field">
+          <div class="card-field-label">Universe Test — The Challenge I Am Facing</div>
+          <textarea class="card-textarea" rows="3" id="ut-text-${n}" placeholder="Auto-filled from Section 1 — edit or expand as needed…" oninput="updateReframe(${n})"></textarea>
+        </div>
+        <div class="arrow-col"><span class="arrow">→</span></div>
+        <div class="card-field">
+          <div class="card-field-label">My Intentional Response — I see this as an…</div>
+          <div id="response-words-${n}" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;"></div>
+          <textarea class="card-textarea" rows="3" id="rs-text-${n}" placeholder="Select a word above, then describe your intentional response…" oninput="updateReframe(${n})"></textarea>
+        </div>
+      </div>
+    </div>`;
+    c2.appendChild(card2);
+
+    // Build the 8 response-framing word pills
+    const wordContainer=card2.querySelector('#response-words-'+n);
+    RESPONSE_WORDS.forEach(word=>{
+      const pill=document.createElement('div');
+      pill.className='emotion-pill';
+      pill.textContent=word;
+      pill.style.cursor='pointer';
+      pill.addEventListener('click',()=>{
+        // Deselect all others in this group
+        wordContainer.querySelectorAll('.emotion-pill').forEach(p=>p.classList.remove('selected'));
+        pill.classList.add('selected');
+        reframeData[n].responseWord=word;
+        // Seed the textarea if it's empty or only contains a previous seed
+        const ta=document.getElementById('rs-text-'+n);
+        const prev=RESPONSE_WORDS.map(w=>'This is an '+w+' to ').find(s=>ta.value.startsWith(s))||'';
+        if(!ta.value.trim()||prev){
+          ta.value='This is an '+word+' to ';
+          ta.focus();
+          ta.setSelectionRange(ta.value.length,ta.value.length);
+        }
+        updateReframe(n);
+      });
+      wordContainer.appendChild(pill);
+    });
+  });
+}
+
+function updateCardState(n){
+  const text=document.getElementById('ch-text-'+n).value.trim();
+  challengeData[n].text=text;
+  document.getElementById('card1-'+n).classList.toggle('filled',text.length>0);
+
+  // Auto-populate Section 2 universe test textarea with the challenge text
+  const utField=document.getElementById('ut-text-'+n);
+  if(utField){
+    utField.value=text;
+    reframeData[n].test=text;
+  }
+
+  // Mirror into carryover block
+  const carryover=document.getElementById('carryover-'+n);
+  const coChallenge=document.getElementById('co-challenge-'+n);
+  const coEmotions=document.getElementById('co-emotions-'+n);
+  if(text.length>0){
+    carryover.style.display='block';
+    coChallenge.textContent=text;
+  } else {
+    carryover.style.display='none';
+  }
+  const pills=[...challengeData[n].emotions];
+  const custom=document.getElementById('emotion-custom-'+n)?.value.trim()||'';
+  const allEmotions=[...pills,...(custom?[custom]:[])];
+  coEmotions.textContent=allEmotions.length>0?allEmotions.join(', '):'—';
+
+  updateResiliencePanel();
+  updateGameplan();
+}
+
+function updateReframe(n){
+  reframeData[n].test=document.getElementById('ut-text-'+n).value.trim();
+  reframeData[n].strategy=document.getElementById('rs-text-'+n).value.trim();
+  const filled=reframeData[n].test.length>0||reframeData[n].strategy.length>0;
+  document.getElementById('card2-'+n).classList.toggle('filled',filled);
+  updateResiliencePanel();
+  updateGameplan();
+}
+
+function updateResiliencePanel(){
+  const panel=document.getElementById('resiliencePanel');
+  const hasAny=challengeData[1].text.length>0;
+  if(!hasAny){panel.classList.remove('visible');return;}
+  panel.classList.add('visible');
+
+  const summaryCards=document.getElementById('rpSummaryCards');
+  summaryCards.innerHTML='';
+
+  const n=1;
+  const ch=challengeData[n].text;
+  const pills=[...challengeData[n].emotions];
+  const custom=document.getElementById('emotion-custom-'+n)?.value.trim()||'';
+  const allEmotions=[...pills,...(custom?[custom]:[])];
+  const emotionStr=allEmotions.length>0?allEmotions.join(', '):'—';
+  const reframe=reframeData[n].test||'';
+  const response=reframeData[n].strategy||'';
+  const word=reframeData[n].responseWord||'';
+
+  const card=document.createElement('div');
+  card.style.cssText='background:var(--white);border:1px solid #D4956A;border-radius:2px;overflow:hidden;';
+  const headerColor=reframe?'var(--gold)':'var(--rust)';
+  card.innerHTML=`
+    <div style="background:${headerColor};padding:9px 16px;font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:2px;font-weight:700;color:white;text-transform:uppercase;">
+      Your Universe Test${reframe?' — Reframed':''}
+    </div>
+    <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;">
+      <div>
+        <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:5px;">The Challenge</div>
+        <div style="font-size:14px;color:var(--navy);line-height:1.6;">${ch}</div>
+      </div>
+      <div>
+        <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:var(--rust);text-transform:uppercase;margin-bottom:5px;">How It Felt</div>
+        <div style="font-size:14px;color:var(--navy);line-height:1.6;">${emotionStr}</div>
+      </div>
+      ${reframe?`<div>
+        <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:5px;">Reframe — A Different Perspective</div>
+        <div style="font-size:14px;color:var(--navy);line-height:1.6;">${reframe}</div>
+      </div>`:'<div style="display:flex;align-items:center;font-size:13px;font-style:italic;color:var(--med);">Complete the reframe in Section 2 above.</div>'}
+      ${response?`<div>
+        <div style="font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:1.5px;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:5px;">My Intentional Response</div>
+        <div style="font-size:14px;color:var(--navy);line-height:1.6;">${response}</div>
+      </div>`:'<div></div>'}
+    </div>`;
+  summaryCards.appendChild(card);
+
+  // Narrative — only when fully complete
+  const narrativeBox=document.getElementById('rpNarrative');
+  const narrativeText=document.getElementById('rpNarrativeText');
+  const isComplete=ch&&reframe&&response;
+  if(!isComplete){narrativeBox.style.display='none';return;}
+  narrativeBox.style.display='block';
+
+  const name=document.getElementById('patientName').value.trim();
+  const emotionPhrase=allEmotions.length>0?allEmotions.slice(0,2).join(' and ').toLowerCase():'discomfort';
+  const chClean=ch.replace(/\.$/,'').toLowerCase();
+  const responseClean=response.replace(/\.$/,'').toLowerCase();
+  const wordLabel=word||'opportunity';
+
+  narrativeText.innerHTML=
+    `When faced with <em>${chClean}</em> — and the ${emotionPhrase} that came with it — I chose to treat this as a Universe Test and see it as an <strong>${wordLabel}</strong>: <em>${responseClean}</em>.<br><br><strong>I expect and I am prepared for hard things. I reframe them, respond to them, and grow through them. This is my new gameplan.</strong>`;
+}
+
+function updateGameplan(){}
+
+function generateDoc(){
+  const name=document.getElementById('patientName').value.trim()||'________________';
+  const tier=document.getElementById('tier').value||'________________';
+  const dateVal=document.getElementById('docDate').value;
+  const provider=document.getElementById('provider').value.trim()||'________________';
+  document.getElementById('display-name').textContent=name;
+  document.getElementById('display-tier').textContent=tier;
+  document.getElementById('display-provider').textContent=provider;
+  if(dateVal){const d=new Date(dateVal+'T00:00:00');document.getElementById('display-date').textContent=d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
+  updateResiliencePanel();
+}
+
+buildCards();
+document.getElementById('docDate').value=new Date().toISOString().split('T')[0];
+generateDoc();
+</script>
+</body>
+</html>

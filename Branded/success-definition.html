@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lazarus Method — Success Definition Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #96792F;
+    --gold-soft: #B8975A;
+    --gold-bg: #FAF6ED;
+    --navy: #1A1A2E;
+    --charcoal: #3A3A3A;
+    --med: #8A8A8A;
+    --subtle: #BBBBBB;
+    --cream: #FDFBF7;
+    --white: #FFFFFF;
+    --border: #E8E0D0;
+    --section-bg: #F7F4EE;
+    --accent-red: #8B3A3A;
+    --accent-green: #3A6B3A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    background: #F0EDE6;
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    background: var(--navy);
+    padding: 28px 24px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .header-brand {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .header-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 28px;
+    color: var(--white);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .header-subtitle {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-top: 8px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  /* ═══ PATIENT INPUT ═══ */
+  .patient-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .patient-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .patient-field { display: flex; flex-direction: column; }
+
+  .patient-field label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .patient-field input,
+  .patient-field select {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .patient-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238A8A8A'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    cursor: pointer;
+  }
+
+  .patient-field input:focus,
+  .patient-field select:focus { border-color: var(--gold-soft); }
+  .patient-field input::placeholder { color: var(--subtle); font-style: italic; }
+
+  /* ═══ MAIN CONTENT ═══ */
+  .main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  /* ═══ SECTION BLOCKS ═══ */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--gold-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-number {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--gold);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .section-body { padding: 20px; }
+
+  .section-intro {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  /* ═══ FIVE WORDS ═══ */
+  .words-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .word-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .word-num {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .word-input {
+    width: 100%;
+    text-align: center;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    border: none;
+    border-bottom: 2px solid var(--border);
+    padding: 8px 4px;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .word-input:focus { border-bottom-color: var(--gold); }
+  .word-input::placeholder { color: var(--subtle); font-weight: 400; font-style: italic; font-size: 14px; }
+
+  /* ═══ ELEMENT CARDS ═══ */
+  .elements-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .element-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .element-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  .element-card.spark-card {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    justify-self: center;
+  }
+
+  .element-head {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .element-icon {
+    font-size: 16px;
+    margin-right: 6px;
+  }
+
+  .element-name {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .el-nourish .element-head { background: #FFF8F0; }
+  .el-nourish .element-name { color: #9B6B3A; }
+
+  .el-move .element-head { background: #F0F7F0; }
+  .el-move .element-name { color: #4A7A4A; }
+
+  .el-rest .element-head { background: #F0F0F8; }
+  .el-rest .element-name { color: #5A5A8A; }
+
+  .el-challenge .element-head { background: #FFF0F0; }
+  .el-challenge .element-name { color: #8B4A4A; }
+
+  .el-connect .element-head { background: #F8F0F0; }
+  .el-connect .element-name { color: #7A5A5A; }
+
+  .el-learn .element-head { background: #FFFBF0; }
+  .el-learn .element-name { color: #7A6A2A; }
+
+  .el-spark .element-head { background: #F8F5F0; }
+  .el-spark .element-name { color: var(--gold); }
+
+  .element-body { padding: 14px; }
+
+  .element-prompt {
+    font-size: 13px;
+    color: var(--med);
+    font-style: italic;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .element-textarea {
+    width: 100%;
+    min-height: 70px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px;
+    background: var(--cream);
+    outline: none;
+    resize: vertical;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+
+  .element-textarea:focus { border-color: var(--gold-soft); }
+  .element-textarea::placeholder { color: var(--subtle); }
+
+  /* ═══ ALIGNMENT RATING ═══ */
+  .alignment-section { margin-top: 14px; }
+
+  .alignment-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .alignment-track {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+
+  .alignment-dot {
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    min-height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--subtle);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .alignment-dot:hover {
+    border-color: var(--gold-soft);
+    color: var(--gold);
+  }
+
+  .alignment-dot.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--white);
+  }
+
+  .alignment-dot.active.low {
+    background: #C0392B;
+    border-color: #C0392B;
+  }
+
+  .alignment-dot.active.mid {
+    background: var(--gold-soft);
+    border-color: var(--gold-soft);
+  }
+
+  .alignment-dot.active.high {
+    background: #27AE60;
+    border-color: #27AE60;
+  }
+
+  .alignment-value {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    color: var(--med);
+    margin-left: 8px;
+    min-width: 60px;
+  }
+
+  /* ═══ PRIORITY ACTION ═══ */
+  .action-section { margin-top: 14px; }
+
+  .action-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .action-input {
+    width: 100%;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .action-input:focus { border-color: var(--gold-soft); }
+  .action-input::placeholder { color: var(--subtle); font-style: italic; }
+
+  /* ═══ SUCCESS RADAR ═══ */
+  .radar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .radar-wrap {
+    position: relative;
+    width: 340px;
+    height: 340px;
+  }
+
+  .radar-canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .radar-legend {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 6px 18px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-text {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    color: var(--med);
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══ SUCCESS STATEMENT ═══ */
+  .statement-box {
+    background: var(--navy);
+    border-radius: 6px;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+  }
+
+  .statement-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .statement-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.7;
+    color: var(--white);
+    font-style: italic;
+    max-width: 680px;
+    margin: 0 auto;
+    min-height: 60px;
+  }
+
+  .statement-empty {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--gold-soft);
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  .statement-date {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-top: 18px;
+    opacity: 0.6;
+  }
+
+  /* ═══ ACTIONS BAR ═══ */
+  .actions-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .btn {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--white);
+  }
+
+  .btn-primary:hover { background: var(--gold-soft); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+
+  .btn-secondary:hover { background: var(--gold-bg); }
+
+  /* ═══ FOOTER ═══ */
+  .footer {
+    text-align: center;
+    padding: 30px 24px;
+    margin-top: 10px;
+  }
+
+  .footer-text {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--subtle);
+    text-transform: uppercase;
+  }
+
+  .method-closer {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 20px;
+    padding: 0 20px;
+    font-style: italic;
+  }
+
+  /* ═══ COMMITMENT SECTION ═══ */
+  .commitment-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .commitment-block {}
+
+  .commitment-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .commitment-hint {
+    font-size: 13px;
+    color: var(--med);
+    font-style: italic;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .commitment-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+    body { background: var(--white); }
+
+    @page {
+      size: letter;
+      margin: 0.5in 0.6in;
+    }
+
+    /* Header stays compact */
+    .header {
+      padding: 18px 20px;
+      break-after: avoid;
+    }
+    .header-title { font-size: 24px; }
+
+    /* Patient bar */
+    .patient-bar { padding: 14px 20px; }
+
+    /* Main content */
+    .main { padding: 0 0 20px; }
+
+    /* Sections can break across pages, but headers stay with content */
+    .section {
+      break-inside: auto;
+      page-break-inside: auto;
+      margin-top: 16px;
+    }
+    .section-header {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    /* Element cards can break individually */
+    .element-card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Spark card full width in print */
+    .element-card.spark-card {
+      max-width: 100%;
+    }
+
+    /* Textareas show content clearly */
+    .element-textarea,
+    .action-input,
+    .word-input {
+      border-color: #CCC;
+      background: var(--white);
+    }
+
+    /* Alignment dots */
+    .alignment-dot {
+      border-width: 1.5px;
+    }
+
+    /* Statement box */
+    .statement-box {
+      padding: 22px 20px;
+    }
+
+    /* Method closer */
+    .method-closer {
+      margin-top: 14px;
+    }
+
+    /* Commitment section stays together */
+    .commitment-grid {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Hide buttons */
+    .actions-bar { display: none !important; }
+
+    /* Radar section stays together */
+    .radar-container {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Footer */
+    .footer { padding: 16px; }
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 700px) {
+    .patient-inner { grid-template-columns: 1fr; }
+    .words-grid { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
+    .elements-grid { grid-template-columns: 1fr; }
+    .element-card.spark-card { max-width: 100%; }
+    .radar-wrap { width: 280px; height: 280px; }
+    .radar-legend { grid-template-columns: repeat(2, auto); }
+    .header-title { font-size: 22px; }
+    .statement-text { font-size: 17px; }
+    .commitment-row { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">The Lazarus Method</div>
+  <div class="header-title">Define Your Success</div>
+  <div class="header-subtitle">Define what success means for your health and life</div>
+</div>
+
+<!-- PATIENT INFO -->
+<div class="patient-bar">
+  <div class="patient-inner">
+    <div class="patient-field">
+      <label>Name</label>
+      <input type="text" id="patientName" placeholder="Full name" oninput="updateStatement()">
+    </div>
+    <div class="patient-field">
+      <label>Date</label>
+      <input type="date" id="patientDate">
+    </div>
+    <div class="patient-field">
+      <label>Program Tier</label>
+      <select id="patientTier">
+        <option value="" disabled selected>Select tier</option>
+        <option value="Repair">Repair</option>
+        <option value="Train">Train</option>
+        <option value="Master">Master</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SECTION 1: INTERNAL SCORECARD -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div class="section-title">Your Internal Scorecard</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        Success is distinct and personal to each individual. Most people measure themselves against an external scorecard: wealth, status, recognition. But true success in health and life requires awareness of your internal scorecard. Write three words that define what a successful, healthy, and fulfilling life means to you, not what the world tells you it should mean.
+      </div>
+      <div class="words-grid">
+        <div class="word-cell">
+          <div class="word-num">01</div>
+          <input type="text" class="word-input success-word" placeholder="e.g. Confidence" maxlength="24" oninput="updateStatement()">
+        </div>
+        <div class="word-cell">
+          <div class="word-num">02</div>
+          <input type="text" class="word-input success-word" placeholder="e.g. Energy" maxlength="24" oninput="updateStatement()">
+        </div>
+        <div class="word-cell">
+          <div class="word-num">03</div>
+          <input type="text" class="word-input success-word" placeholder="e.g. Purpose" maxlength="24" oninput="updateStatement()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: ELEMENT MAPPING -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div class="section-title">Map Success Across the Seven Elements</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        For each element, describe what a successful and healthy life looks like to you in that area. Then rate how aligned you feel right now on a scale of 1 to 10, and commit to one priority action.
+      </div>
+      <div class="elements-grid">
+
+        <!-- NOURISH -->
+        <div class="element-card el-nourish">
+          <div class="element-head">
+            <span class="element-icon">🍃</span>
+            <span class="element-name">Nourish</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does nutritional success look like for you?</div>
+            <textarea class="element-textarea" data-element="Nourish" placeholder="Describe your ideal relationship with food, nutrition, and fueling your body..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="nourish"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Nourish...">
+            </div>
+          </div>
+        </div>
+
+        <!-- MOVE -->
+        <div class="element-card el-move">
+          <div class="element-head">
+            <span class="element-icon">🏃</span>
+            <span class="element-name">Move</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does movement success look like for you?</div>
+            <textarea class="element-textarea" data-element="Move" placeholder="Describe your ideal relationship with physical activity, strength, and mobility..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="move"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Move...">
+            </div>
+          </div>
+        </div>
+
+        <!-- REST -->
+        <div class="element-card el-rest">
+          <div class="element-head">
+            <span class="element-icon">🌙</span>
+            <span class="element-name">Rest</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does restorative success look like for you?</div>
+            <textarea class="element-textarea" data-element="Rest" placeholder="Describe your ideal sleep, recovery, and downtime..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="rest"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Rest...">
+            </div>
+          </div>
+        </div>
+
+        <!-- CHALLENGE -->
+        <div class="element-card el-challenge">
+          <div class="element-head">
+            <span class="element-icon">⛰️</span>
+            <span class="element-name">Challenge</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does personal challenge success look like for you?</div>
+            <textarea class="element-textarea" data-element="Challenge" placeholder="Describe how you want to push your limits, grow through discomfort, and set goals..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="challenge"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Challenge...">
+            </div>
+          </div>
+        </div>
+
+        <!-- CONNECT -->
+        <div class="element-card el-connect">
+          <div class="element-head">
+            <span class="element-icon">🤝</span>
+            <span class="element-name">Connect</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does relational success look like for you?</div>
+            <textarea class="element-textarea" data-element="Connect" placeholder="Describe the quality of relationships and community you want in your life..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="connect"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Connect...">
+            </div>
+          </div>
+        </div>
+
+        <!-- LEARN -->
+        <div class="element-card el-learn">
+          <div class="element-head">
+            <span class="element-icon">📖</span>
+            <span class="element-name">Learn</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does intellectual success look like for you?</div>
+            <textarea class="element-textarea" data-element="Learn" placeholder="Describe how you want to grow your knowledge, curiosity, and awareness..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="learn"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Learn...">
+            </div>
+          </div>
+        </div>
+
+        <!-- SPARK -->
+        <div class="element-card el-spark spark-card">
+          <div class="element-head">
+            <span class="element-icon">✨</span>
+            <span class="element-name">Spark</span>
+          </div>
+          <div class="element-body">
+            <div class="element-prompt">What does purposeful success look like for you?</div>
+            <textarea class="element-textarea" data-element="Spark" placeholder="Describe the passion, meaning, and joy you want to feel in your daily life..." oninput="updateRadar()"></textarea>
+            <div class="alignment-section">
+              <div class="alignment-label">Current Alignment</div>
+              <div class="alignment-track" data-element="spark"></div>
+            </div>
+            <div class="action-section">
+              <div class="action-label">Priority Action</div>
+              <input type="text" class="action-input" placeholder="One thing I will do this week for Spark...">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: ALIGNMENT SNAPSHOT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div class="section-title">Success Alignment Snapshot</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        This radar shows where you stand today relative to your own definition of health and life success. The shape reveals which elements need attention. A thriving life is not about perfection in every area; it is about knowing where you are and choosing where to grow.
+      </div>
+      <div class="radar-container">
+        <div class="radar-wrap">
+          <canvas id="radarCanvas" class="radar-canvas" width="680" height="680"></canvas>
+        </div>
+        <div class="radar-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#C0392B;"></div><span class="legend-text">Needs Focus (1–3)</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--gold-soft);"></div><span class="legend-text">Building (4–6)</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#27AE60;"></div><span class="legend-text">Aligned (7–8)</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1A8A4A;"></div><span class="legend-text">Thriving (9–10)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: SUCCESS STATEMENT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div class="section-title">Your Personal Success Statement</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        This statement is auto-generated from your three words above. Use it as a daily anchor to remind yourself what a successful, healthy life actually means to you, not what the world says it should mean.
+      </div>
+      <div class="statement-box">
+        <div class="statement-label">My Definition of Success</div>
+        <div id="successStatement" class="statement-text">
+          <span class="statement-empty">Complete Section 1 to generate your personal success statement...</span>
+        </div>
+        <div id="statementDate" class="statement-date"></div>
+      </div>
+      <div class="method-closer">
+        The Lazarus Method is the framework that will guide you there. Through the seven essential elements of health, your coach, and a commitment to your own definition of success, you have everything you need to build the life you just described.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: COMMITMENT & ACCOUNTABILITY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <div class="section-title">Commitment & Accountability</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        Success is built through partnership and follow-through. Identify who will walk this path with you and when you will check in on your progress.
+      </div>
+
+      <div class="commitment-grid">
+        <div class="commitment-row">
+          <div class="commitment-block">
+            <div class="commitment-label">Accountability Partner</div>
+            <div class="commitment-hint">Who will hold you to this standard?</div>
+            <input type="text" class="action-input" placeholder="e.g. Your Lazarus Method Coach">
+          </div>
+          <div class="commitment-block">
+            <div class="commitment-label">6-Week Review Date</div>
+            <div class="commitment-hint">When will you revisit and re-rate your alignment?</div>
+            <input type="date" class="action-input" id="reviewDate">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions-bar">
+    <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+    <button class="btn btn-secondary" onclick="resetAll()">Reset All Fields</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-text">©The Lazarus Method · All Rights Reserved</div>
+</div>
+
+<script>
+// ═══ ALIGNMENT DOTS ═══
+const elements = ['nourish','move','rest','challenge','connect','learn','spark'];
+const elementColors = {
+  nourish: '#9B6B3A', move: '#4A7A4A', rest: '#5A5A8A',
+  challenge: '#8B4A4A', connect: '#7A5A5A', learn: '#7A6A2A', spark: '#96792F'
+};
+const elementLabels = {
+  nourish: 'Nourish', move: 'Move', rest: 'Rest',
+  challenge: 'Challenge', connect: 'Connect', learn: 'Learn', spark: 'Spark'
+};
+const ratings = {};
+
+elements.forEach(el => {
+  ratings[el] = 0;
+  const track = document.querySelector(`.alignment-track[data-element="${el}"]`);
+  for (let i = 1; i <= 10; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'alignment-dot';
+    dot.textContent = i;
+    dot.dataset.value = i;
+    dot.addEventListener('click', () => setRating(el, i));
+    track.appendChild(dot);
+  }
+  const valSpan = document.createElement('span');
+  valSpan.className = 'alignment-value';
+  valSpan.id = `val-${el}`;
+  track.appendChild(valSpan);
+});
+
+function setRating(el, val) {
+  ratings[el] = val;
+  const track = document.querySelector(`.alignment-track[data-element="${el}"]`);
+  const dots = track.querySelectorAll('.alignment-dot');
+  const valSpan = document.getElementById(`val-${el}`);
+
+  dots.forEach(d => {
+    const v = parseInt(d.dataset.value);
+    d.classList.remove('active','low','mid','high');
+    if (v <= val) {
+      d.classList.add('active');
+      if (val <= 3) d.classList.add('low');
+      else if (val <= 6) d.classList.add('mid');
+      else d.classList.add('high');
+    }
+  });
+
+  if (val <= 3) valSpan.textContent = 'Needs Focus';
+  else if (val <= 6) valSpan.textContent = 'Building';
+  else if (val <= 8) valSpan.textContent = 'Aligned';
+  else valSpan.textContent = 'Thriving';
+
+  updateRadar();
+}
+
+// ═══ RADAR CHART ═══
+function updateRadar() {
+  const canvas = document.getElementById('radarCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  const cx = W / 2;
+  const cy = H / 2;
+  const maxR = Math.min(W, H) / 2 - 60;
+  const n = elements.length;
+  const angleStep = (2 * Math.PI) / n;
+  const startAngle = -Math.PI / 2;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid rings
+  for (let ring = 1; ring <= 5; ring++) {
+    const r = (ring / 5) * maxR;
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const a = startAngle + i * angleStep;
+      const x = cx + r * Math.cos(a);
+      const y = cy + r * Math.sin(a);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = ring === 5 ? '#D0C8B8' : '#E8E0D0';
+    ctx.lineWidth = ring === 5 ? 1.5 : 1;
+    ctx.stroke();
+
+    // Ring labels
+    if (ring % 1 === 0) {
+      ctx.font = '18px -apple-system, sans-serif';
+      ctx.fillStyle = '#CCCCCC';
+      ctx.textAlign = 'center';
+      ctx.fillText(ring * 2, cx + 14, cy - r + 5);
+    }
+  }
+
+  // Spokes
+  for (let i = 0; i < n; i++) {
+    const a = startAngle + i * angleStep;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + maxR * Math.cos(a), cy + maxR * Math.sin(a));
+    ctx.strokeStyle = '#E8E0D0';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Data polygon
+  const vals = elements.map(el => ratings[el] || 0);
+  const hasData = vals.some(v => v > 0);
+
+  if (hasData) {
+    ctx.beginPath();
+    vals.forEach((v, i) => {
+      const r = (v / 10) * maxR;
+      const a = startAngle + i * angleStep;
+      const x = cx + r * Math.cos(a);
+      const y = cy + r * Math.sin(a);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(150, 121, 47, 0.15)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(150, 121, 47, 0.7)';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Data points
+    vals.forEach((v, i) => {
+      if (v === 0) return;
+      const r = (v / 10) * maxR;
+      const a = startAngle + i * angleStep;
+      const x = cx + r * Math.cos(a);
+      const y = cy + r * Math.sin(a);
+
+      let color;
+      if (v <= 3) color = '#C0392B';
+      else if (v <= 6) color = '#B8975A';
+      else if (v <= 8) color = '#27AE60';
+      else color = '#1A8A4A';
+
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, 2 * Math.PI);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+  }
+
+  // Labels
+  elements.forEach((el, i) => {
+    const a = startAngle + i * angleStep;
+    const labelR = maxR + 32;
+    const x = cx + labelR * Math.cos(a);
+    const y = cy + labelR * Math.sin(a);
+
+    ctx.font = '700 20px -apple-system, sans-serif';
+    ctx.fillStyle = elementColors[el];
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(elementLabels[el].toUpperCase(), x, y);
+
+    if (ratings[el] > 0) {
+      ctx.font = '600 16px -apple-system, sans-serif';
+      ctx.fillStyle = '#8A8A8A';
+      ctx.fillText(ratings[el] + '/10', x, y + 18);
+    }
+  });
+}
+
+// ═══ SUCCESS STATEMENT ═══
+function updateStatement() {
+  const words = Array.from(document.querySelectorAll('.success-word'))
+    .map(inp => inp.value.trim())
+    .filter(w => w.length > 0);
+  const name = document.getElementById('patientName').value.trim();
+  const el = document.getElementById('successStatement');
+  const dateEl = document.getElementById('statementDate');
+
+  if (words.length === 0) {
+    el.innerHTML = '<span class="statement-empty">Complete Section 1 to generate your personal success statement...</span>';
+    dateEl.textContent = '';
+    return;
+  }
+
+  let statement = '';
+  if (name) statement += `For ${name}, success `;
+  else statement += 'Success ';
+
+  if (words.length === 1) {
+    statement += `means living a healthy, fulfilling life defined by ${words[0].toLowerCase()}.`;
+  } else if (words.length === 2) {
+    statement += `means living a healthy, fulfilling life defined by ${words[0].toLowerCase()} and ${words[1].toLowerCase()}.`;
+  } else {
+    const last = words.pop();
+    statement += `means living a healthy, fulfilling life defined by ${words.map(w => w.toLowerCase()).join(', ')}, and ${last.toLowerCase()}.`;
+  }
+
+  statement += ' This is my internal scorecard. This is how I measure my health and my life.';
+
+  el.innerHTML = `"${statement}"`;
+  const today = new Date();
+  dateEl.textContent = `Defined on ${today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+}
+
+// ═══ RESET ═══
+function resetAll() {
+  if (!confirm('Clear all fields and start over?')) return;
+  document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
+  elements.forEach(el => {
+    ratings[el] = 0;
+    const dots = document.querySelectorAll(`.alignment-track[data-element="${el}"] .alignment-dot`);
+    dots.forEach(d => d.classList.remove('active','low','mid','high'));
+    document.getElementById(`val-${el}`).textContent = '';
+  });
+  updateStatement();
+  updateRadar();
+}
+
+// ═══ INIT ═══
+document.getElementById('patientDate').valueAsDate = new Date();
+const reviewDate = new Date();
+reviewDate.setDate(reviewDate.getDate() + 42);
+document.getElementById('reviewDate').valueAsDate = reviewDate;
+updateRadar();
+</script>
+</body>
+</html>

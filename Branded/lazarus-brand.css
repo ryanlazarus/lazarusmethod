@@ -1,0 +1,1289 @@
+/* =====================================================================
+   LAZARUS METHOD — BRAND REFRESH STYLESHEET
+   Version: 0.8 — preview build, 2026-04-22
+   Author: BrandThis (Jordan)
+   Spec:    Outputs/2026-04-22-lazarus-design-system-v1.md
+            (THIS FILE IS THE IMPLEMENTATION; THE SPEC DOC GOVERNS.)
+
+   Purpose: Single override layer that brings Ryan's HTML tools into the
+   official Lazarus Method brand system without touching the underlying
+   tool logic. Drop-in via <link> in <head>. Designed to load AFTER the
+   inline <style> block so the cascade favors brand values.
+
+   ─── DESIGN SYSTEM REFERENCE ─────────────────────────────────────────
+   SPACING:  4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 (4-base only)
+   RADII:    8 (inputs) / 10 (cards) / 999 (pills) — three values, no more
+   COLORS:   #0f0f0f near-black, #767676 gray, #b8b8b8 subtle,
+             #e5e5e5 border, #f3f2f1 warm-off-white, #ffffff white,
+             #d4f4b3 lime (RESTRICTED), #b04a3c brand red (danger only)
+   FONTS:    Inter (body, labels) + General Sans (display, headings)
+   LIME:     Appears in EXACTLY 3 places — primary CTA, step-check,
+             perfect-dot. Never decorative.
+   TRACKING: -0.022em display, -0.01em section, 0 body,
+             0.08em buttons, 0.10em eyebrows, 0.16em wordmark
+   BANNED:   gold #96792F, cream #FDFBF7, serif fonts, emoji icons,
+             nested cards, lime as decoration, floating spacing values
+   ──────────────────────────────────────────────────────────────────────
+
+   v0.7 changes — senior-design polish pass:
+   - REMOVED: grain texture overlay (was reading as the worst of both
+     worlds; premium UI in 2026 reads crisp)
+   - TIGHTENED: letter-spacing on caps from 0.18em to 0.10em
+     (matches Linear / Stripe / Vercel premium standard)
+   - BORDER-RADIUS unified: 10px on all cards/surfaces, 8px on inputs,
+     999px reserved for action pills only (was 4 different curves)
+   - LIME RESTRAINED to 3 semantic locations only:
+     (1) primary CTA buttons (.btn-primary, .log-submit, .start-btn,
+         .complete-btn)
+     (2) perfect-dot in calendar (semantic "perfect day" marker)
+     (3) step-check selected state (semantic affirmation)
+     Everything else lime-removed: did-opt.active-yes, checkin-item.
+     checked, diff-btn.active, score-badge, chart-avg, history-cell.
+     done — all reverted to monochrome black treatment
+   - HEADLINE WEIGHT bumped 500 → 600 for hero authority
+   - HERO-NUMBER treatment unified across .prompt-keyword, .stat-value,
+     .time-big, .rule-item .number, .ci-number — single display class
+   - SPACING SCALE snapped to 4-base: 8 / 12 / 16 / 24 / 32 / 48 / 64
+     (no more 14/18/22/28/40 floating values)
+
+   v0.6 changes — comprehensive cleanup pass:
+   - FIX: Header h1 alignment bug (was using `margin: 0 0 X 0` which
+     killed the parent .header > * auto-centering, pushing h1 to left)
+   - FIX: Time-row select had dropdown arrow overlapping values; now
+     excluded from arrow injection, restored to original tight padding
+   - FIX: Chart-y-labels (Sleep Scorecard) bleeding to card edge —
+     trend-section now in card-padding list with 48px padding so the
+     left:-30px label position has breathing room
+   - FIX: Headline max-width capped at 820px so it doesn't span full
+     1200px — feels balanced with subtitle/intro paragraph
+   - ADDED: All .btn variants (.btn-primary, .btn-danger, .btn-gold)
+     with brand treatment — primary = lime CTA, danger = red outline
+   - ADDED: .trend-tab pill styling matching .top-btn
+   - ADDED: .toast brand notification
+   - ADDED: Calendar dots semantic colors (perfect=lime, partial=gray,
+     missed=red, today=black)
+   - ADDED: .history-cell semantic states
+   - ADDED: Missing card containers: .trend-section, .calendar-section,
+     .history-section, .milestones-section, .milestone-card,
+     .intro-card, .done-card, .intro-box, .form-box
+   - REFINED: Stats-row, btn-row gap and alignment
+   - REFINED: Footer-line accent → lime
+   - REFINED: Form-tip icons stay visible (not flattened to black)
+
+   v0.5 changes:
+   - Fixed tight spacing between prompt-keyword and prompt-sub
+     (the "Feel / ONE WORD THAT DESCRIBES" gap was butting up)
+   - Standardized vertical spacing scale on a 4px base
+   - Added subtle SVG grain overlay (multiply blend) for tactile
+     premium feel — Apple/Linear-style
+   - Refined print stylesheet: page-break-inside: avoid on cards,
+     scaled-down typography, hidden top-nav, tighter padding so most
+     tools fit on 1-2 pages
+   - Inputs more breathing room
+   - Card-to-card gap bumped to 32px (was 20px)
+
+   v0.4 changes:
+   - Max-width bumped to 1200px per Jordan
+   - Body padding 40px, card padding 48px to match the larger canvas
+   - Hero font sizes already raised in v0.3 (52px cap)
+
+   v0.3 changes (intermediate, superseded):
+   - Max-width 680px → 880px
+   - Card internal padding 32px → 40px
+   - Hero font cap raised
+
+   v0.2 changes:
+   - Tighter max-widths (Template B Sleep_Scorecard was 840px → 680px)
+   - Aggressive font hierarchy: clamp()-based hero sizes, smaller body
+   - More generous body padding on desktop
+   - Reduced shadow / flatter premium feel
+   - Header banner: full-width bg preserved, inner content constrained
+
+   Brand reference: BrandThis / Clients / LazarusMethod / CONTEXT.md
+   ===================================================================== */
+
+/* ---------- Brand color & token override ---------------------------- */
+:root {
+  --gold: #0f0f0f;
+  --gold-soft: #767676;
+  --gold-bg: #f3f2f1;
+  --navy: #0f0f0f;
+  --charcoal: #0f0f0f;
+  --med: #767676;
+  --subtle: #b8b8b8;
+  --cream: #f3f2f1;
+  --white: #ffffff;
+  --border: #e5e5e5;
+  --green: #0f0f0f;
+  --green-bg: #d4f4b3;
+  --red: #b04a3c;
+  --red-bg: #f8e9e6;
+  --soft-blue: #f3f2f1;
+  --text: #0f0f0f;
+  --amber: #767676;
+
+  --brand-lime: #d4f4b3;
+  --brand-text: #0f0f0f;
+  --brand-gray: #767676;
+
+  /* Spacing tokens */
+  --content-max: 1200px;
+  --content-pad-x: 40px;
+  --card-pad: 48px;
+}
+
+/* ---------- Page background --------------------------------------- */
+html, body {
+  background: #f3f2f1 !important;
+  color: #0f0f0f !important;
+}
+body {
+  font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv11', 'ss01';
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  position: relative;
+}
+
+/* v0.8 NUCLEAR FONT OVERRIDE.
+   Every descendant of body gets Inter unless it's a heading-class
+   element (which gets General Sans). Catches every class I haven't
+   explicitly targeted (e.g. .ms-title, .ms-tip, .done-message, etc.)
+   that the original tools styled with EB Garamond serif. */
+body * {
+  font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6,
+[class$="-title"], [class*="-title "],
+[class$="-name"], [class*="-name "],
+.stat-value, .time-big, .prompt-keyword, .number, .ci-number,
+.ms-title, .done-title, .rest-title, .level-title,
+.card-title, .summary-header-text {
+  font-family: 'General Sans', 'Inter', -apple-system, sans-serif !important;
+}
+
+/* v0.7 REMOVED: grain texture overlay. Premium UI reads crisp. */
+
+/* v0.11 ADDED: Data persistence transparency notice.
+   Tools save progress via localStorage (per-device, per-browser only).
+   This notice sits at the very top of every tool to set expectations.
+   CSS-only — no HTML edits needed across 68 files. */
+body::before {
+  content: 'Your progress saves on this device + browser only. Use the same one to continue.';
+  display: block !important;
+  background: #f3f2f1 !important;
+  color: #767676 !important;
+  text-align: center !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  padding: 10px 16px !important;
+  border-bottom: 1px solid #e5e5e5 !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+@media print {
+  body::before { display: none !important; }
+}
+
+/* ---------- WIDTH DISCIPLINE (the big v0.2 change) ----------------
+   Constrain the main content wrappers across both templates and add
+   real breathing room. */
+
+/* Template A wrapper */
+.shell {
+  max-width: var(--content-max) !important;
+  margin: 0 auto !important;
+  padding: 32px var(--content-pad-x) 56px !important;
+}
+
+/* Template B wrapper (was 840px — too wide on desktop) */
+.container {
+  max-width: var(--content-max) !important;
+  margin: 0 auto !important;
+  padding: 32px var(--content-pad-x) 56px !important;
+}
+
+/* Template B header banner: keep full-width background,
+   constrain inner content to match body width */
+.header {
+  padding: 80px var(--content-pad-x) !important;
+  text-align: center;
+}
+.header > * {
+  max-width: var(--content-max) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Card / surface treatments — flatter, more breathing room.
+   v0.7: border-radius unified to 10px across all surfaces. */
+.card,
+.summary-body,
+.level-section,
+.log-section,
+.checkin-section,
+.rule-banner,
+.daily-card,
+.stat-card,
+.trend-section,
+.calendar-section,
+.history-section,
+.milestones-section,
+.milestone-card,
+.intro-card,
+.done-card,
+.history-toggle,
+.score-breakdown {
+  background: #ffffff !important;
+  border: 1px solid #e5e5e5 !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+  margin-bottom: 32px !important;
+}
+
+.card,
+.summary-body,
+.level-section,
+.log-section,
+.checkin-section,
+.rule-banner,
+.daily-card,
+.trend-section,
+.calendar-section,
+.history-section,
+.milestones-section,
+.intro-card,
+.done-card,
+.score-breakdown {
+  padding: var(--card-pad) !important;
+}
+
+/* Section label inside a card needs a tighter top reset so it doesn't
+   double-up with the card's own padding-top. */
+.milestones-section .section-label,
+.calendar-section .section-label,
+.history-section .section-label,
+.trend-section .section-label,
+.log-section .section-label,
+.checkin-section .section-label {
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+.milestone-card {
+  padding: 24px !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 10px !important;
+  position: relative !important;
+}
+.milestone-card.locked {
+  opacity: 0.45 !important;
+}
+.milestone-card.unlocked {
+  background: #ffffff !important;
+  border-color: #0f0f0f !important;
+  border-width: 2px !important;
+  opacity: 1 !important;
+}
+.milestone-card.locked::before,
+.milestone-card.unlocked::before {
+  font-size: 14px !important;
+  top: 16px !important;
+  right: 16px !important;
+}
+
+/* Milestone internal type — was leaking serif from EB Garamond */
+.milestone-card .ms-day {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  color: #767676 !important;
+  margin-bottom: 8px !important;
+}
+.milestone-card .ms-title {
+  font-family: 'General Sans', 'Inter', sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: #0f0f0f !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+.milestone-card .ms-tip {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  color: #767676 !important;
+  border-top: 1px solid #e5e5e5 !important;
+  background: transparent !important;
+  padding-top: 12px !important;
+  margin-top: 12px !important;
+  line-height: 1.5 !important;
+}
+
+.stat-card {
+  padding: 24px 18px !important;
+}
+
+/* Inline call-out boxes (highlighted tip / instructional boxes) */
+.intro-box,
+.form-box {
+  background: #f3f2f1 !important;
+  border: 1px solid #e5e5e5 !important;
+  border-left: 3px solid #0f0f0f !important;
+  border-radius: 10px !important;
+  padding: 16px 24px !important;
+  margin: 24px 0 !important;
+  box-shadow: none !important;
+}
+
+/* Form-tip icons keep slight contrast so they read as "tips" */
+.form-tip-icon { color: #0f0f0f !important; }
+.form-tip { font-size: 14px !important; line-height: 1.5 !important; }
+
+/* Dark banners (the "navy" headers on cards) → brand near-black */
+.card-header,
+.summary-header,
+.daily-header {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+  padding: 48px var(--card-pad) !important;
+  border-radius: 12px 12px 0 0 !important;
+  margin-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+/* When a card-header exists, the next .card-body should have no top radius */
+.card-header + .card-body,
+.summary-header + .summary-body {
+  border-radius: 0 0 12px 12px !important;
+  border-top: 0 !important;
+}
+
+.header {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+}
+.card-header *,
+.summary-header *,
+.daily-header *,
+.header * {
+  color: #ffffff !important;
+}
+.card-header .card-label,
+.summary-header .summary-header-label,
+.daily-header .daily-day-label,
+.header p.subtitle {
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+/* v0.8 CASCADE FIX: .header p.subtitle was getting black color from
+   the eyebrow rule (which loads later). Force white-translucent here
+   with extra specificity + late position.
+   v0.9: same fix applied to .header-brand and .header-subtitle. */
+.header p.subtitle,
+.header > p.subtitle,
+.header .header-brand,
+.header .header-subtitle {
+  color: rgba(255, 255, 255, 0.62) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.header .header-brand {
+  margin-bottom: 16px !important;
+}
+.header .header-subtitle {
+  margin-top: 12px !important;
+}
+
+/* ---------- TYPOGRAPHY HIERARCHY (the other v0.2 change) ---------
+   Aggressive, clear hierarchy. Headlines dominate. Body recedes.
+   Eyebrows/labels are small but high-tracking. */
+
+/* Hero / page headline — biggest type on the page.
+   v0.8: explicit margin-top: 24px so headline has breathing room
+   below the logo (was 0, looked cramped).
+   v0.9: includes .header-title (alternate-template hero pattern). */
+.header h1,
+.header .header-title,
+.card-header .card-title,
+.summary-header .summary-header-text,
+h1 {
+  font-family: 'General Sans', 'Inter', -apple-system, sans-serif !important;
+  font-size: clamp(32px, 4.6vw, 52px) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.022em !important;
+  margin-top: 24px !important;
+  margin-bottom: 12px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 820px !important;
+}
+
+/* Hero subtitle / hero intro — kept narrower for readable line length.
+   v0.8: explicit margin-top: 24px (was 14px) so the subtitle eyebrow
+   between H1 and intro has space to live, not cram. */
+.header-intro,
+.card-header .card-subtitle,
+.summary-header .summary-subtitle,
+.card-header > p:not(.subtitle),
+.summary-header > p:not(.subtitle) {
+  font-family: 'Inter', sans-serif !important;
+  font-size: clamp(16px, 1.4vw, 19px) !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+  max-width: 640px !important;
+  margin-top: 24px !important;
+  margin-bottom: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Body text inside cards: cap line length so it doesn't stretch
+   across 1100px+ on big monitors */
+.card-body p,
+.summary-body p,
+.level-section p,
+.log-section p,
+.checkin-section p,
+.rule-banner p,
+.summary-body .vision-statement {
+  max-width: 720px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Section heads inside cards.
+   v0.6: split margin shorthand to preserve any auto-centering. */
+.level-title,
+.rule-banner h2,
+.checkin-section h3,
+.log-section h3,
+.trend-section h3,
+.calendar-section h3,
+.history-section h3,
+.milestones-section h3,
+h2, h3 {
+  font-family: 'General Sans', 'Inter', sans-serif !important;
+  font-size: clamp(20px, 2.4vw, 26px) !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  color: #0f0f0f !important;
+}
+
+/* Hero numbers / display labels — UNIFIED treatment across all tools.
+   v0.7: single hero-display class for .stat-value, .time-big,
+   .rule-item .number, .ci-number, .prompt-keyword. */
+.stat-value,
+.stat-card .stat-value,
+.time-big,
+.rule-item .number,
+.checkin-item .ci-number,
+.prompt-keyword {
+  font-family: 'General Sans', 'Inter', sans-serif !important;
+  font-size: clamp(32px, 4vw, 48px) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.022em !important;
+  line-height: 1 !important;
+  color: #0f0f0f !important;
+}
+
+/* Prompt keyword keeps its capitalize transform + spacing-below */
+.prompt-keyword {
+  text-transform: capitalize !important;
+  margin-bottom: 16px !important;
+}
+
+/* v0.7 spacing — snapped to 4/8/16/24 base scale */
+.prompt-sub {
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+.prompt-input {
+  padding: 16px 0 !important;
+  font-size: 18px !important;
+  margin-bottom: 8px !important;
+}
+
+.card-label,
+.summary-header-label,
+.daily-day-label {
+  margin-bottom: 16px !important;
+}
+
+.card-title,
+.daily-day,
+.summary-header-text {
+  margin-bottom: 8px !important;
+}
+
+.section-label {
+  margin-top: 8px !important;
+  margin-bottom: 24px !important;
+}
+
+.step-card {
+  margin-bottom: 24px !important;
+}
+.step-top {
+  padding: 16px !important;
+}
+
+/* Body text inside cards */
+.card-body,
+.summary-body,
+.level-section,
+.log-section,
+.checkin-section,
+.rule-banner,
+.summary-body p,
+.summary-body .vision-statement,
+.rule-item .desc,
+p {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+}
+
+/* Eyebrow labels — small caps, premium-tight tracking.
+   v0.7: tracking knocked from 0.18em to 0.10em (Linear/Stripe standard)
+   v0.9: includes .header-brand and .header-subtitle from alternate
+   header templates (health-audit.html, lazarus-eat-plan.html). */
+.top-brand,
+.card-label,
+.section-label,
+.summary-header-label,
+.daily-day-label,
+.stat-label,
+.level-name,
+.form-group label,
+.form-title,
+.checkin-item .ci-title,
+.header p.subtitle,
+.header .header-brand,
+.header .header-subtitle,
+.prompt-sub,
+.step-keyword,
+.step-select-label,
+.diff-label,
+.did-label,
+.progress-label {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.10em !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  color: #0f0f0f !important;
+  line-height: 1.4 !important;
+}
+
+/* Top brand wordmark — slightly looser tracking than other eyebrows */
+.top-brand {
+  letter-spacing: 0.16em !important;
+  font-size: 10px !important;
+}
+
+/* Dates / metadata / footnotes — muted */
+.checkin-date,
+.log-date,
+.footer-copy,
+.footer-method,
+.summary-footnote {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  color: #767676 !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+/* Inputs */
+.prompt-input,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  border-bottom-color: #0f0f0f !important;
+  color: #0f0f0f !important;
+}
+
+.form-group select,
+.step-select,
+.time-row select {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  border-color: #e5e5e5 !important;
+  background-color: #ffffff !important;
+  color: #0f0f0f !important;
+  border-radius: 8px !important;
+}
+
+.form-group select:focus,
+.step-select:focus,
+.prompt-input:focus,
+input:focus,
+textarea:focus {
+  border-color: #0f0f0f !important;
+  outline: none !important;
+}
+
+/* Dropdown arrow injection — full-width selects only.
+   v0.6 FIX: time-row excluded (their selects are tiny + center-aligned;
+   arrow overlapped the displayed value). Time-row gets its own
+   restoration block in the time-row section above. */
+.form-group select,
+.step-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230f0f0f' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  padding-right: 36px !important;
+}
+
+/* Time-row: explicit override — no arrow, tight padding, centered */
+.time-row select {
+  background-image: none !important;
+  padding: 10px 8px !important;
+  text-align: center !important;
+  width: auto !important;
+  min-width: 56px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+.time-row .time-sep {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #0f0f0f !important;
+  padding: 0 4px !important;
+}
+.time-row {
+  gap: 6px !important;
+  align-items: center !important;
+}
+
+/* ---------- Active / selected states -----------------------------
+   v0.7 lime restraint: lime ONLY on step-check (semantic affirmation)
+   and primary CTAs. Other "active" states use solid black. */
+
+/* Step-check (semantic affirmation — keeps lime) */
+.step-card.has-selection .step-check {
+  background: #d4f4b3 !important;
+  border-color: #0f0f0f !important;
+  color: #0f0f0f !important;
+}
+
+/* All other "active" toggles → solid black with white text */
+.did-opt.active-yes,
+.diff-btn.active {
+  background: #0f0f0f !important;
+  border-color: #0f0f0f !important;
+  color: #ffffff !important;
+}
+
+/* Checkin-item.checked → black border, no lime tint background */
+.checkin-item.checked {
+  background: #ffffff !important;
+  border-color: #0f0f0f !important;
+  border-width: 2px !important;
+}
+
+/* Top buttons (header actions) */
+.top-btn {
+  background: #ffffff !important;
+  color: #0f0f0f !important;
+  border: 1px solid #0f0f0f !important;
+  border-radius: 999px !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 8px 16px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.top-btn:hover {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+}
+
+.top-btn.danger {
+  color: #b04a3c !important;
+  border-color: #b04a3c !important;
+  background: #ffffff !important;
+}
+.top-btn.danger:hover {
+  background: #b04a3c !important;
+  color: #ffffff !important;
+}
+
+.did-opt.active-no {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+  border-color: #0f0f0f !important;
+}
+
+/* ---------- Progress bars / fills ---------------------------------- */
+.progress-bar {
+  background: #e5e5e5 !important;
+  border-radius: 999px !important;
+}
+.progress-fill {
+  background: #0f0f0f !important;
+  border-radius: 999px !important;
+}
+
+.level-bar-container {
+  background: #e5e5e5 !important;
+  border-radius: 999px !important;
+}
+.level-bar-fill,
+.level-bar {
+  background: #0f0f0f !important;
+  border-radius: 999px !important;
+}
+
+/* ---------- Generic .btn variants (Sleep + 10-3-2-1) -------------
+   Multiple files use a .btn / .btn-primary / .btn-danger / .btn-gold
+   pattern that the original CSS painted with gold/navy. v0.6 brand
+   treatment: pill-shaped, brand near-black + lime CTA. */
+
+.btn-row {
+  gap: 12px !important;
+  justify-content: center !important;
+  margin-bottom: 32px !important;
+  flex-wrap: wrap !important;
+}
+
+.btn,
+.log-submit,
+.start-btn,
+.complete-btn,
+.checkpoint-btn {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 12px 24px !important;
+  border-radius: 999px !important;
+  border: 1px solid #0f0f0f !important;
+  background: #ffffff !important;
+  color: #0f0f0f !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+}
+.btn:hover,
+.log-submit:hover,
+.start-btn:hover,
+.complete-btn:hover,
+.checkpoint-btn:hover {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+}
+
+/* Primary CTA — lime fill, near-black border + text */
+.btn.btn-primary,
+.log-submit,
+.start-btn,
+.complete-btn {
+  background: #d4f4b3 !important;
+  color: #0f0f0f !important;
+  border-color: #0f0f0f !important;
+}
+.btn.btn-primary:hover,
+.log-submit:hover,
+.start-btn:hover,
+.complete-btn:hover {
+  background: #0f0f0f !important;
+  color: #d4f4b3 !important;
+}
+
+/* Danger — red outline, never filled by default */
+.btn.btn-danger {
+  background: #ffffff !important;
+  color: #b04a3c !important;
+  border-color: #b04a3c !important;
+}
+.btn.btn-danger:hover {
+  background: #b04a3c !important;
+  color: #ffffff !important;
+}
+
+/* Gold variant — repurpose to brand near-black */
+.btn.btn-gold {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+  border-color: #0f0f0f !important;
+}
+
+/* Trend tabs (Sleep_Scorecard "7 DAYS / 14 DAYS / 30 DAYS") */
+.trend-tab {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
+  border: 1px solid #e5e5e5 !important;
+  background: #ffffff !important;
+  color: #0f0f0f !important;
+}
+.trend-tab.active {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+  border-color: #0f0f0f !important;
+}
+.trend-tabs {
+  gap: 8px !important;
+  margin-bottom: 24px !important;
+}
+
+/* ---------- Chart treatment (Sleep_Scorecard) -------------------
+   Chart-y-labels sit at left:-30px. With trend-section now at 48px
+   padding, they have ~18px of breathing room from card edge. */
+.chart-area {
+  margin-left: 8px !important;
+  margin-right: 8px !important;
+  border-bottom-color: #0f0f0f !important;
+  border-left-color: #0f0f0f !important;
+}
+.chart-y-labels {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: #767676 !important;
+}
+.chart-bar {
+  background: #0f0f0f !important;
+}
+/* Chart average line — muted dashed, no lime */
+.chart-avg-line {
+  border-top-color: #767676 !important;
+  border-top-style: dashed !important;
+  border-top-width: 1px !important;
+}
+.chart-avg-label {
+  color: #ffffff !important;
+  background: #0f0f0f !important;
+  padding: 2px 8px !important;
+  border-radius: 999px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* ---------- Calendar dots (10-3-2-1 Tracker) -------------------- */
+.legend {
+  gap: 18px !important;
+  margin-top: 16px !important;
+}
+.legend-item {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  color: #767676 !important;
+}
+.legend-dot {
+  border-radius: 4px !important;
+  width: 12px !important;
+  height: 12px !important;
+}
+.perfect-dot { background: #d4f4b3 !important; border: 1px solid #0f0f0f !important; }
+.partial-dot { background: #e5e5e5 !important; }
+.missed-dot { background: #b04a3c !important; }
+.today-dot { background: #0f0f0f !important; }
+
+/* History grid cells (Plank Challenge) — v0.7: lime removed */
+.history-cell {
+  background: #ffffff !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 8px !important;
+}
+.history-cell.done {
+  background: #0f0f0f !important;
+  border-color: #0f0f0f !important;
+}
+.history-cell.done .history-cell-day,
+.history-cell.done .history-cell-time { color: #ffffff !important; }
+.history-cell.missed { border-color: #b04a3c !important; }
+.history-cell.missed .history-cell-day { color: #b04a3c !important; }
+.history-cell.rest { background: #f3f2f1 !important; }
+.history-cell.rest .history-cell-day { color: #767676 !important; }
+
+/* ---------- Footer line accent ---------------------------------- */
+.footer-line {
+  background: #0f0f0f !important;
+  width: 36px !important;
+  height: 2px !important;
+  margin: 0 auto 16px !important;
+}
+
+/* ---------- DARK SURFACE TEXT INVERSION RULE -------------------
+   v0.10: SYSTEMIC RULE. Any element with an explicit dark background
+   automatically gets light-on-dark text. This prevents the
+   "near-black-on-near-black" bug when global color overrides
+   (#0f0f0f) leak into dark-themed surfaces.
+
+   To extend: add new dark-bg classes to this selector list. */
+
+.card-header, .card-header *,
+.summary-header, .summary-header *,
+.daily-header, .daily-header *,
+.header, .header *,
+.preview-navy, .preview-navy *,
+.preview-bold, .preview-bold *,
+.preview-gold, .preview-gold *,
+.toast, .toast *,
+.btn.btn-primary, .btn.btn-primary *,
+.log-submit, .log-submit *,
+.complete-btn, .complete-btn *,
+.start-btn, .start-btn *,
+[class*="theme-dark"], [class*="theme-dark"] *,
+.dark-surface, .dark-surface * {
+  /* Default text color on dark surfaces. Specific theme rules below
+     (.mantra-text etc.) override this with stronger weight/size. */
+}
+
+/* Dark-surface text colors (high specificity, late cascade position) */
+.preview-navy .mantra-text,
+.preview-bold .mantra-text {
+  color: #ffffff !important;
+}
+.preview-navy .mantra-attr,
+.preview-bold .mantra-attr,
+.preview-gold .mantra-attr {
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+.preview-gold .mantra-text {
+  color: #ffffff !important;
+}
+
+/* Light-surface theme variants keep near-black text */
+.preview-cream .mantra-text,
+.preview-minimal .mantra-text {
+  color: #0f0f0f !important;
+}
+.preview-cream .mantra-attr,
+.preview-minimal .mantra-attr {
+  color: #767676 !important;
+}
+
+/* Brand-aligned primary CTA in dark contexts (lime button keeps
+   near-black text — that's the brand spec, not a contrast violation) */
+.btn.btn-primary,
+.log-submit,
+.start-btn,
+.complete-btn {
+  color: #0f0f0f !important;
+}
+
+/* Active state for primary CTAs that appear inside dark sections */
+.btn.btn-primary:hover,
+.log-submit:hover,
+.start-btn:hover,
+.complete-btn:hover {
+  color: #d4f4b3 !important;
+}
+
+/* ---------- Step wizard indicators (mantra-builder pattern) -----
+   v0.9: dots show step progression. Active = lime (semantic
+   affirmation, same role as step-check). Inactive = border only. */
+.steps-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin: 24px 0 !important;
+}
+.step-dot {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+  flex-shrink: 0 !important;
+}
+.step-dot.active {
+  background: #d4f4b3 !important;
+  border-color: #0f0f0f !important;
+}
+.step-dot.complete {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+}
+.step-line {
+  width: 32px !important;
+  height: 1px !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* When step indicators sit OUTSIDE the dark .header (e.g., on
+   light-bg main area), use near-black instead of white-translucent */
+.main .step-dot,
+.container .step-dot {
+  border-color: #e5e5e5 !important;
+}
+.main .step-dot.complete,
+.container .step-dot.complete {
+  background: #0f0f0f !important;
+  border-color: #0f0f0f !important;
+}
+.main .step-line,
+.container .step-line {
+  background: #e5e5e5 !important;
+}
+
+/* ---------- Header badge (mantra-builder, alternate templates) ---
+   Pill-shaped status badge sometimes shown in header areas. */
+.header-badge {
+  display: inline-block !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 16px !important;
+}
+
+/* ---------- Toast notifications --------------------------------- */
+.toast {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+  padding: 16px 24px !important;
+  border-radius: 999px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  border: 1px solid #0f0f0f !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ---------- Stats row alignment (Plank, Sleep, 10-3-2-1) -------- */
+.stats-row {
+  gap: 14px !important;
+  margin-bottom: 28px !important;
+}
+
+/* ---------- Plank Challenge done state -------------------------- */
+.done-emoji,
+.rest-emoji {
+  font-size: 56px !important;
+  margin-bottom: 18px !important;
+}
+.done-title,
+.rest-title {
+  font-family: 'General Sans', 'Inter', sans-serif !important;
+  font-size: clamp(24px, 3vw, 32px) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.015em !important;
+  color: #0f0f0f !important;
+  margin-bottom: 10px !important;
+}
+.done-sub,
+.rest-sub {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 15px !important;
+  color: #767676 !important;
+  font-style: normal !important;
+}
+
+/* ---------- Score breakdown (Sleep_Scorecard) ------------------- */
+.sb-item {
+  border-bottom: 1px solid #e5e5e5 !important;
+  padding: 16px 0 !important;
+}
+.sb-item:last-child { border-bottom: 0 !important; }
+.score-badge {
+  background: #0f0f0f !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  padding: 8px 16px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* ---------- Step / option backgrounds ----------------------------- */
+.step-top {
+  background: #f3f2f1 !important;
+}
+.diff-btn {
+  background: #ffffff !important;
+  border: 1px solid #e5e5e5 !important;
+}
+.did-opt {
+  background: #ffffff !important;
+  color: #0f0f0f !important;
+  border: 1px solid #e5e5e5 !important;
+}
+.rule-item {
+  background: #f3f2f1 !important;
+  border-radius: 12px !important;
+}
+
+/* ---------- Print stylesheet adjustments -------------------------
+   Goal: most tools fit on 1-2 pages without design spilling awkwardly
+   onto a third. Strategies:
+   - Tighten typography
+   - Reduce padding aggressively
+   - page-break-inside: avoid on cards
+   - Hide non-essential UI (top nav buttons, intro fluff)
+   - Single column for content blocks if needed */
+
+@media print {
+  @page {
+    margin: 0.5in;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Wrappers: full page width, no extra padding */
+  .shell, .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Top nav: hide entirely; not useful in print */
+  .top-bar,
+  .top-actions,
+  .top-btn,
+  button,
+  .reset-btn,
+  .print-btn {
+    display: none !important;
+  }
+
+  /* Cards: tighter padding, never split mid-card */
+  .card,
+  .summary-body,
+  .level-section,
+  .log-section,
+  .checkin-section,
+  .rule-banner,
+  .daily-card,
+  .stat-card {
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    border: 1px solid #d0d0d0 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-shadow: none !important;
+  }
+
+  /* Banners: scale down */
+  .card-header,
+  .summary-header,
+  .header,
+  .daily-header {
+    padding: 20px 16px !important;
+    background: #0f0f0f !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Typography scale-down */
+  .header h1,
+  .card-header .card-title,
+  .summary-header .summary-header-text,
+  h1 {
+    font-size: 22px !important;
+    margin-bottom: 8px !important;
+  }
+  h2, h3,
+  .level-title,
+  .rule-banner h2,
+  .checkin-section h3,
+  .log-section h3 {
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
+  }
+  .stat-value,
+  .stat-card .stat-value,
+  .time-big,
+  .rule-item .number,
+  .checkin-item .ci-number,
+  .prompt-keyword {
+    font-size: 22px !important;
+  }
+  .header-intro,
+  .card-header > p,
+  .summary-header > p {
+    font-size: 12px !important;
+    margin-top: 6px !important;
+  }
+  .section-label {
+    margin: 12px 0 8px !important;
+  }
+
+  /* Selected-state: lime preserved on print */
+  .step-card.has-selection .step-check,
+  .did-opt.active-yes,
+  .checkin-item.checked,
+  .diff-btn.active {
+    background: #d4f4b3 !important;
+    border-color: #0f0f0f !important;
+    color: #0f0f0f !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Avoid orphaned headings */
+  h1, h2, h3 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Long lists: allow page breaks between items but not inside */
+  li, .step-card, .checkin-item, .stat-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+/* ---------- Mobile refinements ----------------------------------- */
+@media (max-width: 640px) {
+  :root {
+    --content-pad-x: 18px;
+    --card-pad: 22px;
+  }
+  .card-header,
+  .summary-header,
+  .daily-header {
+    padding: 28px 22px !important;
+  }
+  .header {
+    padding: 48px 18px !important;
+  }
+}

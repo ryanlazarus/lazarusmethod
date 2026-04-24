@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — Technology Cleanse</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+  :root {
+    --gold: #96792F;
+    --gold-soft: #B8975A;
+    --gold-bg: #FAF6ED;
+    --navy: #1A1A2E;
+    --charcoal: #3A3A3A;
+    --med: #8A8A8A;
+    --subtle: #BBBBBB;
+    --cream: #FDFBF7;
+    --white: #FFFFFF;
+    --border: #E8E0D0;
+    --rust: #7A3A1E;
+    --rust-light: #F5EDE8;
+    --section-bar: #2C2C3E;
+    --success: #2D6A4F;
+    --success-bg: #EAF4EE;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    background: #EDEBE5;
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ INPUT PANEL ═══ */
+  .input-panel {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    padding: 28px 24px 22px;
+  }
+  .input-inner { max-width: 900px; margin: 0 auto; }
+  .input-label {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 3px; color: var(--gold);
+    text-transform: uppercase; font-weight: 700; margin-bottom: 16px;
+  }
+  .input-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 14px;
+    align-items: end;
+  }
+  .field { display: flex; flex-direction: column; }
+  .field label {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9.5px; letter-spacing: 1.5px; color: var(--med);
+    text-transform: uppercase; font-weight: 600; margin-bottom: 4px;
+  }
+  .field input, .field select {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px; color: var(--navy);
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: 7px 10px; background: var(--cream); outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--gold); }
+  .btn-generate {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 2px; font-weight: 700;
+    text-transform: uppercase; color: var(--white);
+    background: var(--navy); border: none; border-radius: 2px;
+    padding: 9px 18px; cursor: pointer; transition: background 0.2s;
+    white-space: nowrap; height: fit-content;
+  }
+  .btn-generate:hover { background: var(--rust); }
+
+  /* ═══ PROGRESS BAR ═══ */
+  .progress-bar-wrap {
+    max-width: 900px; margin: 20px auto 0;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .progress-label {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 2px; font-weight: 700;
+    color: var(--gold); text-transform: uppercase; white-space: nowrap;
+  }
+  .progress-track {
+    flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--gold); border-radius: 3px;
+    width: 0%; transition: width 0.4s ease;
+  }
+  .progress-pct {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 11px; font-weight: 700; color: var(--navy);
+    min-width: 36px; text-align: right;
+  }
+  .progress-steps {
+    display: flex; gap: 6px;
+  }
+  .progress-step-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9px; font-weight: 700; color: var(--med);
+    transition: all 0.3s;
+  }
+  .progress-step-dot.complete {
+    background: var(--gold); color: var(--white);
+  }
+
+  /* ═══ PRINT BUTTON ═══ */
+  .print-btn {
+    display: block; margin: 0 auto; max-width: 900px;
+    text-align: right; padding: 14px 0 0;
+  }
+  .print-btn button {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 2px; font-weight: 700;
+    text-transform: uppercase; color: var(--white);
+    background: var(--gold); border: none; border-radius: 2px;
+    padding: 9px 20px; cursor: pointer; transition: background 0.2s;
+  }
+  .print-btn button:hover { background: var(--rust); }
+
+  /* ═══ DOCUMENT ═══ */
+  #document {
+    max-width: 900px; margin: 24px auto 48px;
+    background: var(--white);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+  }
+
+  /* ═══ HEADER ═══ */
+  .doc-header {
+    background: var(--white);
+    padding: 36px 48px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .header-left { display: flex; flex-direction: column; gap: 6px; }
+  .header-badge {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9px; letter-spacing: 4px; font-weight: 700;
+    color: var(--gold); text-transform: uppercase;
+  }
+  .header-title {
+    font-size: 32px; font-weight: 600; color: var(--navy);
+    letter-spacing: 1px; line-height: 1.1;
+  }
+  .header-sub { font-size: 15px; color: var(--med); font-style: italic; }
+  .header-meta { text-align: right; display: flex; flex-direction: column; gap: 8px; }
+  .meta-item {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; color: var(--med); letter-spacing: 0.5px;
+  }
+  .meta-value { font-size: 14px; color: var(--navy); }
+
+  /* ═══ INTRO ═══ */
+  .intro-block {
+    background: var(--gold-bg); border-left: 3px solid var(--gold);
+    margin: 28px 48px 0; padding: 16px 20px;
+  }
+  .intro-block p { font-size: 14.5px; line-height: 1.75; color: var(--charcoal); }
+  .intro-block strong { color: var(--navy); font-weight: 600; }
+
+  /* ═══ DOC BODY ═══ */
+  .doc-body { padding: 28px 48px 40px; }
+
+  /* ═══ SECTION HEADERS ═══ */
+  .section-header {
+    background: var(--section-bar); margin: 0 -48px;
+    padding: 10px 48px; margin-bottom: 20px;
+  }
+  .section-header h2 {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 3.5px; font-weight: 700;
+    color: var(--white); text-transform: uppercase;
+  }
+
+  /* ═══ COMPONENTS GRID ═══ */
+  .components-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 32px;
+  }
+  .component-card {
+    background: var(--cream); border: 1px solid var(--border);
+    padding: 14px 12px; border-radius: 2px; text-align: center;
+    transition: border-color 0.3s;
+  }
+  .component-card.complete { border-color: var(--gold); background: var(--gold-bg); }
+  .component-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--rust); color: var(--white);
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 11px; font-weight: 700; margin-bottom: 8px;
+    transition: background 0.3s;
+  }
+  .component-card.complete .component-num { background: var(--gold); }
+  .component-name { font-size: 12px; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 4px; }
+  .component-desc { font-size: 11.5px; color: var(--med); font-style: italic; line-height: 1.4; }
+
+  /* ═══ PRE-CLEANSE ASSESSMENT ═══ */
+  .assessment-intro { font-size: 14px; color: var(--charcoal); margin-bottom: 18px; line-height: 1.65; }
+  .assessment-intro em { color: var(--med); font-style: italic; }
+
+  .ranking-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+  .ranking-table th {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9.5px; letter-spacing: 2px; font-weight: 700;
+    color: var(--med); text-transform: uppercase;
+    padding: 6px 10px 8px; border-bottom: 2px solid var(--border);
+  }
+  .ranking-table th:first-child { text-align: left; }
+  .ranking-table th:not(:first-child) { text-align: center; width: 60px; }
+  .ranking-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .ranking-table tr:last-child td { border-bottom: none; }
+  .ranking-table td.cat-name { font-weight: 600; color: var(--navy); }
+  .ranking-table td.rank-cell { text-align: center; }
+  .rank-radio {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 11px; font-weight: 700; color: var(--med);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .rank-radio:hover { border-color: var(--gold); color: var(--gold); }
+  .rank-radio.selected { background: var(--rust); border-color: var(--rust); color: var(--white); }
+  .other-row input {
+    font-family: 'EB Garamond', Georgia, serif; font-size: 14px; color: var(--navy);
+    border: none; border-bottom: 1px solid var(--border); outline: none;
+    width: 100%; padding: 2px 0; background: transparent;
+  }
+  .other-row input:focus { border-bottom-color: var(--gold); }
+
+  /* ═══ DISTRACTION AUDIT SUMMARY ═══ */
+  .audit-summary {
+    background: var(--rust-light); border: 1px solid #D4956A;
+    border-radius: 2px; padding: 18px 20px; margin-bottom: 28px;
+    display: none;
+  }
+  .audit-summary.visible { display: block; }
+  .audit-title {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9.5px; letter-spacing: 2.5px; font-weight: 700;
+    color: var(--rust); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .audit-items { display: flex; flex-direction: column; gap: 10px; }
+  .audit-item { display: flex; align-items: flex-start; gap: 12px; }
+  .audit-rank-badge {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; font-weight: 700; color: var(--white);
+    background: var(--rust); border-radius: 2px;
+    padding: 3px 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .audit-item-text { font-size: 14px; color: var(--charcoal); line-height: 1.55; }
+  .audit-item-text strong { color: var(--navy); }
+
+  /* ═══ 48-HOUR TIMELINE ═══ */
+  .timeline-intro {
+    font-size: 14px; color: var(--charcoal); line-height: 1.65; margin-bottom: 20px;
+  }
+  .timeline-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  .timeline-col-header {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9.5px; letter-spacing: 2px; font-weight: 700;
+    color: var(--med); text-transform: uppercase;
+    border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 14px;
+  }
+  .timeline-item {
+    display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start;
+  }
+  .timeline-time {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; font-weight: 700; color: var(--gold);
+    white-space: nowrap; margin-top: 3px; min-width: 52px;
+  }
+  .timeline-content { flex: 1; }
+  .timeline-step-name {
+    font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.3;
+  }
+  .timeline-step-detail {
+    font-size: 13px; color: var(--med); font-style: italic; line-height: 1.45;
+  }
+  .timeline-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); flex-shrink: 0; margin-top: 6px;
+    transition: background 0.3s;
+  }
+  .timeline-dot.active { background: var(--gold); }
+
+  /* ═══ STEP SECTIONS ═══ */
+  .step-section {
+    margin-bottom: 22px; border: 1px solid var(--border);
+    border-radius: 2px; overflow: hidden;
+  }
+  .step-section.complete { border-color: var(--gold); }
+  .step-header {
+    background: var(--rust); padding: 10px 18px;
+    display: flex; align-items: center; gap: 12px;
+    transition: background 0.3s;
+  }
+  .step-section.complete .step-header { background: var(--gold); }
+  .step-num {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    color: rgba(255,255,255,0.7);
+  }
+  .step-title {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 3px; font-weight: 700;
+    color: var(--white); text-transform: uppercase; flex: 1;
+  }
+  .step-complete-badge {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9px; letter-spacing: 1.5px; font-weight: 700;
+    color: rgba(255,255,255,0.9); text-transform: uppercase;
+    display: none;
+  }
+  .step-section.complete .step-complete-badge { display: block; }
+  .step-body { padding: 18px 20px; background: var(--white); }
+  .step-desc {
+    font-size: 14px; color: var(--charcoal); line-height: 1.7;
+    margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+  .step-desc strong { color: var(--navy); font-weight: 600; }
+
+  .checklist { display: flex; flex-direction: column; gap: 10px; }
+  .checklist-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px; cursor: pointer; user-select: none;
+  }
+  .check-box {
+    width: 18px; height: 18px; border: 1.5px solid var(--border);
+    border-radius: 2px; flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; background: var(--cream);
+  }
+  .check-box svg { display: none; }
+  .check-item.checked .check-box { background: var(--rust); border-color: var(--rust); }
+  .check-item.checked .check-box svg { display: block; }
+  .check-label { font-size: 14.5px; color: var(--charcoal); line-height: 1.55; }
+  .check-label strong { color: var(--navy); font-weight: 600; }
+  .check-item.checked .check-label { color: var(--med); text-decoration: line-through; }
+
+  /* ═══ BONUS ═══ */
+  .bonus-section { margin-bottom: 22px; border: 1px solid var(--gold); border-radius: 2px; overflow: hidden; }
+  .bonus-section.complete { border-color: var(--success); }
+  .bonus-header { background: var(--gold); padding: 10px 18px; display: flex; align-items: center; gap: 12px; transition: background 0.3s; }
+  .bonus-section.complete .bonus-header { background: var(--success); }
+  .bonus-header .step-num { color: rgba(255,255,255,0.75); }
+  .bonus-header .step-title { color: var(--white); }
+
+  /* ═══ COMMITMENT STATEMENT ═══ */
+  .commitment-block {
+    background: var(--gold-bg); border: 1px solid var(--gold);
+    border-radius: 2px; padding: 24px 24px 20px; margin-top: 8px;
+  }
+  .commitment-title {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9.5px; letter-spacing: 2.5px; font-weight: 700;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+  }
+  .commitment-body {
+    font-size: 15px; line-height: 1.85; color: var(--navy);
+    font-style: italic; margin-bottom: 20px;
+  }
+  .commitment-body span.fill-name { font-weight: 600; font-style: normal; color: var(--rust); }
+  .commitment-body span.fill-date { font-weight: 600; font-style: normal; }
+  .commitment-body span.fill-priority { font-weight: 600; font-style: normal; color: var(--rust); }
+
+  .commitment-sig-row {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 8px;
+  }
+  .sig-field { display: flex; flex-direction: column; }
+  .sig-label {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9px; letter-spacing: 2px; font-weight: 700;
+    color: var(--med); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .sig-line {
+    border: none; border-bottom: 1.5px solid var(--gold);
+    width: 100%; padding: 6px 2px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px; color: var(--navy);
+    background: transparent; outline: none;
+  }
+  .sig-line:focus { border-bottom-color: var(--rust); }
+
+  /* ═══ REFLECTION ═══ */
+  .reflection-q { margin-bottom: 22px; }
+  .q-label {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 9.5px; letter-spacing: 2px; font-weight: 700;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .q-text { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 8px; line-height: 1.5; }
+  .q-line {
+    border: none; border-bottom: 1px solid var(--border);
+    width: 100%; padding: 9px 2px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14.5px; color: var(--navy); background: transparent;
+    outline: none; resize: none; display: block; margin-bottom: 2px;
+  }
+  .q-line:focus { border-bottom-color: var(--gold); }
+
+  /* ═══ FOOTER ═══ */
+  .doc-footer {
+    background: var(--navy); padding: 16px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-brand {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 10px; letter-spacing: 3px; font-weight: 700;
+    color: rgba(255,255,255,0.5); text-transform: uppercase;
+  }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); font-style: italic; }
+
+  @media print {
+    body { background: white; }
+    .input-panel, .print-btn, .progress-bar-wrap { display: none !important; }
+    #document { margin: 0; box-shadow: none; max-width: 100%; }
+    .check-item { break-inside: avoid; }
+    .step-section, .bonus-section { break-inside: avoid; }
+    .timeline-cols { break-inside: avoid; }
+    .commitment-block { break-inside: avoid; }
+    .audit-summary { display: block !important; }
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+
+<!-- INPUT PANEL -->
+<div class="input-panel">
+  <div class="input-inner">
+    <div class="input-label">Patient Details</div>
+    <div class="input-grid">
+      <div class="field">
+        <label>Patient Name</label>
+        <input type="text" id="patientName" placeholder="Full name" oninput="generateDoc()" />
+      </div>
+      <div class="field">
+        <label>Program Tier</label>
+        <select id="tier" onchange="generateDoc()">
+          <option value="">Select tier</option>
+          <option>Repair</option>
+          <option>Train</option>
+          <option>Master</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Cleanse Start Date</label>
+        <input type="date" id="cleanseDate" onchange="generateDoc()" />
+      </div>
+      <div class="field">
+        <label>Provider</label>
+        <input type="text" id="provider" placeholder="Dr. Lazarus" oninput="generateDoc()" />
+      </div>
+      <button class="btn-generate" onclick="generateDoc()">Generate</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrap">
+    <span class="progress-label">Cleanse Progress</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-pct" id="progressPct">0%</span>
+    <div class="progress-steps" id="progressSteps"></div>
+  </div>
+</div>
+
+<!-- PRINT BUTTON -->
+<div class="print-btn"><button onclick="window.print()">↓ Print / Save PDF</button></div>
+
+<!-- DOCUMENT -->
+<div id="document">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="header-left">
+      <div class="header-badge">The Lazarus Method</div>
+      <div class="header-title">Technology Cleanse</div>
+      <div class="header-sub">48-Hour Digital Detox Protocol</div>
+    </div>
+    <div class="header-meta">
+      <div><div class="meta-item">Patient</div><div class="meta-value" id="display-name">________________</div></div>
+      <div><div class="meta-item">Program Tier</div><div class="meta-value" id="display-tier">________________</div></div>
+      <div><div class="meta-item">Cleanse Start</div><div class="meta-value" id="display-date">________________</div></div>
+      <div><div class="meta-item">Provider</div><div class="meta-value" id="display-provider">________________</div></div>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro-block" style="margin: 28px 48px 0;">
+    <p><strong>Welcome to The Lazarus Method Technology Cleanse.</strong> The goal of this cleanse is to help you intentionally unplug from the noise and distractions that pull you away from your core values and health goals. Complete the five steps below during this 48-hour experience to take meaningful steps toward reconnecting with what is truly important.</p>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+
+    <!-- COMPONENTS -->
+    <div class="section-header"><h2>Cleanse Components</h2></div>
+    <div class="components-grid" id="componentsGrid">
+      <div class="component-card" id="card-1">
+        <div class="component-num">1</div>
+        <div class="component-name">News Detox</div>
+        <div class="component-desc">Detox from the continuous news &amp; propaganda cycle.</div>
+      </div>
+      <div class="component-card" id="card-2">
+        <div class="component-num">2</div>
+        <div class="component-name">Social Media Fast</div>
+        <div class="component-desc">Take a break from the posts, likes &amp; alerts.</div>
+      </div>
+      <div class="component-card" id="card-3">
+        <div class="component-num">3</div>
+        <div class="component-name">Contact Purge</div>
+        <div class="component-desc">Remove 10 contacts from your phone.</div>
+      </div>
+      <div class="component-card" id="card-4">
+        <div class="component-num">4</div>
+        <div class="component-name">App Rearrangement</div>
+        <div class="component-desc">Delete &amp; rearrange all unused apps.</div>
+      </div>
+      <div class="component-card" id="card-5" style="border-color: var(--gold);">
+        <div class="component-num" style="background: var(--gold);">5</div>
+        <div class="component-name">BONUS: 24-Hour Phone Removal</div>
+        <div class="component-desc">Experience your life without your phone for a day.</div>
+      </div>
+    </div>
+
+    <!-- PRE-CLEANSE ASSESSMENT -->
+    <div class="section-header" style="margin-top:4px;"><h2>Pre-Cleanse Assessment</h2></div>
+    <p class="assessment-intro">Rank your current technology distractions below. <em>(1 = most distracting &nbsp;|&nbsp; 5 = least distracting)</em> Your top-ranked items will generate a personalized action summary.</p>
+
+    <table class="ranking-table">
+      <thead>
+        <tr>
+          <th>Distraction Source</th>
+          <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+        </tr>
+      </thead>
+      <tbody id="rankingBody"></tbody>
+    </table>
+
+    <!-- DISTRACTION AUDIT SUMMARY -->
+    <div class="audit-summary" id="auditSummary">
+      <div class="audit-title">Your Personalized Distraction Audit</div>
+      <div class="audit-items" id="auditItems"></div>
+    </div>
+
+    <!-- 48-HOUR TIMELINE -->
+    <div class="section-header" style="margin-top:8px;"><h2>Your 48-Hour Cleanse Timeline</h2></div>
+    <p class="timeline-intro">Map each cleanse step to a specific time so execution is planned, not aspirational. Fill in your scheduled times below.</p>
+    <div class="timeline-cols">
+      <div>
+        <div class="timeline-col-header">Day 1 — Prepare &amp; Execute</div>
+        <div class="timeline-item">
+          <div class="timeline-dot active"></div>
+          <div class="timeline-time">Morning</div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">Complete Pre-Cleanse Assessment</div>
+            <div class="timeline-step-detail">Rank your distractions and review your personalized audit above.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" id="dot-1"></div>
+          <div class="timeline-time"><input class="timeline-time-input" id="time-1" type="time" style="font-family:'EB Garamond',serif;font-size:13px;border:none;border-bottom:1px solid var(--border);outline:none;background:transparent;color:var(--gold);width:70px;"/></div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">Step 1 — News Detox</div>
+            <div class="timeline-step-detail">Log out of all news apps. Set your one designated catch-up window.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" id="dot-2"></div>
+          <div class="timeline-time"><input class="timeline-time-input" id="time-2" type="time" style="font-family:'EB Garamond',serif;font-size:13px;border:none;border-bottom:1px solid var(--border);outline:none;background:transparent;color:var(--gold);width:70px;"/></div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">Step 2 — Social Media Fast</div>
+            <div class="timeline-step-detail">Turn off notifications. Log out or uninstall all platforms.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" id="dot-3"></div>
+          <div class="timeline-time"><input class="timeline-time-input" id="time-3" type="time" style="font-family:'EB Garamond',serif;font-size:13px;border:none;border-bottom:1px solid var(--border);outline:none;background:transparent;color:var(--gold);width:70px;"/></div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">Step 3 — Contact Purge</div>
+            <div class="timeline-step-detail">Scroll your contacts and remove 10 that no longer serve your goals.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" id="dot-4"></div>
+          <div class="timeline-time"><input class="timeline-time-input" id="time-4" type="time" style="font-family:'EB Garamond',serif;font-size:13px;border:none;border-bottom:1px solid var(--border);outline:none;background:transparent;color:var(--gold);width:70px;"/></div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">Step 4 — App Rearrangement</div>
+            <div class="timeline-step-detail">Delete unused apps. Move goal-aligned apps to your home screen.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="timeline-col-header">Day 2 — Bonus &amp; Reflect</div>
+        <div class="timeline-item">
+          <div class="timeline-dot" id="dot-5"></div>
+          <div class="timeline-time"><input class="timeline-time-input" id="time-5" type="time" style="font-family:'EB Garamond',serif;font-size:13px;border:none;border-bottom:1px solid var(--border);outline:none;background:transparent;color:var(--gold);width:70px;"/></div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">BONUS — 24-Hour Phone Removal</div>
+            <div class="timeline-step-detail">Set auto-responses. Place phone in a location you won't access.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot active"></div>
+          <div class="timeline-time">Evening</div>
+          <div class="timeline-content">
+            <div class="timeline-step-name">Post-Cleanse Reflection</div>
+            <div class="timeline-step-detail">Complete the reflection questions and sign your commitment statement.</div>
+          </div>
+        </div>
+        <div class="timeline-item" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+          <div class="timeline-dot" style="background:var(--gold-soft);"></div>
+          <div class="timeline-time" style="color: var(--med); font-size: 10px; font-weight: 600;">Notes</div>
+          <div class="timeline-content">
+            <textarea class="q-line" rows="4" placeholder="Use this space to note what you want to do during your phone-free day — walks, reading, family time…" style="font-size:13px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="section-header" style="margin-top:8px;"><h2>Cleanse Steps</h2></div>
+
+    <div class="step-section" id="step-1" data-step="1" data-total="3">
+      <div class="step-header">
+        <span class="step-num">01</span>
+        <span class="step-title">News Detox</span>
+        <span class="step-complete-badge">✓ Complete</span>
+      </div>
+      <div class="step-body">
+        <p class="step-desc">Detox from the continuous news and propaganda cycle that fuels fear and anxiety. While staying informed is important, the constant influx of news — <strong>especially negative news</strong> — can lead to increased levels of stress, fear, and anxiety.</p>
+        <div class="checklist">
+          <label class="check-item" onclick="toggleCheck(this, 'step-1')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Identify Sources:</strong> List the news sources you regularly check.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-1')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Log Out / Unsubscribe:</strong> Log out of news apps or temporarily unsubscribe from all news notifications.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-1')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Set Boundaries:</strong> Choose one designated time to catch up on necessary news after the detox, preferably from unbiased sources.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-section" id="step-2" data-step="2" data-total="3">
+      <div class="step-header">
+        <span class="step-num">02</span>
+        <span class="step-title">Social Media Fast</span>
+        <span class="step-complete-badge">✓ Complete</span>
+      </div>
+      <div class="step-body">
+        <p class="step-desc">Take a break from the posts, likes, and alerts that distract you from your priorities. Social media platforms are engineered to capture your attention — the endless scrolling and notifications pull you away from real-life priorities and can lead to feelings of inadequacy.</p>
+        <div class="checklist">
+          <label class="check-item" onclick="toggleCheck(this, 'step-2')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>List Platforms:</strong> Name the social media platforms you use most frequently.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-2')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Notifications Off:</strong> Turn off all social media notifications on every device.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-2')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Log Out:</strong> Log out of all social media apps or temporarily uninstall them for the duration of the cleanse.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-section" id="step-3" data-step="3" data-total="2">
+      <div class="step-header">
+        <span class="step-num">03</span>
+        <span class="step-title">Contact Purge</span>
+        <span class="step-complete-badge">✓ Complete</span>
+      </div>
+      <div class="step-body">
+        <p class="step-desc">Remove 10 contacts from your phone that no longer serve your health or goals. Over time we accumulate contacts that no longer align with our current life or aspirations, creating invisible digital weight.</p>
+        <div class="checklist checklist-2col">
+          <label class="check-item" onclick="toggleCheck(this, 'step-3')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Review Contacts:</strong> Scroll through your full contacts list with intention.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-3')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Identify and Remove:</strong> Delete 10 contacts you no longer interact with or who don't serve your current goals.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-section" id="step-4" data-step="4" data-total="3">
+      <div class="step-header">
+        <span class="step-num">04</span>
+        <span class="step-title">App Rearrangement &amp; Deletion</span>
+        <span class="step-complete-badge">✓ Complete</span>
+      </div>
+      <div class="step-body">
+        <p class="step-desc">Delete all unused apps and rearrange the remaining ones to prioritize what truly matters. What lives on your home screen is a direct reflection of what you are inviting into your attention every day.</p>
+        <div class="checklist checklist-2col">
+          <label class="check-item" onclick="toggleCheck(this, 'step-4')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Inventory:</strong> Take stock of all apps currently installed on your phone.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-4')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Delete:</strong> Remove any app you haven't opened in the past month.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-4')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Rearrange:</strong> Move your most goal-supportive apps to the home screen. Hide everything else.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 BONUS -->
+    <div class="bonus-section" id="step-5" data-step="5" data-total="3">
+      <div class="bonus-header">
+        <span class="step-num">BONUS</span>
+        <span class="step-title">24-Hour Phone Removal</span>
+        <span class="step-complete-badge">✓ Complete</span>
+      </div>
+      <div class="step-body">
+        <p class="step-desc">Experience your life untethered and unfiltered without your phone for an entire day. A full day without it offers a powerful perspective on how reliant we have become on a single device for our sense of connection, productivity, and identity.</p>
+        <div class="checklist">
+          <label class="check-item" onclick="toggleCheck(this, 'step-5')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Plan Ahead:</strong> Inform necessary contacts that you will be unavailable for the day.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-5')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Set Up Auto-Responses:</strong> Activate auto-responses for calls and texts before putting the phone away.</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this, 'step-5')">
+            <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4.5 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="check-label"><strong>Safeguard:</strong> Place your phone in a safe but physically inaccessible location for the full 24 hours.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST-CLEANSE REFLECTION -->
+    <div class="section-header" style="margin-top:8px;"><h2>Post-Cleanse Reflection</h2></div>
+    <div>
+      <div class="reflection-q">
+        <div class="q-label">Question 01</div>
+        <div class="q-text">What positive changes did you notice during and after the cleanse?</div>
+        <textarea class="q-line" rows="2" placeholder="Write your response here…" id="ref1" oninput="updateCommitment()"></textarea>
+      </div>
+      <div class="reflection-q">
+        <div class="q-label">Question 02</div>
+        <div class="q-text">What challenges did you face and how did you overcome them?</div>
+        <textarea class="q-line" rows="2" placeholder="Write your response here…" id="ref2" oninput="updateCommitment()"></textarea>
+      </div>
+      <div class="reflection-q">
+        <div class="q-label">Question 03</div>
+        <div class="q-text">What are the next steps you will take to maintain a balanced relationship with technology?</div>
+        <textarea class="q-line" rows="2" placeholder="Write your response here…" id="ref3" oninput="updateCommitment()"></textarea>
+      </div>
+    </div>
+
+    <!-- COMMITMENT STATEMENT -->
+    <div class="section-header" style="margin-top:8px;"><h2>Commitment Statement</h2></div>
+    <div class="commitment-block">
+      <div class="commitment-title">My Technology Commitment</div>
+      <div class="commitment-body" id="commitmentText">
+        I, <span class="fill-name" id="commit-name">_______________</span>, commit to carrying the lessons of this 48-hour Technology Cleanse into my daily life. Having identified my highest-priority distraction as <span class="fill-priority" id="commit-priority">_______________</span>, I will take deliberate action to reclaim my attention and direct it toward what truly serves my health and goals. I understand that technology is a tool — not a default — and I choose to use it with intention from this point forward.
+      </div>
+      <div class="commitment-sig-row">
+        <div class="sig-field">
+          <div class="sig-label">Signature</div>
+          <input class="sig-line" type="text" placeholder="Sign your name" />
+        </div>
+        <div class="sig-field">
+          <div class="sig-label">Date</div>
+          <input class="sig-line" type="text" id="commit-date-field" placeholder="________________" />
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end doc-body -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span class="footer-brand">The Lazarus Method</span>
+    <span class="footer-copy">© The Lazarus Method · All Rights Reserved</span>
+  </div>
+
+</div><!-- end document -->
+
+<script>
+  // ─── DATA ────────────────────────────────────────────────────────────
+  const defaultCategories = ['Social Media','News','Email','Games','Shopping'];
+  const auditMessages = {
+    'Social Media': 'The endless scroll and social comparison loop is your sharpest edge. The fast in Step 2 is your highest-leverage action this cleanse.',
+    'News': 'Constant news consumption is compressing your stress response. Step 1 is non-negotiable for you — commit to a single, timed news window post-cleanse.',
+    'Email': 'Email is a proxy for other people\'s priorities. Step 4 (App Rearrangement) should specifically address where your email app lives on your home screen.',
+    'Games': 'Gaming apps are engineered for compulsion. Step 4 (App Deletion) is your most important action — remove them entirely for the 48 hours.',
+    'Shopping': 'Browsing-based shopping creates dopamine loops tied to acquisition. Delete or log out of all shopping apps as part of Step 2 and Step 4.'
+  };
+  const fallbackMessage = 'Reflect on what this distraction is providing emotionally — boredom relief, escape, or connection — and identify a healthier substitute to build into your daily routine.';
+
+  const stepChecks = { 'step-1': 0, 'step-2': 0, 'step-3': 0, 'step-4': 0, 'step-5': 0 };
+  const stepTotals = { 'step-1': 3, 'step-2': 3, 'step-3': 2, 'step-4': 3, 'step-5': 3 };
+  let rankData = {};
+
+  // ─── RANKING TABLE ───────────────────────────────────────────────────
+  function buildRankingTable() {
+    const tbody = document.getElementById('rankingBody');
+    tbody.innerHTML = '';
+    const cats = [...defaultCategories, '', '', ''];
+    cats.forEach((cat, i) => {
+      const isOther = i >= defaultCategories.length;
+      const tr = document.createElement('tr');
+      tr.className = 'other-row';
+      const nameCell = document.createElement('td');
+      nameCell.className = 'cat-name';
+      if (isOther) {
+        const inp = document.createElement('input');
+        inp.type = 'text'; inp.placeholder = 'Other…';
+        inp.dataset.row = i;
+        inp.addEventListener('input', updateAudit);
+        nameCell.appendChild(inp);
+      } else {
+        nameCell.textContent = cat;
+      }
+      tr.appendChild(nameCell);
+
+      for (let r = 1; r <= 5; r++) {
+        const td = document.createElement('td');
+        td.className = 'rank-cell';
+        const btn = document.createElement('div');
+        btn.className = 'rank-radio';
+        btn.textContent = r;
+        btn.dataset.row = i;
+        btn.dataset.val = r;
+        btn.onclick = function() {
+          document.querySelectorAll(`.rank-radio[data-row="${i}"]`).forEach(b => b.classList.remove('selected'));
+          this.classList.add('selected');
+          rankData[i] = { rank: r, cat: isOther ? (document.querySelector(`input[data-row="${i}"]`)?.value || 'Other') : cat };
+          updateAudit();
+          updateCommitment();
+          updateDots();
+        };
+        td.appendChild(btn);
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ─── AUDIT SUMMARY ───────────────────────────────────────────────────
+  function updateAudit() {
+    const entries = Object.values(rankData).filter(d => d.rank === 1 || d.rank === 2);
+    const top = Object.values(rankData).filter(d => d.rank === 1);
+    const summary = document.getElementById('auditSummary');
+    const items = document.getElementById('auditItems');
+    if (Object.keys(rankData).length < 2) { summary.classList.remove('visible'); return; }
+    summary.classList.add('visible');
+    const sorted = Object.values(rankData).sort((a, b) => a.rank - b.rank).slice(0, 3);
+    items.innerHTML = sorted.map(d => `
+      <div class="audit-item">
+        <span class="audit-rank-badge">Rank ${d.rank}</span>
+        <span class="audit-item-text"><strong>${d.cat}:</strong> ${auditMessages[d.cat] || fallbackMessage}</span>
+      </div>
+    `).join('');
+  }
+
+  // ─── PROGRESS ────────────────────────────────────────────────────────
+  function updateProgress() {
+    const totalChecks = Object.values(stepTotals).reduce((a, b) => a + b, 0);
+    const doneChecks = Object.values(stepChecks).reduce((a, b) => a + b, 0);
+    const pct = Math.round((doneChecks / totalChecks) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  function buildProgressDots() {
+    const wrap = document.getElementById('progressSteps');
+    wrap.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const d = document.createElement('div');
+      d.className = 'progress-step-dot';
+      d.id = 'pdot-' + i;
+      d.textContent = i === 5 ? 'B' : i;
+      wrap.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    for (let i = 1; i <= 5; i++) {
+      const key = 'step-' + i;
+      const dot = document.getElementById('pdot-' + i);
+      const tl = document.getElementById('dot-' + i);
+      const isComplete = stepChecks[key] >= stepTotals[key];
+      if (dot) dot.classList.toggle('complete', isComplete);
+      if (tl) tl.classList.toggle('active', isComplete);
+      const card = document.getElementById('card-' + i);
+      if (card) card.classList.toggle('complete', isComplete);
+      const section = document.getElementById(key);
+      if (section) section.classList.toggle('complete', isComplete);
+    }
+  }
+
+  // ─── CHECKBOXES ──────────────────────────────────────────────────────
+  function toggleCheck(el, stepId) {
+    el.classList.toggle('checked');
+    const section = document.getElementById(stepId);
+    const checked = section.querySelectorAll('.check-item.checked').length;
+    const total = section.querySelectorAll('.check-item').length;
+    stepChecks[stepId] = checked;
+    updateProgress();
+    updateDots();
+  }
+
+  // ─── COMMITMENT STATEMENT ────────────────────────────────────────────
+  function updateCommitment() {
+    const name = document.getElementById('patientName')?.value.trim() || '_______________';
+    const top1 = Object.values(rankData).find(d => d.rank === 1);
+    const priority = top1 ? top1.cat : '_______________';
+    document.getElementById('commit-name').textContent = name;
+    document.getElementById('commit-priority').textContent = priority;
+  }
+
+  // ─── GENERATE DOC ─────────────────────────────────────────────────────
+  function generateDoc() {
+    const name = document.getElementById('patientName').value.trim() || '________________';
+    const tier = document.getElementById('tier').value || '________________';
+    const dateVal = document.getElementById('cleanseDate').value;
+    const provider = document.getElementById('provider').value.trim() || '________________';
+    document.getElementById('display-name').textContent = name;
+    document.getElementById('display-tier').textContent = tier;
+    document.getElementById('display-provider').textContent = provider;
+    if (dateVal) {
+      const d = new Date(dateVal + 'T00:00:00');
+      const formatted = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      document.getElementById('display-date').textContent = formatted;
+      document.getElementById('commit-date-field').placeholder = formatted;
+    } else {
+      document.getElementById('display-date').textContent = '________________';
+    }
+    updateCommitment();
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────
+  buildRankingTable();
+  buildProgressDots();
+  updateProgress();
+
+  // Set today's date as default
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('cleanseDate').value = today;
+  generateDoc();
+</script>
+</body>
+</html>

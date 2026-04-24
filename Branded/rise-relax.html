@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — RISE & Relax</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+  :root {
+    --gold: #96792F;
+    --gold-soft: #B8975A;
+    --gold-bg: #FAF6ED;
+    --navy: #1A1A2E;
+    --charcoal: #3A3A3A;
+    --med: #8A8A8A;
+    --subtle: #BBBBBB;
+    --cream: #FDFBF7;
+    --white: #FFFFFF;
+    --border: #E8E0D0;
+    --green: #3A6A3A;
+    --green-bg: #EFF5EF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    background: #F0EDE6;
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    background: var(--navy);
+    padding: 28px 24px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .header-logo {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 10px;
+  }
+
+  .header-brand {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .header-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 28px;
+    color: var(--white);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .header-subtitle {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14px;
+    color: var(--gold-soft);
+    margin-top: 10px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ═══ PATIENT BAR ═══ */
+  .patient-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .patient-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 160px 160px;
+    gap: 14px;
+  }
+
+  .patient-field { display: flex; flex-direction: column; }
+
+  .patient-field label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .patient-field input, .patient-field select {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 7px 10px;
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .patient-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 26px;
+  }
+
+  .patient-field input:focus { border-color: var(--gold-soft); }
+  .patient-field input::placeholder { color: var(--subtle); font-style: italic; }
+
+  /* ═══ MAIN WRAP ═══ */
+  .main-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ═══ INTRO CARD ═══ */
+  .intro-card {
+    background: var(--gold-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px 26px;
+    margin-bottom: 32px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .intro-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+
+  .intro-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .intro-text {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+
+  /* ═══ RISE ACRONYM ═══ */
+  .rise-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .rise-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 22px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .rise-letter {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .rise-word {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .rise-detail {
+    font-size: 14px;
+    color: var(--med);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .rise-active {
+    border-color: var(--gold);
+    background: var(--gold-bg);
+  }
+
+  /* ═══ BREATHING VISUALIZER ═══ */
+  .breathe-section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 36px 22px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .breathe-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .breathe-circle-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+  }
+
+  .breathe-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: var(--gold-bg);
+    border: 3px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: transform 1.2s ease-in-out, background 1.2s ease-in-out, border-color 0.3s;
+  }
+
+  .breathe-circle.inhale { transform: scale(1.25); background: var(--green-bg); border-color: var(--green); }
+  .breathe-circle.hold { transform: scale(1.25); background: var(--gold-bg); border-color: var(--gold); }
+  .breathe-circle.exhale { transform: scale(1); background: var(--cream); border-color: var(--subtle); }
+  .breathe-circle.pause { transform: scale(1); background: var(--gold-bg); border-color: var(--gold-soft); }
+
+  .breathe-phase {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .breathe-count {
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1;
+  }
+
+  .breathe-round {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: var(--med);
+    margin-bottom: 20px;
+  }
+
+  .breathe-btn {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 10px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--white);
+    background: var(--gold);
+    border: none;
+  }
+
+  .breathe-btn:hover { background: var(--gold-soft); }
+
+  .breathe-btn.stop {
+    background: transparent;
+    color: var(--med);
+    border: 1px solid var(--border);
+  }
+
+  .breathe-btn.stop:hover { border-color: var(--gold-soft); color: var(--gold); }
+
+  /* ═══ SECTION LABEL ═══ */
+  .section-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-list { margin-bottom: 32px; }
+
+  .step-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .step-num {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    margin-top: 4px;
+    width: 18px;
+    text-align: center;
+  }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .step-desc {
+    font-size: 13.5px;
+    color: var(--med);
+    line-height: 1.5;
+  }
+
+  /* ═══ PRACTICE LOG ═══ */
+  .log-section {
+    background: var(--gold-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 22px;
+    margin-bottom: 32px;
+  }
+
+  .log-head {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .log-week-label {
+    font-size: 13px;
+    color: var(--med);
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+
+  .log-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .log-day {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .log-day:hover { border-color: var(--gold-soft); }
+  .log-day.done { background: var(--green-bg); border-color: #B5D4B5; }
+
+  .log-day-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--med);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .log-day-date {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 8px;
+    color: var(--subtle);
+    margin-bottom: 4px;
+  }
+
+  .log-day-icon {
+    font-size: 18px;
+    line-height: 1;
+    color: var(--subtle);
+    transition: color 0.2s;
+  }
+
+  .log-day.done .log-day-icon { color: var(--green); }
+
+  .log-streak {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  /* ═══ TIPS ═══ */
+  .tips-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+  }
+
+  .tips-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .tips-text {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--charcoal);
+  }
+
+  /* ═══ CLOSING ═══ */
+  .closing {
+    text-align: center;
+    font-size: 14.5px;
+    font-style: italic;
+    color: var(--med);
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0 auto 8px;
+  }
+
+  .closing-tag {
+    text-align: center;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-top: 6px;
+    margin-bottom: 28px;
+  }
+
+  /* ═══ BUTTONS ═══ */
+  .btn-row { display: flex; justify-content: center; gap: 12px; margin-top: 32px; }
+
+  .btn {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 10px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-gold { color: var(--white); background: var(--gold); border: none; }
+  .btn-gold:hover { background: var(--gold-soft); }
+  .btn-ghost { color: var(--med); background: transparent; border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--gold-soft); color: var(--gold); }
+
+  .footer {
+    text-align: center;
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--subtle);
+    padding: 24px 0 32px;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 600px) {
+    .patient-inner { grid-template-columns: 1fr; }
+    .rise-grid { grid-template-columns: 1fr; }
+    .log-grid { grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .intro-card { flex-direction: column; gap: 10px; }
+    .breathe-circle-wrap { width: 160px; height: 160px; }
+    .breathe-circle { width: 160px; height: 160px; }
+    .header-title { font-size: 24px; }
+    .intro-text { font-size: 17px; }
+    .intro-title { font-size: 13px; }
+    .section-label { font-size: 13px; }
+    .rise-letter { font-size: 36px; }
+    .rise-word { font-size: 15px; }
+    .rise-detail { font-size: 19px; }
+    .step-title { font-size: 18px; }
+    .step-desc { font-size: 16px; }
+    .log-head { font-size: 12px; }
+    .log-day-label { font-size: 12px; }
+    .log-day-date { font-size: 11px; }
+    .log-day-icon { font-size: 20px; }
+    .log-day { padding: 8px 4px; }
+    .log-streak { font-size: 15px; }
+    .log-week-label { font-size: 15px; }
+    .tips-title { font-size: 13px; }
+    .tips-text { font-size: 17px; }
+    .breathe-label { font-size: 16px; }
+    .breathe-phase { font-size: 15px; }
+    .breathe-count { font-size: 36px; }
+    .breathe-round { font-size: 16px; }
+    .closing { font-size: 17px; }
+    .closing-tag { font-size: 12px; }
+    .header-brand { font-size: 12px; }
+    .header-subtitle { font-size: 15px; }
+    .patient-field label { font-size: 13px; }
+    .patient-field input, .patient-field select { font-size: 17px; }
+    .btn { font-size: 13px; padding: 12px 24px; }
+    .footer { font-size: 12px; }
+  }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    body { background: white; }
+    @page { size: letter; margin: 0.5in 0.6in; }
+    .header { padding: 18px 20px; break-after: avoid; }
+    .header-title { font-size: 24px; }
+    .patient-bar { padding: 14px 20px; }
+    .btn-row { display: none; }
+    .breathe-section { display: none; }
+    .main-wrap { padding: 20px 0; max-width: 100%; }
+    .rise-card { break-inside: avoid; border-color: #ccc; }
+    .step-card { break-inside: avoid; border-color: #ccc; }
+    .log-day.done { background: #f0f7f0 !important; }
+    .log-day.done .log-day-icon { color: var(--green) !important; }
+    .intro-card, .log-section, .tips-card { background: #FAF6ED !important; }
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img class="header-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAy6klEQVR42u2dd5yeVZn3v+euT59nekumJDOTXkgljRK6BIgoCiIq6sJa2VVXXV3XXl53XQULIOwrAgosClIEaaEkpBPSSM8kM5ma6U9/nruc948nhMQk0zIJYd9cn48fP0zu+36uc/3Odc51rnbgLJ2ls/TeJfG/cVAzJlXKc6fWMm1iFWOryxlVWkRubhhvwI/jSlLJFN09MVpaO9jb0MLGrfWs2bSbN9/aLc4CfIbSzAkV8v0XTeeS+eOprS4llBNC1UxcRUNRdKRqIEwPOC6ObSOkBEABXMchGomzc18LL72+mceeW8n6rXvEWYDPALpkTq381NI5LJxZTTAYwHYVLFeAaqDqJpphYpgeVMODZnpxHRfHsrAdB9uykZaD5VgIV2JoKoamEo0lWbF+G/c++hLPLn9TnAX4XaCpNSXyKx85l8Wza1B1naQlEYqOaXpRzSy4QjNQNANNN1D0IwC2LRzHwXXcrEa7DtJ2sG0by7JASnyGgePaLFv1Fj/97yd5c/s+cRbg00S3fXCmvPWacwj4vcQzElU30U0DRTXQNAOh6xheLz6fH6/PD14fmF7w+MFxIGOBbSPTadKJNMlUinQ6g3RdpCtxXQcrk50EAY9BMpHiN4+8xH/e97Q4C/Appt999RJ54YzRRNMuQjEwTA9C0xGqhtfrJScnhGZ4iKYc2rrj7G/tpaUjQk8kQcaWSFdimgb54SDlJXlUlhZQUpBD0OfBtiyi0RjJVAbpuEjpYmUshJQE/R5eXbuN67/2a3EW4FNAdaNy5R2fW0BVaQ6xtMT0mKiqgVB1giEfPr+f9t4MqzY38fK63azduo+d+1oHNb4JNaPlnKl1XHTuFObPqKMoP0giniQSTyBciXRc0ukMOX6ThpYOPvPD+9m6t1mcBXiEaEJFWP7qC4soCHlI2mCaBkLRCPh9BPwhtjZ28fCLb3HvY6tGZDy3Xn+ZvHHJAibWlBGPpUjEk4DEylj4dOiOJPiH79/Ppt0HxFmAT5KqikPyrtsWUZhjknElqqahagaFuUEa2lPc+eSb/PG5TadkHDddfZ78zPWXMLY8n86eCDgutpXBUKE3Guemb/+ePQcOirMAnwQ99PXFsnZUiKTlomsqpsfA6/Hy8LJ6vvO7104L/z/44oflR6+cTzqVJJ1MYdsWPkNhT1MnS75051mAh0vfu2m2vHJuOdGkjaYJgn6TaBK++8A6XljfcFp5v3zBdPnDL1xL2KvTF43hOBY5PpOnV7zFl25/7IyVo3KmMnbFrAp5+axSemNpAAJek31tcT72kxdPO7gAf3t9o7j+q3dS39JN0O8BBD3RJEvm1fGBC6bJsxo8RHriWxfLcFDHciThkJc9LTGu/+ELZwS/z97+RVldlkNvJImhuPRFE1z4xbvEWQ0eJH1uyURZmushmXbweXUa2hNnDLgAV9x2h2hs7yPg1UinM5Tk+fjajRfIswAPkt43q5xI0sJraMRTLv9yz+ozjscv/sejpNI2pqERiae5Zv74s3vwkVRdFJTjy8Ny4qiwrCvNkZWFAQlw6+UTZW5Ax3Ykmqrwk4c3Ud/ad8YtfzsaWsUP7nsB0zSwbYccn8GXrlt4WIurinJkTWmurCkNy8rC0Lum3adFcPNqCuS4siAVhT5KcryEfCpeU0PTVFQVEAqOhITlEvQaaJog4DVYvaOLr/z36jPa0v/FbdfKi2ZUEI0lyGQsOrpj5HhVdCFBurhOBtuySKYtIvEkbT1x6tujbG+O8er2NvGeBXhmdZ5cUJPLhLIg+QEDTRW4AhwpEEhQBFIRCAGapqKpKqaugqKCyP7ddqG1L8PyrW3c9/yOMwroS+ZOlFfMn8iUygKCHgXXtkG6CCnJpFM4loVj29hOBuG6KNJGShuBjSIljmXTHUuxvTnKazt7eGVnl3hPALywtkBeMqmI6gIPigqO6+JKBSEAVUFRFEwNPKaOYWioqkAoCqCQcVwURUXXFfw+HV1TMHUNTVc52Jfhb+ub+PFDb7yrQN9wxTz5kUtmMKGqEF0BK5XCtjJEYgmsTDbO7DdAuDaO5ZCx0mTSGdLpDBkrg+NYSNdBOg6qtNCEREqHA11Jnnurhyc3d4szEuCJpSG5dEYJtUU+XFdiSYlQBIYqQAh0VcHr1VFVlUTaoS2SoaErQWtvis5ImlRG8NkraxiV76U9YvGHV+rJz/FQWRyktjxETXmI8iI/XRGHu/+6g9/85fQG4hfPnSy//okrmTOxnGg8wYG2Dhqau9nX3EFrZy9XnVtHnk/jYG+U//vMRjRVkB/0UBo2GZ3voyio49UklpUinsxgWTbCsbAdC9d10IWDgcP+botHN/Sxoj4yIuPTRuIjH5xRLi8en4uqKMRTFoqqoKpZ+00o4PdkA/Lr9/Wxbl8fL25uOS7z/3LtOKkbKi9sbODJNfuPeqamPFfOHV/MFXOr+OZHZ3PtBePlbXcs46369lMO9C+/cbP82JIF7G9u5+7HlvPq+l088/rR/m9DRd586VQ8us6fVmw/hqfq4pCcXpnPnLFhJpb6yPFqxBMWlg2KEFg2JC2XogDcdl6ImeWqvH15j3jXNfjLF42V44q9pGwHRSgoWlZjFUUQ9GrELHh9dw/3L+8/I+LcccXyRzdNJW25fOaudexvP/EMnlZTJP9x6UwWzx7Dj+5fye//emq0eUpdpbzvh58B6XL7H57l/ieWn/B3JlYUy3u/dhWmgK/du4wXN9Sf8NkxRQF5yZQSLqgNEjJdIsk00raRjo1z6H9+zaW5z+bOVXF2daTFu6LB33lfnSwM6ERTGUxNQxEC1wXTVNFUhVd29nLPK/WDYq4ox0PAVNm8P9IvuACb9hwUn/nPZ5k5vkz+2ycvZFRJrvzhfy8bUZCvvnC2/NbnruW+x1/ll394dsBvb2tsFzsau+S8caWUhP39Plt/MCbufmkPd78En11cIRePC6LgELMkQmQ1ui8tyfNLvrzIw12rhXyzJTWs8Q37HPydy2tl2CNIWDaqkv2MIyV+U6UnbvOLF/YNGlyA3ICBpqms39M9aB7e2NEi3v/VP4jeaIrbbjx/wLPmhEKvnFzkH/C5D1wyT1510Sw++MX/GhS47/DTiqGphIOeQY/hN8saxXeeaqKxxyXoVXHd7N9VBdK2REHyqVlezin1ydMG8FfPr5FeDdKORBEC+Ta4XpU3m+J89dGtYlPj0PaPgEfBciTbG3uHzM+v/2elWLlpP5eeO6lfIZSGFIpCbv9n9nPGy1DIxz/8252ioaVjSGPYuLcN+1Ae11Boa1Of+KdH94oXdyUIeFWkBAkoAhwXbMflhsle6vI98pQD/OlZFTJkCDI2qIe2cOlC0NRZtr2XO14cXj6xR1OJxDO8Ud8xrPfXbW0Qz69+q9938wIK+f7+hxxLpPndn18aFg+vb90vook0HkMd1qr461faxB/Xx/GZCkJKJCAESClASj40PnBqNfiKscWy3G+Qsl1UASBxpcTv0Xh2RzcPrmkc9j4oFEFXzD6l1nDIoxDy9G92bNl5cumxPfHMSVmuf97YKe5bG8draGT1OGsJ2y54Ncknp+bJUwJwbW5QTinwk7IcFCEO7bkQMBVW7I3w6PqmkxJM2naJxDOnFOCgVyfkM0/pb/TF0yStk5uoz2zrFQ9vTBIwVFyZ3VIUASkHRgdUFo0KyhEHeH5pDo7rIg7NT1eCT1fZ2ZHhgZPQ3LcpEreJp/oXzKV1OSfltA94VIJe9aT4XFTVPw/RRJq+EZioT2zpE8v22ATNrJ/+MMi2ZFahZ2Q1eGZhWIZNBVtmzfi3rbxYRvKLl/aOyPGktTdB0uofv7IcySdmDz8y4/cahHzDPxl+/aJcKUX/4KUzNu3diRFZDe5ZHRF7exQ8elahOLRo6wpcURmWIwbwhLAX6wjtlVJi6ipPbj04YktbS3eC1ABL24r6NFdP9nFezfBADnh1/J7hAXzr/FxZU6CzYl+y3wmdshzq27pHTC73b0jhSgVFvLMfZxxJdUAfGQ2eHA7KoJZdJgTgHgJ3Z0eSVftGzjG+taFHRJL9A7ynKy12d7t88YIQdUVDPxcGvDoe0xgyb1dNyZUfmO7ntX3WgM/GUg4b945cGHBvZ0qs2G/j1ZUjtFiiC8kFpQNP9AEBrvabh8GVR/g2X9o1crP0bWrrGnhpW9do4TcVbruo8Pj8Fp140B5Tx2vqJ3jv+IbL7KqQvHleDr0phdX70wOvRF3REZfLI1sioi8tOOTeR0FguZLRPv3kNThX17BlFlqJxNAU9nYl2dMZHXH/76622IDP/OnNHtGd1hlbaPClS0cdA4omJJdMKTouWKauoxvHX6KnV4SO+/cvXFSEYajs7HbZdTAx4Ji3NxzkVND6lgweTRzWYgfwKQp1Qa8cNsCTc4JSFW+fxrIqrAiFdc19p2QQG/YMLjK0rdXCFSoXTsxhUvnRmre7PSpqS47vCzZMHfM4S/T4spDUtWPl9K2rq2VBUEMoGi9uiw/IV2VJnnx5Y/0pCXw8uTMikrZAOeLrEkGZ1xy+BhfpWbfZ25/TFEFXKsPWtsi7GnR/eksvKDqmrvKBuccu1R1xl+l/Z2VWFPikx8zuwW/nf71N08bksaXp6NVjWkVYLqwLoagaW1ptXt01sOu1oa37lMqlvtfGVMFFZu0hV5Kv68MHOKhqhz8mAV1V2NeT5t2mTY0R8cruOIahMrc2l7rSo7X40ZUNorTgaLee32NgeHRMj0HQe/QynchItjcdPWnfP6cY06OTclXufLmNM4F2daazvv9Do3UBr3ISe7BHUQ597J2x7+9LnhGD/enT9aK5D/KDJh+YX37Mvz/7xtGetXDAwGOaGKZOOHC0o+CptUdXStSUhOTculxUTeP3Kzpp6IyfEflga1oSIulwyE0MUoImBFW+E+/D/QKsCoF7xIMpR7K1/cxJYf3FswewpMbiKYVUF/fvvisMezEMHdPQKQz37wm6YmYJowr8rNgd5/F1x9YB92epn2rqTbtoR2zEAvBrytA1uNJ75KyQqIpCLOOOCJPjwkFZmTO00NfS2eVyfNnRIK7b2yn+++VmKoqCfGB+Rb/vlxcE0EwdzTAoy/cPAHAZLRGbf/3DlmPAvXxasSwJ60Mec1XAPyKToiPpor69TB/izquIoQOsH/ZbZZcCRQiiljUiAO/sjYqKsM4tc3Pl1DJzUAP/y7pmsWRm2TF/v2/ZXvG3TZ18+Pyq/t2chQGkUHGEwuii4Amfu3ZBtayryOW/nqw/5t8umlIiS8IeVu0aXIrrtDKP/Mi0XDmjOCj3x0Zmme9OOofdxYePhgxDgxXlHefG2w+ebJTkSFreEBUrG5J8ZEaA77+vQE4rH3iG/+dTO8Wtl4475rnb7l4r0o7C1z40/YTfKAl7iMfTxOMpSvpZoj92cS1PrmnluQ1HV+/XleXIuvIg9706cGXj9FF++b3LC+TSyR5WH4izoX3kfAaxjHOcTDo5dIAdVx7luQJIu4wobW1Lia8/3SUael2+t6SAHy8tl3Oq+9/f7n5+53GF9aXfruOq+WNOfOQLaMTjKRKxDHn+40eU5k8sk+GQly/dc2w1RX7Iz51/678T3uzqkPzJ0jL5b5fnsbPD4rvP94r67syI2ixpxz3i6NoftAMAbEuJPPJ1IXDlqbEt7l3ZLb71dCeFQZ2ffmAU//GhMXJhXf6Qfmztzjbx++d38U/XTj3mvZljC2VAV0gmLZKpDAFdZW5d8THPLZ1fyU8f2XTc76/a0XJCoBaNy5X/8aEq+dNrSwmYKv/6VCd/eOPUGKOue6xYrH5gPmFopSGVEvPJkUdyqYhTV6u2uTkuPv1AnFsvLJXXzy5gTm2Y9Q2F8vF1nazY2TkoYd3zzFbx+asnHzPa6VVh0mmbSMzGlQ6qhGmVIdbsaj/8zJiSkGxsj/PM2v2DBmbR+Hy5dGYBsyq9pFMWv1vdxf2vn9p6I3EkBodiBCnXHTrAb2uxeSipDiTGaahFvPvlVvFGQ1LecuEoFo3PYfbYPDY1jZKPrWnl5a0DuzJ/9eRWMXdcqVyz850WSrPHhNnX0kdnPIOmKPTF0syqzuW3R7w3qiDIr57aPChwLphcLK+dXcK00SZeDdbu6eOuZS1sbYqe8iOkoYp3jCyRjSzF7GECnHRdvGiHwoTZDI7TQevre8X6+l5uubhaXr+gnHnjc5lZl8/utlr51Lpm/rSi/7ypI8E9t6ZQVuQavLDlILaTNR4P9goun1rE/LoiuXJXtkvOa1sH7nv1/vlV8qo5pdQVefCqLh19Ge59pZkHXms8bb4Bn64c3nsFkJHQkDhxznS/AEcch8JDj7iuJHiaAH6bfvviPrGuvk/edlUdkyvDjK8wOWdcIbcsmSRf2tjCC+ub2LCn/zZG759ZSjplsb05SlnYiyqgsSvF4nE5LJ1Zwspd/Ud/plYXyEtnj+aiaSWU5hhk0imQDuv2RPnF07vZ0XR6HT9hU0Me0Sk34fZvqvTL3PhgQM4vCCB1BY9HwTB1bl839KzDc6ryZMhr0p3IsKVheGWSX79uqrzu/GpsRyJUFU1IYvEM9S0RttR3s6Whh8bOJImUg1AkRUGDiycWU1dk4riST9+3SXzmgiqpqSq/fGmv+O3N06RHVdjUHONnzx5tHS+cUCKnVuUys7aAuoow4ZCHVCZbDqog+P0Lu/n1X4dXzjpxVIH0m4J1e4eXHvyJKfmyyBD0JiSKpbCtL8NrHX3D0+Ad0ZiYmeeXpshmcnhVweSikNx6cOBo0vjSkLxgYgG5fg9vNfXx5IaTa/33k0c3iy0NUfmNG6djSMnB7ji4kpKQTnhiIZdMKcSxbHpiadIZFw2wLAfNhZd29gKQ59UPB81f39HDxRNymVDs5bc3T5cpx8VrqhSHfXg9Oq4i0DSNVDJNa8aiKN9PJG7znfvfYPlbLcMey7amTjFxVFjefP4YWRLS2djQw7ObB99MLc8jsO1DASABzcn+gz8DJih1ZByqvephQ7wq7GPrwcgJn59RmSuvml5MeZ6Xl7Z3ctdLg4+PThgVksm0zf6O4wfW/7p2n9jTGpE/+NhMynI0OnsTKEhau5Os2NZBYUCjtsiPRxUkLYe0JVnRGOHBVdk9Ms+rIg5ZKL9f1ShCXl1OKvPjMSDg00g5ktd3dtKXclk0oYhwQCJVhaKAn417evnEf7w0IsvxtqZesa2pl/FlQXnD3FJumF0gn9/azYNr+rfAJxV6ZVAX9GZcVKHQ57jsjfVfszQgwzVBv7x4VBipiWxXGeBXxzlKjCkMyaXTi5hTHWZLS4wfPj30JWxKRViOKw2SHzJIObCrOcaqnce3nH/92flyUqmPbQcixBMpcrw6j69p5dkTlKbeOK9aLh6XjytcXt3Rw4OrsltNZZ5f5vg0EpZDxs5a3EtmFhNNQ17IS1WJn9d29vCN+9Ye97uXzSiT5WEPrnRp706xozXBvoNDi5dfOCFPfmZhEelMhkfe6OXprcePK79/fK6cmqfRE3cRjsKGjhTLB/CSDYqRD40tkUUBHUVTCAd1/rTtINuOGMTV08rkFRPyCPg0/ryxg79sOD2dWH9+8yxZU+TlL2tbaDgY47rZpfTGMjy/tYPdBxM0dsfFuNKQPLe2mMWTS5Eym6yvI3l0bSNPbXjH7XhBXaG88pxifB6Vpzd2MqkixGXnlPDyjm5+9D8n7oVZURiQjR2xERnvT66pkNPLVdbuT3Lful7qO47Wzq/NL5SKI0mmJSlLcNdbA/sHBsXY+NyAvKwqD1cR5AZUGmMW972R9dX+8+IxckKJFxvBQ+vaWL6787Ralb/61ExZlWfyyOvNPLCyQfzT4jHynFEBImkXzfQSCPjw+bxYqKiKgitl1lhybbp6YyQTCVRpURwyeXlPH/e8tk986fI6edmMYlbvjfDtRzad1vH88+ISuXiMRkc0w0NvxnlhVzZIsbDCL6+q8XIwItGkwhvtGV4chAU/aOY/OK5UVuV4UDXweDWW7e9lYU0Oo8MGFoI/rG1l7b7u0x4rHlsckv92TR1BXfC7Fc38dVOL+Pi5o+XC8YUI3YfH78fwePF4PCha9ojhpDMkk0msVIJkPIKbSfPU5g6e2dom/vHCsfKKaQU09qb5wn0b35XY923nF8r5lWDbDk9ts3h4Y1T8y4J8GdIglhQk0oJfbhqcFT5o39SfDjkPFJFNfL96Yh6FPgUXeOzNgycFbnWBd9hO7r3tEfHSWx2kLZvLJxZkDajVB0RXErxeE8P04vX78QaD+MMhfKEgZsCPx+tB0XV8Xi/bOzI8s7VNzKrKlXPHBIkmHR5Z1cq7Rbe/2iE2tkrA5eKxCt+4IFfmebMJ7x5NYVXb4CsnhpTm/1pzL5eMzUUiSWUcgrrOsp29vLprcLNpQbVPjg6rFOcYFIUM8gI6QZ+O19CRiiItVCypYrkKCRtSVrZvRdxySFmC3liGrt4UHZEkbT1JGg7ZAQ++3iAWjA1Lnw7n1xXKV3d1iHX1PYyrLMHRVXTTxBvw4/EFsG0LJDiZDJqm4zg6y7Z3ZE8Ao3PQkTR0JVlxHOOuqjgkC3K8FOd6KQ4Z5Ad0cgMq+T4Vvw664qLhYFkO8VSGnmiG1p40TX1pmrptWvts6rsG147hxy90ip9fkydDmkWpXxBNung1la3tGda3Dz62PCSA1zb3iIUVYRnUFRRFYLuSxzYO7kxYne+RxQFBZa7O6HyNfL+Kz6NgGiqKrqBpGpqhoesGmm6ComEhSDqCSErQHknR0B7Dsh164unD3pzDERVHYqoS/VB2QzxjI4RAIFAUBUXV0EwDiURRFVAEqiJI2C5bm7Krj6kKhFDojL2T2FBdHJLjR+dSWxZkTHmYipIQuX4VrybRpES4meyNLZk0lpXGscCxId+jUxESTC7WSKYNumNp9nfZrGs05d92Ds7KvntVgq8s8mC5Ek1R6EjAH7f3DmmlHBLAV9cVy4B2qIRCZtNoP39BtfzVKwN7t/Z1pcS+LoB38osnlvlkWY5JXlDHb2pkXIikXHoTLp3RDNubBjeYCycWyRyvSirp0NSbPfhPq8jFsm1Qs/ckZVIpQOLYDnbGxnEcLMfBq8HCumK5Yle76E3ZuNKlquCdhIB97RGxrz3Csyf47XGjwjLHqxI0VUIeBb8Bpi6wLYeumE1bn836huGlGZeFsjVJkmyKjqENfScbNMCTCkJyQp6ftOPi0VWkUJDSYWKxjxtmj5IPrRt6ffC2loTY1nLylXjvm1aCV1fZfCDKjrY+ce6YAllTYNIXT+JDJ62nQEAmlcR1Xax0hkwy26DMTqW5bEI+K3a188DqA+K88QWyJKRw/bxK+fCqgbM3djb1npoOP2Ve+bGZHhzbwqtp9KTBpwlunV4g7944+JPK4OuDS3LIONmEr6QD965tYW+3BQIWjc3hmnPK3pVMw89eWicnjfLT0JPmZ8/tEXOq8uRNs4sQdgaPcNFlmlQiTjwSJRGJkIxGScSiOJkEBhbCsSjxK3zp4rES4P5VLeiaxtJZJUwanfuujKm20CM/uyCAV3fpTCqsbHIxNEHScinxCRaWDz6rc1AzYWFpnpxZEsBVBPlBjdWtUf62M+s//fjcUfLcMTmYusIzb/XwpzeaTtvR4oZFY+THzxvNG7u7eWB5Awtqc7loXD47miLs7kpjuZCX42NeXQmGYYLInoN14dLaFWF3S4R0MkmOV2VSmZ+klNz5ciMVBQE+fVElCUdy0+2rTutRaUKJX37p/BzyfTZvtVl869lsRcU3z8+ThlRIpCCZgTsGqcWDeuiT48qkaSqYpobHVPnJiqOLvhfWFsqlUwsZlWvyyu4e7np1/7CFMqcmX5blevGYGnvaY6w/gePkpgtr5M2Lq9h5IMKm+l6mjQ7S3hPnoTUt7Gw9es+bVV0o//GiGmxX4tVVVu/p4s6XjnWlfnjOKHnF9BK2tsRIWJLLzykmmpF848GNNBw81iVYW54na0v9SMeitSfNxv0n15luUW2O/MLCMEI6PL0tzu/XvvO9y2uD8sLRJgejEt1VWNOW5uXmyMk7OuYU5MiZhQFsTZDn02lMZHhoy/FdkZ9cUCUXT8ilLWbzf19rYFvL0IyLebUFUlehL+WwqR9hfenaqfKD55bT2ZsgnXFIpR2WbWpnV1uUygIPJUEDVcKB7hQPr8/y+vF5lXJhTZiumM3XH89245lRkSunlgfRDYVkxqGhO4UrBVfNKqWyyI9QVYpzPUQy8O8PbmJT/bFRn4rCgByV56UgaCKkw+62BNuahx4j/vyFZfLKiQE2Hojzx/W9bGk59ij0nfMLZTIpSVuSWBru3dZ18gB/cHSRDPtUFEMlL2DwYmMP65tPLPyaooBcMq2EKaNDvNHQx29GqMXDYdfkF86XCybk0d4Zw8rYSNeltSuFkA6VuTquJYmnHZLpDLbt0tLj8M0ntokxhQH5b5dWsWx3Lw+ubRJLp5fJq6YWoioSj1fDZ+oYukpPyqG+M0VVcYDcgIFUFXKCHhTd4P88soknVo5s9eAlkwrkh2YVkcqkeXR9J6/tPvHk+McZ+bLAhEgChKPwWmuKN7v6Dzb0a0VX+HwyoKk4UqALSLn0Cy7AnoMx8YsX9mSX0QVV8ptLJ8r69jhr67vZexL5wXPqiuW/3ziNirIQ3X1pAl4dxWuQTmVIBlz2H4yyob6XnlgGBRiV56GmyMfoApUPzxktH1l7QEhVlfu7s7VV10wvxHYlSUew7UCcaMpBVxVK8jyMKQmSn+PB5zUQClgSTAW+/7FpjC8Pyv/z6Mn7pxeNK5JzxoZRcbjn1RbW7h/YGt/XZ1FcYgIOjpRUBnTe7DqJY1KZRz9U9p11CkRTQ6tseOD17F48oTwsR+X5Cfm98s36od8UdstldfLjF49B0xXsdIbCXC/1LVFe39zCirfaWbHt+HcUfur8MfKiCXnMq8nlkbUHiNsuCcvlo/OrpN9ncKAnze0v7KWx89ho0LTqfDmnroiFU0qYMjYfU3Ppi6b58KJRTCgLyJ8+to1tB4a+51YUhmRZ2EvadvjZM7uG9H5TxIJiE4HAkZJcfeBDUL8/cGVRgSzwaQhDIcev0RS3+fOultNmVU4anSM/f8VYZtaGEULDVlS2NMR4au0Bnlo1OEPuZzdOkxX5Hn75fD1XTi/h+S0HuWhSIePKAvz4yT2srx/YGp09rlheOWc0iyYWEDYlrmPTG8tw/ysHeOAkDMrh0NfnFsp02iWRBmyVV9tj7IgkhpeyE1AVHCnRACEEfRn7tA3k5vMr5Ifnl1KY46EnnmHNni4eX93C+j39+71rSnLlnrZ3NOu5rQf58vvGMq4sB01XqSj0MbrIx662xKDABVi3s12s25nNof6HS+vkpdMLGB3W+Nwl5cyq9Mu7X2pkW3P0tACdtEE74pcKTZ0dw3V0qEIgRVbNBRC1Tj3Ak0cF5W8+Pk5+dnExwrX589o2vnDvFr754CYxELgACyYWH/Xfz29qFT0pl6nVuYSDJhNGhckLenh999FNZD56wbhBOQ/ueX6XuO6nK8Uvnm1gT1uMc8f4+K8bxvDxhafH0ZN03MN50a6UhFRteHtwnc8nD7WjPLyaZ2z3lDL/iflF8iPz8pGoPL6hi8fXd7B9CJrxtetmyDU72o91J7YmmD8uj2gyQ0GOh4yEp//OIdMRSXLb0mny9r8MzoB6eHmDeHh5AzfMK5NXTglz66I8Zo025a+WHWRn+6krGM9mlSqARErwqmJ4rkqP8nZfnSzJQzPmVFBdsVf+6sOj5HUzQrz4VpTb/tjAj56oF0MBd/H0CjlrQhGvHOeMvq05itdroBkGQb9Je+RYY/G5DY3i3ElFvG9u1ZAG+dCqFvHR324TP3/hIGEP/OyDxdw4O++UabN7xOhcQBfDBNhQ1GNK1xRl5CfmjTNC8puX5LGvM83nH2rmp39rEjtaTwzsx86vPa7wvnvTdJ5eve+47+xujYKq4TE1An6TfR3HD3A88MJufvCJWcf9t6tmV8mqohP3qXx0/UFx0+/2iXuW93BhrZefXl0kawvMEQdaQR6Fi8owAVaPLIA5pMOmOnLFSZVhU962KFeGfQoff7BZ/OylDrGvq/82gV++epxctevYhijf++gMqSsOvz9BaemGPQeFhcDn92D6TBo6j98S6Zm1+0Vjay8Pff3YewifWrdffHBe+YDjemJzj/j0H5vFa3sTfGxWgEvrgiMKsq4q2YPrYXjk8AD+++VYkRDQR+SSFmrCAVmV4+H25T3i1ysGF2776MIKuXJ7B7v/TrsXTymVH15Qxp+XN/b7fk/cwufN3t/U1HHiEOVvn93F7OoQX1468RjJPbGmkU8tHtwS/vRbMfGtv3WJWFKyoDxnxED2qgpD2SlPCLDlymy78UPrgQPkeEYG4D29MfFqw+D9tbUlIbmlsY9Vu4/N+/qnJWPo7I3z1JoD/X6jtSOC6rpEo2lau07cUe+ZdY1i9c5OblxUyqXTSo9ustYWE8u3dXFO5eDDiCsPxMTrzSNXv+TVJO4RRb0DlCadGOCUdA4v0IJsKWnYc3qLz94RbERsajxWSN/78AQ5Kqzx+vYudjT3vxIc7ImjSJe+WIK9A1x2+cTqJqyMxecvr6Ci4OjWErvaouLNhp53JdtyWrFXGuo7oArAHq4GJxyJyztfclyXkKFzptCV55TI82r99MXSPL3u2H25rvzoTnddfWmkYxOJpY56bmxpWE6qyPu7RmqNYk9LnFyPy22XjT5jxjw6ZBy17ypA0hnmHtyYSglXclSnHY8Kc0blnREXId+8sBAnY7GzOcJr24/2b394YaW07KPndk80hXRsorGji7X2tvaKc+vCx3z/r2+0YWVspo02ufqcojNizJVhDfuIHixCgZhjDw9ggITrvGNNi2xjlto837s+0G9eVSn9mo0tXf605tj63lyPwr72owMIfYkM0s4QSxzbsd22HWpKjrZ2/7iyWbT1pLFSFtdMyzkDwPXKYp+C7YI4lIQngK6MNXyAe2wnm+jOO53GK0LGuzrQmmKfnFGu4zo2a/fEePHv6nPm1uTL7U3HGlHRhIVlZYglji233Livl7qSYyfuk292A5KiAFw0fmDDamx54SnT9OklBoYqD59uhMjuxZt7+/ea9QtwS/rI2SGQMptZ/75xxadkILNqSgb87uI6Pz7VoT3i8K3Hj03XFYrg1R3H+qwTqex1r8e7+GNTQ59IZo796YfXtImtzQkM4TJvzMArl6ZIZo8bdUpkM61EI21LhMj6F1UhiDjO8I9JAHtjcZFwJMqhVV8IQdpymV4aPCWztLrYP+AzM8s1EhmH2186fuuF1buOHyFKZbL50In08Ze0l7cdP079L482iINRi0lFAxvOOw90islVhSMul8vqAjLfy+H9V5JtQtqcsE8O4KwWpzGUI87DriRoqiydOvLRk6JQ/82tF43xy9EhwZ2v9bHpwNBKNhMZm3TGIp4cejvG25d1ETLhmskDOyxqyvJGHOALqw3SlotQ3gHNQrKifeCctwEBXt7eKxzpHgZYCEHKsjm3IsiYfP+IgXzuuEKpG/3zu7jW4OGNcV7cOXTHwd6DCZHKZIglhx7yXN8YF/etjrCgemA/QEF4ZI3Qm2cFZJ5XYrviHe1VBM3xwY1jUM7lfbEMhqocvkvPlQIVyXXnlI7YQCqKgmhK/+zs7ZTcv3b4XqFEyiKWGl5D1Uc3RcRbbS41A1wQGfQZzJ1QPiITf9Zojzy/WiWWlu+08pcSKQRvdiZHDuAXmjqF5YrD4UNx6AauylyDG2aPjFFRFvZgDpBj9OAbJ1cmEk85xFPOsN///bpesaer/54YPkNlVP7I2CifnO3N3jZ3RANwU1PYG7FojKZHtj54Q0cUj6YiD/nJFAGxtM15Y0NcMuHkreocn07Qc2o9ZZF4Jtut9RSS1zSO6Sg/HPrhlQUy6AHrCMeGKiDtwOO7e0e+NmlNS49oimUwNeXwIVsRgnjG5QPTCziv7uTOgIaukBvQTqnwe+IWyfSpzUoJenU8xsmN41uXFcmaXIVkRh51EaihKbzcNLRivSEFeB/c2iRiDmiqzDq8D82jhOXw0dklXDrx5DQ5P+g5pcLviDnE++laP35sxUnxX1OeL4M+g5NJfPnulWVySqlGNCNRFA5dvg1+Q+HNdot1LUNLBxpyBP+JHe1IoaAe8qS8/Wtpy+H62cXceO7whJTOOBSETCqLhhcgv2z+BDln8ph+3z3QJdnfc+L+zTv2NopbPnSZrB41vIlaW56Pz9RxnKFvAzVFfnn7dVVyUrFOLOXytr3pSInfENT3OPzPtqHbIEMGeG93TPx5aweKqqAKeRTI8bTDJRPy+OaSOllVEBiSkKIpi4BXZXz50P2+3771Mpkb9LJ2a/9lJQe6B16ef/s/z4mvfGop779k7pBBnja2JLuipYd2FLtmepH8/lXllAUhnnZRD5nMjgsBQ9DQ53LHmuGFKIeVg7OltVf8YUMbrlAwNYHrZlvrqWSrH8YUevnXJTVcN2fwFnZv3EZImFGbP2g+liyok8/fcbPc3dDBw89tGFAAnYO8Yfxz371b3HTN+dz3o88NCeRzaktJZSx6Bnl/8JTROfJHHxgnP72oCIEkZUsUJXtScV1Jjqmwuwt+/Mrwj4bDtgY2t/SJO5c78uPnllISNEjbLgKJqghSloOuqrx/RhGL6vLkyzu6eHx9/83ROiJpkpbD9OrcAX/7gukV8gvXzaK6vJDbfvEcyzcOrrqgMZ4ctKCu/fxPxW++fYs8sOw38r7HXua+J5az98CJWw3OHDdajikNE0tmaO/p/xq8c6ry5JLpxcyu8IHMEElah41Wy81qXcij8mq9xa9XnNwtcyOSmfAPC6vk3OogjiPJSImqKahKNnfXZyp4TJ3elMvWAzHW7etl5XE62IwtDclf3TKLgNfgx3/azjPrj26fMK26UC6YXML75lUyc3w5L7zRwsd++NQpz6z4yPsWyB//8/WoCjy7fBPPv76F9W/Vs6/l6IDGv398sfzQ+eNpauvl8m/88Ri+xpXny5ljcplXk0tNoQchbWLxJLZjg3RwbAvXtvFqLvG0w/+8GeWv207+CsERE9C8MfnyqmmFlIY9WK6LI0FVBLoqkEJgagpej4FQBNGUQ0tvhsbuBO19KToiGRRF4YtLasgNetjbluTJtY2Myg9QURxgbHmImrIQxXkedrcm+PmftvCXFbtPb0e9b35CfujimajSZX9LB3sOtLO3sY365k6isQS3LJlJ2Keyr7WXXz6+nrDfoDjHZHS+n6pCHyUhHVNxSKbTxFMWrmODbWHbFq508Cgu0nVY3xjnoXW97O9Ojcj4RlxIV04tkeePy6M07AEhD93eIrJdXlUFRVHwagoeU0M3taxBoShIKcg4DqqqYRgKfq+OrikYpooiVPZ3xPnLygPc89et79rNa/Om1cpPX7OI+VMrCXo0Mpk0TtrCstNEYgkcK4Pj2Hg0BUW6SCuDZadJpSzS6TQZy8J1LVzHQToOGha64pK2XLa3xHlyYydr9o9sjdMpE9Z54wvlvLG51JYEyPFqKGr27tvsRfESqQikkm0TpGkauqZi6CoSBZRDoUlHsv9gkpc3tfL463vPmCv1ZoyvlFcumszCyZXkmBqutBCucxi4TCaNa9s4lo3jZhDSRXEdkDYCF1U6WJbNwb4EbzZEeGVHF282npobXU+L0M4bXyzrSgNUFfooCBkEPdleH5qmZc97SjYVJZmRhAM6iiLICRg8/NoBbn9i8xkD7PHooe/cJCdW5BFPJnFth1TawqMJVGmDa2NZGSwre51PbzxJS3ecPS0RthzoZdVpaNz6rgmvuiggTV0DBJbtsvfQpZffvmGGvPicYpIZF6EofPHONWw/0H1Ggnz1oinyR7dcRm80Tq5X564n1/LLx1eLyZXF0qMr6JpCxrKJp212NHW9K2M44wQ3tTJP3vGZOaQyLiG/QUNnght+vOyM43NCdal88NsfRbgWtmWRTmVYdNs9ZxyfypnG0OaGbrFyRxc5Pp1IIkNtWZDbP7tInml83v7l6zB1nVTGIuT38NiKbWfkFqKciUzd98JuUhbomkJvLM0FU4r48afnnTEgP/Xzz8vKkjCxVBqfadLUGeXnj74uzgI8SNrV3CseWb6fHJ8OQtATS7Nkbhm//MJ57yrIY8oL5fO//rKcUFVMJJ5CEQKfR+eOR1eesUagcqYydtczb4kt+6OHkwB6ozYXnVPCo999nxw3Ov+0A33h3Eny4f/4PGNHFRKJZ8tf8oIenly5gydf33rGWvpn9BGkuiRH3nvbIrxeFReJKlRCQQ9JS+WOxzZx/3NbTgv/37zl/fLT156PlU6TSiaxbQufobCn8SBLvnL3GS3DM5o5gAUTy+R//eNcXFyEUBGqhsc0yMnxs3pbJ3c8up6VWxpOyTiWXjxX/vNNlzG+qpSungjScbCtNIYq6I0muOnf72NP08GzAJ8sXTG7Sv7wk7NwpIOLhmEYoGrkhYKgGLy86QB/+NtmXli9c0TGc8OS8+RN1yxi9qQqkqk08WgSkFiZDD5doSca59Pfv59Nuw6c8fJ7TwAMcPGMCvnjT83FY6qkHJG9RUXR0QyTnHAQoensbOxl2bp6Xl67m1fXD+1iriWL58hLFkzjwrkTqSjLx05l6InGcV0X4bikMhlyfDotrd3c+qMH2Lz7wHtCdu8ZgAHOqSmWP7l1PrXluUTSDrruQTdMUHVUXScY8BMKBMigcbAvRX1zN/XNXbR2ROmLJoklM6iKQsDvIS8nSHlJLjUVpVSXF5CXE0BIl2gsQTyRRDoSKV0sywLHJRTw8vqGXXzwy7e/p2T2nmL2sJPhC4vlNefV4kiVjCPQTQ+qYSBUHU01UU0Dr8+HLxBA9/rA9ILhyf6/44JtZQt9MhZWKk0ikSKdSuPYDlK6uK6LnbGwbQefR8e2bO758yv84K7H3nPyek8CDNl0nX++fi6Tx5aScSHtCFTdwGP4UEwdRTMQmomiGeiGgWJ40EwvrpO9pMNxHFzbBcfFcbNRIMe2sSwb13XwGjoCWLlhJz+59wlWbdz1npTVexbgt+kfls6RH7tyBhPHlqJoOpYrsIWKoploholmeDAME8Xwonu8OI6Lk8ngOA625eBaNpZtgSvRVIFHV0mlLdZt3sPdj7zA4y+seU/L6D0P8OEjzYVT5bWXTGP+ObWUFedjeDxIRcdFQ6gaaCaq4UE6Lq5tI2U2UVA/dJNbMpmhsamNV1Zv5ZG/reKV1Zv/V8jmfw3AR9LVi2fKc6ePYfK4SqoryyguzMcfCuLzB3Bsl2QiSSQWp62jh731rWzaXs+qDTtZtvLN/3Xy+F8J8PGopqpU+jweXClJJFLUH2j7/2bsZ+ksnaX3Kv0/85B2L+dmZ14AAAAASUVORK5CYII=" alt="Lazarus Method">
+  <div class="header-brand">The Lazarus Method</div>
+  <div class="header-title">RISE & Relax</div>
+  <div class="header-subtitle">The Lazarus Method RISE breath technique is a simple and progressive technique designed to promote relaxation and mental clarity. Each round builds gradually: 1 second, then 2, then 3, then 4. Practice it daily and log your progress below.</div>
+</div>
+
+<!-- PATIENT BAR -->
+<div class="patient-bar">
+  <div class="patient-inner">
+    <div class="patient-field">
+      <label>Name</label>
+      <input type="text" id="userName" placeholder="Your name">
+    </div>
+    <div class="patient-field">
+      <label>Start Date</label>
+      <input type="date" id="userDate">
+    </div>
+    <div class="patient-field">
+      <label>Program Tier</label>
+      <select id="userTier">
+        <option value="" disabled selected>Select tier</option>
+        <option value="Repair">Repair</option>
+        <option value="Train">Train</option>
+        <option value="Master">Master</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- INTRO -->
+  <div class="intro-card">
+    <div class="intro-icon">🫁</div>
+    <div>
+      <div class="intro-title">Practice Anytime, Anywhere</div>
+      <div class="intro-text">This technique can be practiced anytime, especially if you feel stressed, anxious, or in need of focus. You do not have to wait for a tense moment to try this. Get comfortable with the breathing steps when you are calm, so when stress does hit, you are good to go. The cadence builds across four rounds: Round 1 is 1 second per breath, Round 2 is 2 seconds, Round 3 is 3 seconds, and Round 4 is 4 seconds. By the final round, you will feel the difference.</div>
+    </div>
+  </div>
+
+  <!-- RISE ACRONYM -->
+  <div class="rise-grid">
+    <div class="rise-card" id="riseR">
+      <div class="rise-letter">R</div>
+      <div class="rise-word">Rest</div>
+      <div class="rise-detail">Get comfortable</div>
+    </div>
+    <div class="rise-card" id="riseI">
+      <div class="rise-letter">I</div>
+      <div class="rise-word">Inhale</div>
+      <div class="rise-detail" id="riseIDetail">1s → 2s → 3s → 4s</div>
+    </div>
+    <div class="rise-card" id="riseS">
+      <div class="rise-letter">S</div>
+      <div class="rise-word">Sustain</div>
+      <div class="rise-detail" id="riseSDetail">1s → 2s → 3s → 4s</div>
+    </div>
+    <div class="rise-card" id="riseE">
+      <div class="rise-letter">E</div>
+      <div class="rise-word">Exhale</div>
+      <div class="rise-detail" id="riseEDetail">1s → 2s → 3s → 4s</div>
+    </div>
+  </div>
+
+  <!-- BREATHING VISUALIZER -->
+  <div class="breathe-section">
+    <div class="breathe-label">Guided Breathing Exercise</div>
+    <div class="breathe-circle-wrap">
+      <div class="breathe-circle" id="breatheCircle">
+        <div class="breathe-phase" id="breathePhase">Ready</div>
+        <div class="breathe-count" id="breatheCount">1</div>
+      </div>
+    </div>
+    <div class="breathe-round" id="breatheRound">Round 1: 1s · Round 2: 2s · Round 3: 3s · Round 4: 4s</div>
+    <button class="breathe-btn" id="breatheBtn" onclick="toggleBreathing()">Begin</button>
+  </div>
+
+  <!-- HOW TO -->
+  <div class="section-label">How to Perform the RISE Breath</div>
+  <div class="step-list">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">Inhale Through the Nose</div>
+        <div class="step-desc">Take a slow, deep breath through your nose for the count of the current round. Round 1 is 1 second, Round 2 is 2 seconds, Round 3 is 3 seconds, and Round 4 is 4 seconds.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">Hold the Breath</div>
+        <div class="step-desc">Once you have inhaled fully, hold your breath for the same count as the current round.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">Exhale Through the Mouth</div>
+        <div class="step-desc">Slowly exhale the air through your mouth for the same count, emptying the lungs completely.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div>
+        <div class="step-title">Pause</div>
+        <div class="step-desc">After exhaling, hold your breath for the same count before beginning the next cycle.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div>
+        <div class="step-title">Repeat &amp; Build</div>
+        <div class="step-desc">Each round increases by one second. By Round 4, you are breathing at a full 4-second cadence. Continue until you feel relaxed and centered.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEKLY PRACTICE LOG -->
+  <div class="log-section">
+    <div class="log-head">7-Day Practice Log</div>
+    <div class="log-week-label" id="logWeekLabel">Tap each day after completing your RISE breath session</div>
+    <div class="log-grid" id="logGrid"></div>
+    <div class="log-streak" id="logStreak"></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-card">
+    <div class="tips-title">When to Use This Technique</div>
+    <div class="tips-text">Before a stressful meeting or conversation. While stuck in traffic or waiting in line. During a midday energy slump instead of reaching for caffeine. Right before bed to quiet a racing mind. Any moment you need to reset your nervous system and regain focus.</div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">"Your breath is the bridge between your body and your mind. Master the breath, and you master yourself."</div>
+  <div class="closing-tag">The Lazarus Method — Rest Element</div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <button class="btn btn-gold" onclick="window.print()">Print / Save PDF</button>
+    <button class="btn btn-ghost" onclick="resetAll()">Reset All Fields</button>
+  </div>
+
+  <div class="footer">©The Lazarus Method · All Rights Reserved</div>
+</div>
+
+<script>
+  /* ═══ BREATHING ENGINE ═══ */
+  var breathing = false;
+  var breathInterval = null;
+  var currentPhase = 0;
+  var currentCount = 1;
+  var currentRound = 0;
+  var totalRounds = 4;
+  var roundBeats = [1, 2, 3, 4]; // progressive cadence per round
+
+  function getBeat() { return roundBeats[currentRound - 1] || 1; }
+
+  var phases = [
+    { name: 'Inhale', cls: 'inhale', riseId: 'riseI' },
+    { name: 'Hold', cls: 'hold', riseId: 'riseS' },
+    { name: 'Exhale', cls: 'exhale', riseId: 'riseE' },
+    { name: 'Pause', cls: 'pause', riseId: 'riseR' }
+  ];
+
+  function toggleBreathing() {
+    if (breathing) { stopBreathing(); } else { startBreathing(); }
+  }
+
+  function startBreathing() {
+    breathing = true;
+    currentPhase = 0;
+    currentRound = 1;
+    currentCount = getBeat();
+
+    var btn = document.getElementById('breatheBtn');
+    btn.textContent = 'Stop';
+    btn.classList.add('stop');
+
+    updateCircleTransition();
+    setPhase();
+    breathInterval = setInterval(tick, 1200);
+  }
+
+  function stopBreathing() {
+    breathing = false;
+    clearInterval(breathInterval);
+
+    var circle = document.getElementById('breatheCircle');
+    circle.className = 'breathe-circle';
+    circle.style.transform = '';
+    circle.style.transitionDuration = '';
+    document.getElementById('breathePhase').textContent = 'Ready';
+    document.getElementById('breatheCount').textContent = '1';
+    document.getElementById('breatheRound').textContent = 'Round 1: 1s · Round 2: 2s · Round 3: 3s · Round 4: 4s';
+
+    var btn = document.getElementById('breatheBtn');
+    btn.textContent = 'Begin';
+    btn.classList.remove('stop');
+
+    document.querySelectorAll('.rise-card').forEach(function(c) { c.classList.remove('rise-active'); });
+    // Reset RISE card details
+    document.getElementById('riseIDetail').textContent = '1s → 2s → 3s → 4s';
+    document.getElementById('riseSDetail').textContent = '1s → 2s → 3s → 4s';
+    document.getElementById('riseEDetail').textContent = '1s → 2s → 3s → 4s';
+  }
+
+  function updateCircleTransition() {
+    var beat = getBeat();
+    var dur = (beat * 1.2) + 's';
+    var circle = document.getElementById('breatheCircle');
+    circle.style.transitionProperty = 'transform, background, border-color';
+    circle.style.transitionDuration = dur + ', ' + dur + ', 0.3s';
+    circle.style.transitionTimingFunction = 'ease-in-out';
+  }
+
+  function setPhase() {
+    var beat = getBeat();
+    var p = phases[currentPhase];
+    var circle = document.getElementById('breatheCircle');
+    circle.className = 'breathe-circle ' + p.cls;
+    document.getElementById('breathePhase').textContent = p.name;
+    document.getElementById('breatheCount').textContent = currentCount;
+    document.getElementById('breatheRound').textContent = 'Round ' + currentRound + ' of ' + totalRounds + '  ·  ' + beat + '-second cadence';
+
+    document.querySelectorAll('.rise-card').forEach(function(c) { c.classList.remove('rise-active'); });
+    document.getElementById(p.riseId).classList.add('rise-active');
+
+    // Update RISE card details to show current round cadence
+    document.getElementById('riseIDetail').textContent = beat + ' second' + (beat > 1 ? 's' : '');
+    document.getElementById('riseSDetail').textContent = beat + ' second' + (beat > 1 ? 's' : '');
+    document.getElementById('riseEDetail').textContent = beat + ' second' + (beat > 1 ? 's' : '');
+  }
+
+  function tick() {
+    currentCount--;
+    if (currentCount <= 0) {
+      currentPhase++;
+      if (currentPhase >= phases.length) {
+        currentPhase = 0;
+        currentRound++;
+        if (currentRound > totalRounds) {
+          stopBreathing();
+          document.getElementById('breathePhase').textContent = 'Complete';
+          document.getElementById('breatheCount').textContent = '✓';
+          document.getElementById('breatheRound').textContent = 'Well done. All 4 rounds completed.';
+          return;
+        }
+        updateCircleTransition();
+      }
+      currentCount = getBeat();
+      setPhase();
+    } else {
+      document.getElementById('breatheCount').textContent = currentCount;
+    }
+  }
+
+  /* ═══ PERSISTENT WEEKLY LOG ═══ */
+  var STORAGE_KEY = 'lazarus_rise_log';
+  var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  function getWeekStartDate() {
+    var now = new Date();
+    var day = now.getDay(); // 0=Sun
+    var diff = day === 0 ? 6 : day - 1; // Mon = start
+    var start = new Date(now);
+    start.setDate(start.getDate() - diff);
+    start.setHours(0,0,0,0);
+    return start;
+  }
+
+  function formatShort(date) {
+    return (date.getMonth()+1) + '/' + date.getDate();
+  }
+
+  function loadLog() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return null;
+  }
+
+  function saveLog(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+  }
+
+  function buildLog() {
+    var weekStart = getWeekStartDate();
+    var weekKey = weekStart.toISOString().split('T')[0];
+
+    var saved = loadLog();
+    // If saved log is from a different week, start fresh
+    if (!saved || saved.weekKey !== weekKey) {
+      saved = { weekKey: weekKey, days: [false,false,false,false,false,false,false] };
+      saveLog(saved);
+    }
+
+    var grid = document.getElementById('logGrid');
+    grid.innerHTML = '';
+
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      var dayIdx = d.getDay();
+
+      var card = document.createElement('div');
+      card.className = 'log-day' + (saved.days[i] ? ' done' : '');
+      card.dataset.index = i;
+      card.onclick = function() {
+        var idx = parseInt(this.dataset.index);
+        this.classList.toggle('done');
+        var log = loadLog();
+        log.days[idx] = this.classList.contains('done');
+        saveLog(log);
+        updateStreak();
+      };
+
+      card.innerHTML =
+        '<div class="log-day-label">' + dayNames[dayIdx] + '</div>' +
+        '<div class="log-day-date">' + formatShort(d) + '</div>' +
+        '<div class="log-day-icon">' + (saved.days[i] ? '●' : '○') + '</div>';
+
+      grid.appendChild(card);
+    }
+
+    updateStreak();
+  }
+
+  function updateStreak() {
+    var saved = loadLog();
+    if (!saved) return;
+    var count = saved.days.filter(function(d) { return d; }).length;
+    var el = document.getElementById('logStreak');
+    if (count === 0) {
+      el.textContent = '';
+    } else if (count === 7) {
+      el.textContent = '🏆 Perfect week! All 7 days completed.';
+    } else {
+      el.textContent = count + ' of 7 days completed this week';
+    }
+
+    // Update icons
+    document.querySelectorAll('.log-day').forEach(function(card) {
+      var idx = parseInt(card.dataset.index);
+      var icon = card.querySelector('.log-day-icon');
+      if (icon) icon.textContent = saved.days[idx] ? '●' : '○';
+    });
+  }
+
+  /* ═══ PERSIST NAME & DATE ═══ */
+  function loadUserInfo() {
+    try {
+      var info = JSON.parse(localStorage.getItem('lazarus_rise_user') || '{}');
+      if (info.name) document.getElementById('userName').value = info.name;
+      if (info.tier) document.getElementById('userTier').value = info.tier;
+    } catch(e) {}
+    document.getElementById('userDate').valueAsDate = new Date();
+  }
+
+  function saveUserInfo() {
+    try {
+      localStorage.setItem('lazarus_rise_user', JSON.stringify({
+        name: document.getElementById('userName').value,
+        tier: document.getElementById('userTier').value
+      }));
+    } catch(e) {}
+  }
+
+  document.getElementById('userName').addEventListener('input', saveUserInfo);
+  document.getElementById('userTier').addEventListener('change', saveUserInfo);
+
+  function resetAll() {
+    if (!confirm('Reset all fields and practice log? This will clear your saved progress for this week.')) return;
+    stopBreathing();
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem('lazarus_rise_user');
+    } catch(e) {}
+    document.getElementById('userName').value = '';
+    document.getElementById('userDate').value = '';
+    document.getElementById('userTier').selectedIndex = 0;
+    buildLog();
+  }
+
+  /* ═══ INIT ═══ */
+  loadUserInfo();
+  buildLog();
+</script>
+</body>
+</html>

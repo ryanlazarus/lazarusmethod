@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lazarus Method — Daily Intentions</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #96792F;
+    --gold-soft: #B8975A;
+    --gold-bg: #FAF6ED;
+    --navy: #1A1A2E;
+    --charcoal: #3A3A3A;
+    --med: #8A8A8A;
+    --subtle: #BBBBBB;
+    --cream: #FDFBF7;
+    --white: #FFFFFF;
+    --border: #E8E0D0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    background: #F0EDE6;
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: var(--navy);
+    padding: 28px 24px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .header-brand {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .header-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 28px;
+    color: var(--white);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .header-subtitle {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-top: 8px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  .patient-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .patient-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .patient-field { display: flex; flex-direction: column; }
+
+  .patient-field label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .patient-field input,
+  .patient-field select {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .patient-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238A8A8A'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    cursor: pointer;
+  }
+
+  .patient-field input:focus,
+  .patient-field select:focus { border-color: var(--gold-soft); }
+  .patient-field input::placeholder { color: var(--subtle); font-style: italic; }
+
+  .main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--gold-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-icon { font-size: 14px; flex-shrink: 0; }
+
+  .section-title {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .section-body { padding: 20px; }
+
+  .section-intro {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  .count-bar {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--med);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .count-num { color: var(--gold); font-weight: 800; }
+
+  /* ═══ INTENTIONS LIST ═══ */
+  .intentions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .intention-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #F0ECE4;
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .intention-item:hover { background: #FDFBF7; }
+
+  .intention-item.selected {
+    background: var(--gold-bg);
+  }
+
+  .intention-check {
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .intention-item.selected .intention-check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .intention-check-mark {
+    font-size: 12px;
+    color: var(--white);
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-weight: 700;
+  }
+
+  .intention-item.selected .intention-check-mark { opacity: 1; }
+
+  .intention-num {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--subtle);
+    min-width: 20px;
+    margin-top: 4px;
+  }
+
+  .intention-item.selected .intention-num { color: var(--gold); }
+
+  .intention-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--charcoal);
+    flex: 1;
+  }
+
+  .intention-item.selected .intention-text {
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  /* ═══ CUSTOM INTENTION ═══ */
+  .custom-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-top: 2px solid var(--border);
+    background: var(--cream);
+  }
+
+  .custom-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .custom-input {
+    flex: 1;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--navy);
+    border: none;
+    border-bottom: 1px solid var(--gold-soft);
+    padding: 6px 0;
+    background: transparent;
+    outline: none;
+  }
+
+  .custom-input::placeholder { color: var(--gold-soft); opacity: 0.5; font-style: italic; }
+
+  /* ═══ MY INTENTIONS CARD ═══ */
+  .my-card {
+    background: var(--navy);
+    border-radius: 6px;
+    padding: 28px 24px;
+    min-height: 120px;
+  }
+
+  .my-card-label {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .my-card-empty {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--gold-soft);
+    opacity: 0.4;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .my-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .my-card-item {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--white);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .my-card-item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold-soft);
+  }
+
+  .my-card-date {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-top: 20px;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  .method-closer {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 20px;
+    padding: 0 20px;
+    font-style: italic;
+  }
+
+  /* ═══ ACTIONS ═══ */
+  .actions-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .btn {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--gold); color: var(--white); }
+  .btn-primary:hover { background: var(--gold-soft); }
+  .btn-secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+  .btn-secondary:hover { background: var(--gold-bg); }
+
+  .footer {
+    text-align: center;
+    padding: 30px 24px;
+    margin-top: 10px;
+  }
+
+  .footer-text {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--subtle);
+    text-transform: uppercase;
+  }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    body { background: var(--white); }
+    @page { size: letter; margin: 0.5in 0.6in; }
+
+    /* Header compact */
+    .header { padding: 18px 20px; break-after: avoid; }
+    .header-title { font-size: 24px; }
+
+    /* Patient bar */
+    .patient-bar { padding: 14px 20px; }
+
+    /* Main */
+    .main { padding: 0 0 20px; }
+
+    /* Hide the full selection list, only show the personal card */
+    .intentions-section { display: none !important; }
+
+    /* Sections */
+    .section { break-inside: auto; margin-top: 16px; }
+    .section-header { break-after: avoid; page-break-after: avoid; }
+
+    /* My card CAN break across pages for large selections */
+    .my-card {
+      break-inside: auto;
+      page-break-inside: auto;
+      padding: 24px 20px;
+    }
+
+    /* Card label stays with first item */
+    .my-card-label {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    /* Individual items stay together */
+    .my-card-item {
+      font-size: 16px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Date stays with last item */
+    .my-card-date {
+      break-before: avoid;
+      page-break-before: avoid;
+    }
+
+    /* Method closer */
+    .method-closer {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin-top: 14px;
+    }
+
+    /* Hide buttons */
+    .actions-bar { display: none !important; }
+
+    /* Footer */
+    .footer { padding: 16px; }
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 700px) {
+    .patient-inner { grid-template-columns: 1fr; }
+    .intentions-grid { grid-template-columns: 1fr; }
+    .header-title { font-size: 22px; }
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">The Lazarus Method</div>
+  <div class="header-title">Daily Intentions</div>
+  <div class="header-subtitle">Choose the intentions that matter to you right now</div>
+</div>
+
+<div class="patient-bar">
+  <div class="patient-inner">
+    <div class="patient-field">
+      <label>Name</label>
+      <input type="text" id="patientName" placeholder="Full name">
+    </div>
+    <div class="patient-field">
+      <label>Date</label>
+      <input type="date" id="patientDate">
+    </div>
+    <div class="patient-field">
+      <label>Program Tier</label>
+      <select id="patientTier">
+        <option value="" disabled selected>Select tier</option>
+        <option value="Repair">Repair</option>
+        <option value="Train">Train</option>
+        <option value="Master">Master</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- INTENTIONS LIST -->
+  <div class="section intentions-section">
+    <div class="section-header">
+      <span class="section-icon">✦</span>
+      <div class="section-title">Select Your Intentions</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        Read through the list below. Select the intentions that speak to where you are in your life and health right now. There is no right number. Choose what is true for you today.
+      </div>
+      <div class="count-bar"><span class="count-num" id="selectedCount">0</span> intentions selected</div>
+      <div class="intentions-grid" id="intentionsGrid"></div>
+      <div class="custom-row">
+        <div class="custom-label">My Own</div>
+        <input type="text" class="custom-input" id="customIntention" placeholder="Write your own intention here..." oninput="updateCard()">
+      </div>
+    </div>
+  </div>
+
+  <!-- MY INTENTIONS CARD -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📋</span>
+      <div class="section-title">My Intentions</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        This is your personal intentions card. Print it, save it, and put it somewhere you will see it every day.
+      </div>
+      <div class="my-card">
+        <div class="my-card-label">My Daily Intentions</div>
+        <div id="myCardContent">
+          <div class="my-card-empty">Select intentions from the list above...</div>
+        </div>
+        <div class="my-card-date" id="myCardDate"></div>
+      </div>
+      <div class="method-closer">
+        Your intentions are the compass. The Lazarus Method is the path. Read these every morning and let them guide how you move through your day.
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="btn btn-primary" onclick="window.print()">Print My Intentions Card</button>
+    <button class="btn btn-secondary" onclick="resetAll()">Reset All</button>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-text">©The Lazarus Method · All Rights Reserved</div>
+</div>
+
+<script>
+const intentions = [
+  // MINDSET & OWNERSHIP
+  "Live as if you've died and come back. Every minute is bonus time.",
+  "Focus on what you can control. Let go of what you cannot.",
+  "Respond, don't react.",
+  "You are the product of your habits. Choose them carefully.",
+  "Value time more than money or possessions.",
+  "Not everything deserves your opinion. Save your energy.",
+  "Don't suffer imagined troubles. Deal with what is real.",
+  "Never be overheard complaining...even to yourself.",
+  "There is always something you can do. Find it.",
+  "Don't compare your chapter to someone else's highlight reel.",
+  "Focus on process, not outcomes.",
+  "Make a little progress each day. That is enough.",
+  "Prepare for life's inevitable setbacks. They are coming. Be ready.",
+  "Ask yourself the hard question before someone else does.",
+
+  // COURAGE & GROWTH
+  "Seek out the thing that makes you uncomfortable. That is where growth lives.",
+  "Use obstacles as fuel, not excuses.",
+  "Let go of the need to be right.",
+  "Find power in stillness.",
+  "Be a warrior, not a worrier.",
+  "Don't follow the crowd. Think for yourself.",
+  "Accept success without arrogance. Handle failure without collapse.",
+  "Courage. Temperance. Justice. Wisdom. Every day.",
+  "I will write my own story.",
+
+  // CONNECTION & CHARACTER
+  "Two ears, one mouth. Use them in that ratio.",
+  "Try to see the good in people, even when it's hard.",
+  "Every person you meet is an opportunity for kindness.",
+  "Be strict with yourself and tolerant with others.",
+  "Offense is a choice. Choose differently.",
+  "Associate with people who make you better. Distance yourself from those who don't.",
+  "Learn something from everyone you meet.",
+  "Forgive. Then forgive again.",
+  "Don't be afraid to ask for help. It is a sign of strength, not weakness.",
+  "Stay humble. Work hard. Be kind.",
+  "Study the lives of the greats. Apply what they learned.",
+  "Look for the beauty in ordinary things.",
+
+  // HEALTH & THE SEVEN ELEMENTS
+  "Treat your body like it has to last 100 years.",
+  "What I eat today becomes who I am tomorrow.",
+  "Rest is not laziness. It is preparation.",
+  "Move your body every single day. No exceptions.",
+  "Protect your sleep the way you protect your time.",
+  "Define what success means to you. Then measure yourself by that, not by what the world says."
+];
+
+const selected = new Set();
+const grid = document.getElementById('intentionsGrid');
+
+intentions.forEach((text, i) => {
+  const item = document.createElement('div');
+  item.className = 'intention-item';
+  item.dataset.index = i;
+  item.innerHTML = `
+    <div class="intention-check"><span class="intention-check-mark">✓</span></div>
+    <span class="intention-num">${i + 1}.</span>
+    <span class="intention-text">${text}</span>
+  `;
+  item.addEventListener('click', () => {
+    if (selected.has(i)) {
+      selected.delete(i);
+      item.classList.remove('selected');
+    } else {
+      selected.add(i);
+      item.classList.add('selected');
+    }
+    updateCard();
+  });
+  grid.appendChild(item);
+});
+
+function updateCard() {
+  const content = document.getElementById('myCardContent');
+  const countEl = document.getElementById('selectedCount');
+  const dateEl = document.getElementById('myCardDate');
+  const custom = document.getElementById('customIntention').value.trim();
+
+  const items = Array.from(selected).sort((a, b) => a - b).map(i => intentions[i]);
+  if (custom) items.push(custom);
+
+  countEl.textContent = selected.size;
+
+  if (items.length === 0) {
+    content.innerHTML = '<div class="my-card-empty">Select intentions from the list above...</div>';
+    dateEl.textContent = '';
+    return;
+  }
+
+  const listHTML = '<div class="my-card-list">' +
+    items.map(t => `<div class="my-card-item">${t}</div>`).join('') +
+    '</div>';
+  content.innerHTML = listHTML;
+
+  const today = new Date();
+  dateEl.textContent = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function resetAll() {
+  if (!confirm('Clear all selections and start over?')) return;
+  selected.clear();
+  document.querySelectorAll('.intention-item').forEach(el => el.classList.remove('selected'));
+  document.getElementById('customIntention').value = '';
+  document.querySelectorAll('input[type="text"], input[type="date"]').forEach(el => el.value = '');
+  document.getElementById('patientTier').selectedIndex = 0;
+  document.getElementById('patientDate').valueAsDate = new Date();
+  updateCard();
+}
+
+document.getElementById('patientDate').valueAsDate = new Date();
+</script>
+</body>
+</html>

@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lazarus Method — Personal Health Gameplan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --gold:#96792F; --gold-soft:#B8975A; --gold-bg:#FAF6ED;
+    --navy:#1A1A2E; --charcoal:#3A3A3A; --med:#8A8A8A;
+    --cream:#FDFBF7; --white:#FFFFFF; --border:#E8E0D0;
+    --rust:#7A3A1E; --rust-light:#F5EDE8; --section-bar:#2C2C3E;
+    --green:#2D6A4F; --green-bg:#EAF4EE;
+    --q1:#C46210; --q2:#1A3A7A; --q3:#3A7A3A; --q4:#4A1A7A;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family:'EB Garamond', Georgia, serif;
+    background:#EDEBE5; color:var(--charcoal);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ─── INPUT PANEL ─── */
+  .input-panel { background:var(--white); border-bottom:2px solid var(--border); padding:24px 24px 20px; }
+  .input-inner { max-width:900px; margin:0 auto; }
+  .input-label { font-family:'DM Sans',sans-serif; font-size:12px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; font-weight:700; margin-bottom:14px; }
+  .input-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; align-items:end; }
+  .field { display:flex; flex-direction:column; }
+  .field label { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:1.5px; color:var(--med); text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+  .field input { font-family:'EB Garamond',Georgia,serif; font-size:17px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:7px 10px; background:var(--cream); outline:none; transition:border-color .2s; }
+  .field input:focus { border-color:var(--gold); }
+  .print-btn { display:block; max-width:900px; margin:14px auto 0; text-align:right; }
+  .print-btn button { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--white); background:var(--gold); border:none; border-radius:2px; padding:9px 20px; cursor:pointer; }
+  .print-btn button:hover { background:var(--rust); }
+
+
+  .header-logo { width:64px; height:64px; flex-shrink:0; }
+  .header-logo img { width:100%; height:100%; object-fit:contain; }
+
+  /* ─── DOCUMENT ─── */
+  #document { max-width:900px; margin:24px auto 48px; background:var(--white); box-shadow:0 4px 40px rgba(0,0,0,.10); }
+
+  .doc-header { padding:34px 48px 26px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .header-badge { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:4px; font-weight:700; color:var(--gold); text-transform:uppercase; }
+  .header-title { font-size:34px; font-weight:600; color:var(--navy); letter-spacing:.5px; line-height:1.1; margin-top:4px; }
+  .header-quote { font-size:18px; font-style:italic; color:var(--gold-soft); margin-top:6px; }
+  .header-meta { text-align:right; display:flex; flex-direction:column; gap:8px; }
+  .meta-item { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--med); }
+  .meta-value { font-size:16px; color:var(--navy); }
+
+  .intro-block { background:var(--gold-bg); border-left:3px solid var(--gold); margin:26px 48px 0; padding:14px 18px; }
+  .intro-block p { font-size:16px; line-height:1.75; color:var(--charcoal); }
+  .intro-block strong { color:var(--navy); font-weight:600; }
+
+  .doc-body { padding:26px 48px 40px; }
+  .section-bar { background:var(--section-bar); margin:0 -48px; padding:10px 48px; margin-bottom:30px; }
+  .section-bar h2 { font-family:'DM Sans',sans-serif; font-size:12px; letter-spacing:3.5px; font-weight:700; color:var(--white); text-transform:uppercase; }
+
+  /* ─── SECTIONS ─── */
+  .gp-section { margin-bottom:28px; }
+  .gp-instructions { font-size:16px; line-height:1.7; color:var(--charcoal); margin-bottom:16px; }
+  .gp-instructions strong { color:var(--navy); font-weight:600; }
+
+  /* PRE-GAME HUDDLE */
+  .huddle-questions { display:flex; flex-direction:column; gap:14px; }
+  .huddle-q { display:flex; gap:14px; align-items:flex-start; }
+  .huddle-num { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; width:28px; height:28px; border-radius:50%; background:var(--gold); color:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .huddle-body { flex:1; }
+  .huddle-prompt { font-size:17px; font-weight:600; color:var(--navy); font-style:italic; margin-bottom:6px; }
+  .huddle-input { font-family:'EB Garamond',Georgia,serif; font-size:17px; color:var(--navy); border:none; border-bottom:1.5px solid var(--border); padding:6px 0; background:transparent; outline:none; width:100%; transition:border-color .2s; line-height:1.5; }
+  .huddle-input:focus { border-color:var(--gold); }
+
+  /* RATING SELECTOR */
+  .rating-row { display:flex; align-items:center; gap:6px; margin-top:4px; }
+  .rating-dot { width:36px; height:36px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; color:var(--med); transition:all .15s; user-select:none; }
+  .rating-dot:hover { border-color:var(--gold-soft); background:var(--gold-bg); }
+  .rating-dot.active { border-color:var(--gold); background:var(--gold); color:var(--white); }
+  .rating-label { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:1px; font-weight:600; color:var(--med); text-transform:uppercase; margin-left:8px; }
+
+  /* INTENTIONS WITH ELEMENT TAGS */
+  .intention-row { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid #f5f0e8; }
+  .intention-row:last-child { border-bottom:none; }
+  .int-num { font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; color:var(--gold-soft); flex-shrink:0; width:20px; padding-top:8px; }
+  .int-body { flex:1; display:flex; flex-direction:column; gap:6px; }
+  .int-input { font-family:'EB Garamond',Georgia,serif; font-size:17px; color:var(--navy); border:none; border-bottom:1.5px solid var(--border); padding:6px 0; background:transparent; outline:none; width:100%; transition:border-color .2s; }
+  .int-input:focus { border-color:var(--gold); }
+  .int-elem-row { display:flex; gap:5px; flex-wrap:wrap; }
+  .int-elem-btn { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:3px 8px; border-radius:10px; border:1.5px solid var(--border); cursor:pointer; transition:all .15s; user-select:none; color:var(--med); background:transparent; }
+  .int-elem-btn:hover { border-color:var(--gold-soft); }
+  .int-elem-btn.active { color:var(--white); border-color:transparent; }
+
+  /* SCORECARD */
+  .scorecard { margin-bottom:20px; }
+  .sc-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #f5f0e8; }
+  .sc-row:last-child { border-bottom:none; }
+  .sc-num { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; width:24px; height:24px; border-radius:50%; background:var(--gold); color:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .sc-text { flex:1; font-size:16.5px; color:var(--navy); line-height:1.4; }
+  .sc-text-empty { color:var(--border); font-style:italic; }
+  .sc-elem-badge { font-family:'DM Sans',sans-serif; font-size:9.5px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:3px 8px; border-radius:10px; color:var(--white); flex-shrink:0; }
+  .sc-btns { display:flex; gap:6px; flex-shrink:0; }
+  .sc-btn { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:5px 12px; border-radius:20px; border:1.5px solid var(--border); cursor:pointer; transition:all .15s; user-select:none; color:var(--med); background:transparent; }
+  .sc-btn:hover { border-color:var(--gold-soft); }
+  .sc-btn.yes { border-color:var(--green); background:var(--green); color:var(--white); }
+  .sc-btn.partial { border-color:var(--q1); background:var(--q1); color:var(--white); }
+  .sc-btn.no { border-color:var(--rust); background:var(--rust); color:var(--white); }
+
+  /* QUARTERS */
+  .quarters { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .quarter-card { border:1.5px solid var(--border); border-radius:3px; overflow:hidden; transition:border-color .3s; }
+  .quarter-card:focus-within { border-color:var(--gold); }
+  .qc-header { padding:10px 14px; display:flex; align-items:center; gap:10px; }
+  .qc-badge { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:1.5px; font-weight:700; text-transform:uppercase; padding:3px 10px; border-radius:10px; color:var(--white); flex-shrink:0; }
+  .qc-title { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; color:var(--navy); letter-spacing:.5px; }
+  .qc-time { font-family:'DM Sans',sans-serif; font-size:11px; color:var(--med); font-weight:600; }
+  .qc-desc { padding:0 14px; font-size:14.5px; color:var(--med); line-height:1.5; font-style:italic; }
+  .qc-input { font-family:'EB Garamond',Georgia,serif; font-size:16px; color:var(--navy); border:none; border-top:1px solid var(--border); padding:10px 14px; background:var(--cream); outline:none; width:100%; resize:none; min-height:60px; line-height:1.6; margin-top:8px; }
+  .qc-input::placeholder { color:var(--border); }
+
+  /* JOURNAL */
+  .journal-prompts { display:flex; flex-direction:column; gap:20px; }
+  .journal-item { }
+  .journal-prompt { font-size:18px; font-weight:600; color:var(--navy); margin-bottom:8px; display:flex; align-items:center; gap:10px; }
+  .journal-num { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; width:24px; height:24px; border-radius:50%; background:var(--section-bar); color:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .journal-area { font-family:'EB Garamond',Georgia,serif; font-size:17px; color:var(--navy); border:1px solid var(--border); border-radius:2px; padding:10px 14px; background:var(--cream); outline:none; width:100%; resize:none; min-height:70px; line-height:1.7; transition:border-color .2s; }
+  .journal-area:focus { border-color:var(--gold); }
+
+  .score-btn:hover { background:var(--rust) !important; }
+
+  /* AM/PM MODE TOGGLE */
+  .mode-toggle { display:flex; align-items:center; gap:0; border-radius:3px; overflow:hidden; border:1.5px solid var(--border); height:34px; }
+  .mode-btn { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:2px; font-weight:700; text-transform:uppercase; padding:0 18px; height:100%; border:none; cursor:pointer; transition:all .15s; background:transparent; color:var(--med); }
+  .mode-btn.active { background:var(--navy); color:var(--white); }
+  .mode-btn:not(.active):hover { background:var(--gold-bg); }
+  .mode-divider { width:1px; height:100%; background:var(--border); }
+
+  .pm-section { display:none; }
+  .pm-section.visible { display:block; }
+  .pm-transition { display:none; text-align:center; padding:20px 0 10px; }
+  .pm-transition.visible { display:block; }
+  .pm-transition-btn { font-family:'DM Sans',sans-serif; font-size:12px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--white); background:var(--gold); border:none; border-radius:2px; padding:14px 28px; cursor:pointer; transition:background .2s; }
+  .pm-transition-btn:hover { background:var(--rust); }
+  .pm-transition-msg { font-size:16px; color:var(--med); font-style:italic; margin-top:10px; }
+  .am-saved-notice { display:none; text-align:center; padding:12px; background:var(--green-bg); border-radius:3px; margin-bottom:20px; font-family:'DM Sans',sans-serif; font-size:12px; letter-spacing:1.5px; font-weight:600; text-transform:uppercase; color:var(--green); }
+  .am-saved-notice.visible { display:block; }
+
+  /* FINAL SCORE */
+  .final-score { display:none; }
+  .final-score.visible { display:block; }
+  .fs-card { border:2px solid var(--border); border-radius:3px; overflow:hidden; }
+  .fs-top { padding:28px 28px 20px; text-align:center; }
+  .fs-score-ring { width:120px; height:120px; border-radius:50%; margin:0 auto 14px; position:relative; background:var(--border); }
+  .fs-score-ring-fill { position:absolute; inset:0; border-radius:50%; transition:background .6s ease; }
+  .fs-score-ring-inner { position:absolute; inset:6px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; flex-direction:column; }
+  .fs-score-num { font-family:'DM Sans',sans-serif; font-size:40px; font-weight:700; line-height:1; }
+  .fs-score-label { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:2px; font-weight:700; text-transform:uppercase; color:var(--med); }
+  .fs-headline { font-size:24px; font-weight:600; color:var(--navy); margin-bottom:6px; }
+  .fs-message { font-size:17px; line-height:1.7; color:var(--charcoal); font-style:italic; max-width:600px; margin:0 auto; }
+
+  .fs-divider { height:1px; background:var(--border); margin:0 28px; }
+
+  .fs-recap { padding:20px 28px; }
+  .fs-recap-title { font-family:'DM Sans',sans-serif; font-size:11.5px; letter-spacing:2.5px; font-weight:700; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
+  .fs-recap-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .fs-recap-col { }
+  .fs-recap-label { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:1.5px; font-weight:700; color:var(--med); text-transform:uppercase; margin-bottom:6px; }
+  .fs-recap-item { font-size:16px; color:var(--navy); line-height:1.6; padding:4px 0; border-bottom:1px solid #f5f0e8; display:flex; align-items:center; gap:8px; }
+  .fs-recap-item:last-child { border-bottom:none; }
+  .fs-recap-score { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:10px; color:var(--white); flex-shrink:0; }
+  .fs-recap-empty { font-size:15px; color:var(--med); font-style:italic; padding:6px 0; }
+
+  .fs-quarters-recap { padding:0 28px 20px; }
+  .fs-q-row { display:grid; grid-template-columns:auto 1fr; gap:10px; padding:6px 0; border-bottom:1px solid #f5f0e8; align-items:start; }
+  .fs-q-row:last-child { border-bottom:none; }
+  .fs-q-badge { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:1px; font-weight:700; text-transform:uppercase; padding:3px 10px; border-radius:10px; color:var(--white); flex-shrink:0; margin-top:2px; }
+  .fs-q-text { font-size:15.5px; color:var(--navy); line-height:1.5; }
+  .fs-q-empty { font-size:15px; color:var(--med); font-style:italic; }
+
+  /* ─── PROGRESS BAR ─── */
+  .prog-wrap { max-width:900px; margin:14px auto 0; display:flex; align-items:center; gap:14px; }
+  .prog-label { font-family:'DM Sans',sans-serif; font-size:12px; letter-spacing:2px; font-weight:700; color:var(--gold); text-transform:uppercase; white-space:nowrap; }
+  .prog-track { flex:1; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .prog-fill { height:100%; background:var(--gold); border-radius:3px; width:0%; transition:width .5s ease; }
+  .prog-pct { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; color:var(--gold); }
+
+  .doc-footer { background:var(--navy); padding:14px 48px; display:flex; align-items:center; justify-content:space-between; }
+  .footer-brand { font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:3px; font-weight:700; color:rgba(255,255,255,.5); text-transform:uppercase; }
+  .footer-copy { font-size:13px; color:rgba(255,255,255,.3); font-style:italic; }
+
+  /* ─── PRINT ─── */
+  @media print {
+    body { background:white !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .input-panel, .print-btn, .prog-wrap { display:none !important; }
+    .pm-transition { display:none !important; }
+    .am-saved-notice { display:none !important; }
+    .browser-note { display:none !important; }
+    .pm-section.visible { display:block !important; }
+    .pm-section:not(.visible) { display:none !important; }
+    #document { margin:0; box-shadow:none; max-width:100%; }
+
+    /* Prevent awkward page breaks */
+    .gp-section { break-inside:avoid; }
+    .quarter-card { break-inside:avoid; }
+    .journal-item { break-inside:avoid; }
+    .huddle-q { break-inside:avoid; }
+    .intention-row { break-inside:avoid; }
+    .sc-row { break-inside:avoid; }
+    .section-bar { break-after:avoid; }
+    .intro-block { break-inside:avoid; }
+
+    /* Show input values clearly */
+    .qc-input, .journal-area { border:1px solid var(--border) !important; background:var(--cream) !important; min-height:50px; }
+    .huddle-input, .int-input { border-bottom:1.5px solid var(--border) !important; }
+
+    /* Ensure colors print */
+    .rating-dot.active { background:var(--gold) !important; color:var(--white) !important; border-color:var(--gold) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .rating-dot:not(.active) { opacity:.25; }
+    .section-bar { background:var(--section-bar) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .section-bar h2 { color:var(--white) !important; }
+    .huddle-num { background:var(--gold) !important; color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .journal-num { background:var(--section-bar) !important; color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .qc-badge { color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .qc-header { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-num { background:var(--gold) !important; color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-elem-badge { color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .int-elem-btn:not(.active) { display:none !important; }
+    .int-elem-btn.active { color:var(--white) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-btn:not(.yes):not(.partial):not(.no) { opacity:.25; }
+    .sc-btn.yes { background:var(--green) !important; color:var(--white) !important; border-color:var(--green) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-btn.partial { background:var(--q1) !important; color:var(--white) !important; border-color:var(--q1) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .sc-btn.no { background:var(--rust) !important; color:var(--white) !important; border-color:var(--rust) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+
+    /* Alignment buttons */
+    #alignYes, #alignSome, #alignNo { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    #alignYes.active, #alignSome.active, #alignNo.active { background:var(--gold) !important; color:var(--white) !important; border-color:var(--gold) !important; }
+    #alignYes:not(.active), #alignSome:not(.active), #alignNo:not(.active) { opacity:.25; }
+
+    /* Footer */
+    .doc-footer { background:var(--navy) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .footer-brand, .footer-copy { color:rgba(255,255,255,.5) !important; }
+
+    /* Intro block */
+    .intro-block { background:var(--gold-bg) !important; border-left:3px solid var(--gold) !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+
+    /* Header logo */
+    .header-logo img { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+
+    /* Final Score */
+    .final-score.visible { display:block !important; }
+    .final-score:not(.visible) { display:none !important; }
+    .score-btn { display:none !important; }
+    .fs-card { break-inside:avoid; }
+    .fs-score-ring { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-score-ring-fill { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-score-ring-inner { background:var(--white) !important; }
+    .fs-recap-score { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-q-badge { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    .fs-top { break-inside:avoid; }
+    .fs-recap { break-inside:avoid; }
+  }
+
+  @media (max-width:700px) {
+    .input-grid { grid-template-columns:1fr !important; }
+    .mode-toggle { width:100%; }
+    .doc-header { flex-direction:column; }
+    .header-meta { text-align:left; flex-direction:row; flex-wrap:wrap; gap:16px; }
+    .doc-body { padding:20px 24px 32px; }
+    .section-bar { margin:0 -24px; padding:10px 24px; }
+    .quarters { grid-template-columns:1fr; }
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE OVERRIDES
+     Auto-patched for vertical mobile viewing
+     ============================================ */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Common container selectors — constrain to viewport width */
+  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
+  .container, .shell, .prog-wrap, #document, #doc,
+  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
+  .section-wrap, .inner, .wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 640px) {
+
+    /* Prevent iOS from zooming on input focus */
+    input, select, textarea, button {
+      font-size: 16px !important;
+    }
+
+    /* Stack any side-by-side layouts */
+    .grid, .two-col, .three-col, .columns,
+    [style*="display:flex"], [style*="display: flex"] {
+      flex-direction: column !important;
+    }
+
+    /* Make tables scroll rather than overflow */
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* Ensure padding on body for breathing room */
+    body {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    /* Override any remaining fixed-width elements */
+    [style*="width:"] {
+      max-width: 100% !important;
+    }
+  }
+
+</style>
+
+<!-- ===== LAZARUS BRAND REFRESH ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./lazarus-brand.css">
+<!-- ===== /LAZARUS BRAND REFRESH ===== -->
+</head>
+<body>
+
+<div class="input-panel">
+  <div class="input-inner">
+    <div class="input-label">Your Details</div>
+    <div class="input-grid" style="grid-template-columns:2fr 1fr 1fr auto;">
+      <div class="field"><label>Name</label><input type="text" id="patientName" placeholder="Your name" oninput="syncDoc(); saveState()"/></div>
+      <div class="field"><label>Date</label><input type="date" id="docDate" onchange="syncDoc(); loadState()"/></div>
+      <div class="field"><label>Day of Week</label><input type="text" id="dayOfWeek" readonly/></div>
+      <div class="field">
+        <label>Mode</label>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeAM" onclick="setMode('am')">☀ AM</button>
+          <div class="mode-divider"></div>
+          <button class="mode-btn" id="modePM" onclick="setMode('pm')">☽ PM</button>
+        </div>
+      </div>
+    </div>
+    <div class="prog-wrap" style="margin-top:14px;">
+      <span class="prog-label" id="progLabel">Morning Gameplan</span>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <span class="prog-pct" id="progPct">0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="print-btn" style="display:flex;max-width:900px;margin:14px auto 0;justify-content:space-between;align-items:center;">
+    <button onclick="confirmReset()" style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--rust);background:transparent;border:1.5px solid var(--rust);border-radius:2px;padding:9px 20px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='var(--rust)';this.style.color='var(--white)';" onmouseout="this.style.background='transparent';this.style.color='var(--rust)';">↻ Reset Form</button>
+    <button onclick="window.print()" style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--gold);border:none;border-radius:2px;padding:9px 20px;cursor:pointer;">↓ Print / Save PDF</button>
+  </div>
+
+<div id="document">
+  <div class="doc-header">
+    <div style="display:flex;align-items:center;gap:18px;">
+      <div class="header-logo"><img src="data:image/png;base64,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" alt="The Lazarus Method"/></div>
+      <div>
+        <div class="header-badge">The Lazarus Method</div>
+        <div class="header-title">Personal Health Gameplan</div>
+        <div class="header-quote">Every great performance starts with a gameplan.</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div><div class="meta-item">Name</div><div class="meta-value" id="dn">________________</div></div>
+      <div><div class="meta-item">Date</div><div class="meta-value" id="dd">________________</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block" style="margin:26px 48px 0;">
+    <p><strong>Objective:</strong> Wake up and create your personalized health gameplan for the day. This quick and easy framework will help you set clear intentions and establish routines that align with your goals and values.</p>
+    <p class="browser-note" style="margin-top:10px;font-size:14.5px;color:var(--rust);"><strong>* Important:</strong> This form automatically saves your entries and will hold them for up to <strong>36 hours</strong>, so your morning gameplan will be waiting for you when you return for your evening review, even if the day rolls past midnight. For this to work, use the <strong>same browser</strong> on the <strong>same device</strong> and do not clear your browser data. When you are ready to start a new day, use the <strong>Reset Form</strong> button above the document.</p>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- ═══ PRE-GAME HUDDLE ═══ -->
+    <div class="section-bar"><h2>The Pre-Game Huddle</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> Take at least 10 minutes of silence before plugging into any electronic devices. Reflect honestly on these questions.</div>
+      <div class="huddle-questions">
+        <div class="huddle-q">
+          <div class="huddle-num">1</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">How did I sleep?</div>
+            <div class="rating-row" id="sleepRating">
+              <div class="rating-dot" onclick="setRating('sleep',1)">1</div>
+              <div class="rating-dot" onclick="setRating('sleep',2)">2</div>
+              <div class="rating-dot" onclick="setRating('sleep',3)">3</div>
+              <div class="rating-dot" onclick="setRating('sleep',4)">4</div>
+              <div class="rating-dot" onclick="setRating('sleep',5)">5</div>
+              <div class="rating-dot" onclick="setRating('sleep',6)">6</div>
+              <div class="rating-dot" onclick="setRating('sleep',7)">7</div>
+              <div class="rating-dot" onclick="setRating('sleep',8)">8</div>
+              <div class="rating-dot" onclick="setRating('sleep',9)">9</div>
+              <div class="rating-dot" onclick="setRating('sleep',10)">10</div>
+              <span class="rating-label">Poor → Excellent</span>
+            </div>
+          </div>
+        </div>
+        <div class="huddle-q">
+          <div class="huddle-num">2</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">How do I feel?</div>
+            <div class="rating-row" id="feelRating">
+              <div class="rating-dot" onclick="setRating('feel',1)">1</div>
+              <div class="rating-dot" onclick="setRating('feel',2)">2</div>
+              <div class="rating-dot" onclick="setRating('feel',3)">3</div>
+              <div class="rating-dot" onclick="setRating('feel',4)">4</div>
+              <div class="rating-dot" onclick="setRating('feel',5)">5</div>
+              <div class="rating-dot" onclick="setRating('feel',6)">6</div>
+              <div class="rating-dot" onclick="setRating('feel',7)">7</div>
+              <div class="rating-dot" onclick="setRating('feel',8)">8</div>
+              <div class="rating-dot" onclick="setRating('feel',9)">9</div>
+              <div class="rating-dot" onclick="setRating('feel',10)">10</div>
+              <span class="rating-label">Rough → Great</span>
+            </div>
+          </div>
+        </div>
+        <div class="huddle-q">
+          <div class="huddle-num">3</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">Were the decisions I made yesterday in alignment with my health goals?</div>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <div class="rating-dot" id="alignYes" onclick="setAlign('yes')" style="width:auto;padding:0 14px;border-radius:20px;font-size:10px;letter-spacing:1px;">YES</div>
+              <div class="rating-dot" id="alignSome" onclick="setAlign('some')" style="width:auto;padding:0 14px;border-radius:20px;font-size:10px;letter-spacing:1px;">MOSTLY</div>
+              <div class="rating-dot" id="alignNo" onclick="setAlign('no')" style="width:auto;padding:0 14px;border-radius:20px;font-size:10px;letter-spacing:1px;">NOT REALLY</div>
+            </div>
+          </div>
+        </div>
+        <div class="huddle-q">
+          <div class="huddle-num">4</div>
+          <div class="huddle-body">
+            <div class="huddle-prompt">Based on yesterday, the one thing I want to do differently today is…</div>
+            <input class="huddle-input" type="text" id="diffToday" placeholder="e.g. Stop snacking after dinner — I gave in last night and it disrupted my sleep" oninput="updateProgress(); saveState()"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ YOUR PLAYBOOK ═══ -->
+    <div class="section-bar"><h2>Your Playbook</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> Spend at least 5 minutes using your PREPARE gameplan. Then write down at least one intention for the day. Tag each intention to the element it belongs to. These are the specific plays you are choosing to run today.</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:11.5px;letter-spacing:2px;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">Today's Intentions</div>
+      <div id="intentionsContainer"></div>
+    </div>
+
+    <!-- ═══ 4 QUARTERS ═══ -->
+    <div class="section-bar"><h2>Visualize Your Day — The 4 Quarters</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> Visualize yourself making the right health decisions in each quarter of your day. See yourself implementing your intentions in vivid detail: where you are, what it looks like, how it feels to follow through. The more clear and specific your visualization, the more effective it will be. When you have already seen yourself making the right choice, the real moment becomes a replay, not a decision.</div>
+      <div class="quarters">
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q1);">Q1</span>
+            <div><div class="qc-title">Morning</div><div class="qc-time">4 AM — 10 AM</div></div>
+          </div>
+          <div class="qc-desc">The opening quarter. You set the tone here. Visualize yourself executing your morning routine and making your first healthy decisions of the day.</div>
+          <textarea class="qc-input" id="q1" placeholder="What does a great morning look like today?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q2);">Q2</span>
+            <div><div class="qc-title">Midday</div><div class="qc-time">10 AM — 2 PM</div></div>
+          </div>
+          <div class="qc-desc">Halftime check-in. Visualize yourself staying locked in on your intentions through meals, meetings, and the middle of your day.</div>
+          <textarea class="qc-input" id="q2" placeholder="What healthy decisions will you see yourself making?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q3);">Q3</span>
+            <div><div class="qc-title">Afternoon</div><div class="qc-time">2 PM — 6 PM</div></div>
+          </div>
+          <div class="qc-desc">The stretch run. Energy shifts, routines get tested. Visualize yourself holding the line on your intentions when it would be easiest to let them slide.</div>
+          <textarea class="qc-input" id="q3" placeholder="Where might you be tested, and what will you choose instead?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="quarter-card">
+          <div class="qc-header">
+            <span class="qc-badge" style="background:var(--q4);">Q4</span>
+            <div><div class="qc-title">Evening</div><div class="qc-time">6 PM — 10 PM</div></div>
+          </div>
+          <div class="qc-desc">The closing quarter. Visualize yourself winding down with purpose: a nourishing dinner, quality time, and a wind-down routine that sets up tomorrow.</div>
+          <textarea class="qc-input" id="q4" placeholder="What does a strong finish to the day look like?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ AM/PM TRANSITION ═══ -->
+    <div class="pm-transition" id="pmTransition">
+      <button class="pm-transition-btn" onclick="setMode('pm')">Start Your Post-Game Review →</button>
+      <div class="pm-transition-msg">Come back tonight to score your intentions and reflect on the day.</div>
+    </div>
+
+    <!-- ═══ PM SECTIONS ═══ -->
+    <div class="pm-section" id="pmBlock">
+
+    <div class="am-saved-notice" id="amNotice">✓ Your morning gameplan has been saved and is ready to review</div>
+
+    <!-- ═══ POST-GAME REVIEW ═══ -->
+    <div class="section-bar"><h2>Post-Game Review</h2></div>
+    <div class="gp-section">
+
+      <div class="gp-instructions"><strong>Intention Scorecard:</strong> Look at the intentions you set this morning. For each one, answer honestly: did you follow through?</div>
+      <div class="scorecard" id="scorecardContainer"></div>
+
+      <div class="gp-instructions"><strong>Reflect:</strong> Journal your thoughts, wins, and lessons. Honest reflection is where real growth happens.</div>
+      <div class="journal-prompts">
+
+        <div class="journal-item">
+          <div class="journal-prompt"><span class="journal-num">1</span> What plays worked well today?</div>
+          <textarea class="journal-area" id="j1" rows="3" placeholder="Think about the moments where you followed through on your intentions…" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="journal-item">
+          <div class="journal-prompt"><span class="journal-num">2</span> What was I grateful for today?</div>
+          <textarea class="journal-area" id="j2" rows="3" placeholder="Name specific people, moments, or outcomes you appreciate…" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+        <div class="journal-item">
+          <div class="journal-prompt"><span class="journal-num">3</span> How can I improve my strategy tomorrow?</div>
+          <textarea class="journal-area" id="j3" rows="3" placeholder="What would you do differently? What will you carry forward?" oninput="updateProgress(); saveState()"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ FINAL SCORE ═══ -->
+    <div class="section-bar"><h2>Final Score</h2></div>
+    <div class="gp-section">
+      <div class="gp-instructions"><strong>Instructions:</strong> When your day is done, hit the button below to see your final score. This is not about perfection. It is about awareness. Every game has a score, and the best players study theirs.</div>
+      <button class="score-btn" onclick="generateFinalScore()" style="font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--white);background:var(--navy);border:none;border-radius:2px;padding:14px 24px;cursor:pointer;width:100%;transition:background .2s;">Show My Final Score</button>
+    </div>
+
+    <div class="final-score" id="finalScore">
+      <div class="fs-card" id="fsCard">
+        <div class="fs-top">
+          <div class="fs-score-ring" id="fsRing">
+            <div class="fs-score-ring-fill" id="fsRingFill"></div>
+            <div class="fs-score-ring-inner">
+              <div class="fs-score-num" id="fsNum">0</div>
+              <div class="fs-score-label">out of 10</div>
+            </div>
+          </div>
+          <div class="fs-headline" id="fsHeadline"></div>
+          <div class="fs-message" id="fsMessage"></div>
+        </div>
+        <div class="fs-divider"></div>
+        <div class="fs-recap">
+          <div class="fs-recap-title">Intention Recap</div>
+          <div class="fs-recap-grid">
+            <div class="fs-recap-col">
+              <div class="fs-recap-label">What You Set Out to Do</div>
+              <div id="fsIntentions"></div>
+            </div>
+            <div class="fs-recap-col">
+              <div class="fs-recap-label">How You Showed Up</div>
+              <div id="fsScores"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fs-divider"></div>
+        <div class="fs-quarters-recap">
+          <div class="fs-recap-title" style="margin-top:16px;">Your Day at a Glance</div>
+          <div id="fsQuarters"></div>
+        </div>
+        <div class="fs-divider"></div>
+        <div class="fs-recap" style="padding-bottom:24px;">
+          <div class="fs-recap-title">Reflection Highlights</div>
+          <div id="fsReflection"></div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- close pm-section -->
+
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-brand">The Lazarus Method</span>
+    <span class="footer-copy">© The Lazarus Method · All Rights Reserved</span>
+  </div>
+</div>
+
+<script>
+const ELEMENTS = [
+  { id:'nourish',   name:'Nourish',   emoji:'🥗', color:'#3A7A3A' },
+  { id:'move',      name:'Move',      emoji:'⚡', color:'#1A3A7A' },
+  { id:'rest',      name:'Rest',      emoji:'🌙', color:'#4A1A7A' },
+  { id:'challenge', name:'Challenge', emoji:'🧠', color:'#7A1A1A' },
+  { id:'connect',   name:'Connect',   emoji:'🤝', color:'#7A4A1A' },
+  { id:'learn',     name:'Learn',     emoji:'📖', color:'#1A5A6A' },
+  { id:'spark',     name:'Spark',     emoji:'✨', color:'#6A3A1A' }
+];
+
+const PLACEHOLDERS = [
+  'e.g. Eat a whole-food lunch with no processed ingredients',
+  'e.g. Take a 20-minute walk after dinner',
+  'e.g. Be in bed with screens off by 10 PM'
+];
+
+let ratings = { sleep:0, feel:0 };
+let alignment = '';
+let intentions = [
+  { text:'', element:'' },
+  { text:'', element:'' },
+  { text:'', element:'' }
+];
+let scores = ['','',''];
+let currentMode = 'am';
+
+// ═══ PACIFIC TIME UTILITY ═══
+// All date logic uses Pacific Time so the day doesn't roll over at 4-5 PM for West Coast users
+function getPacificDateString() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
+}
+
+// ═══ STORAGE KEY ═══
+function getStorageKey() {
+  const dateVal = document.getElementById('docDate').value;
+  return 'lazarus-gameplan-' + dateVal;
+}
+
+function saveState() {
+  const state = {
+    name: document.getElementById('patientName').value,
+    ratings: ratings,
+    alignment: alignment,
+    diffToday: document.getElementById('diffToday').value,
+    intentions: intentions,
+    q1: document.getElementById('q1').value,
+    q2: document.getElementById('q2').value,
+    q3: document.getElementById('q3').value,
+    q4: document.getElementById('q4').value,
+    scores: scores,
+    j1: document.getElementById('j1').value,
+    j2: document.getElementById('j2').value,
+    j3: document.getElementById('j3').value,
+    mode: currentMode,
+    savedAt: Date.now()
+  };
+  try {
+    localStorage.setItem(getStorageKey(), JSON.stringify(state));
+  } catch(e) { /* storage full or unavailable */ }
+}
+
+function loadState() {
+  syncDoc();
+  const key = getStorageKey();
+  let state;
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      state = JSON.parse(raw);
+    } else {
+      // No data for today — look back up to 2 prior days (covers 36+ hour window)
+      const dateVal = document.getElementById('docDate').value;
+      const baseDate = new Date(dateVal + 'T12:00:00'); // noon avoids any DST edge cases
+      const TTL_MS = 36 * 60 * 60 * 1000; // 36 hours
+      for (let d = 1; d <= 2; d++) {
+        const prev = new Date(baseDate);
+        prev.setDate(prev.getDate() - d);
+        const prevDateStr = prev.getFullYear() + '-' + String(prev.getMonth()+1).padStart(2,'0') + '-' + String(prev.getDate()).padStart(2,'0');
+        const prevKey = 'lazarus-gameplan-' + prevDateStr;
+        const prevRaw = localStorage.getItem(prevKey);
+        if (prevRaw) {
+          const prevState = JSON.parse(prevRaw);
+          // Only auto-load if it was saved within 36 hours
+          if (prevState.savedAt && (Date.now() - prevState.savedAt) <= TTL_MS) {
+            state = prevState;
+            // Also update the date picker to match the original entry
+            document.getElementById('docDate').value = prevDateStr;
+            syncDoc();
+            break;
+          }
+        }
+      }
+      if (!state) { resetForm(); return; }
+    }
+  } catch(e) { resetForm(); return; }
+
+  // Restore name
+  if (state.name) document.getElementById('patientName').value = state.name;
+
+  // Restore ratings
+  if (state.ratings) {
+    ratings = state.ratings;
+    if (ratings.sleep > 0) {
+      document.getElementById('sleepRating').querySelectorAll('.rating-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < ratings.sleep);
+      });
+    }
+    if (ratings.feel > 0) {
+      document.getElementById('feelRating').querySelectorAll('.rating-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < ratings.feel);
+      });
+    }
+  }
+
+  // Restore alignment
+  if (state.alignment) {
+    alignment = state.alignment;
+    document.getElementById('alignYes').classList.toggle('active', alignment === 'yes');
+    document.getElementById('alignSome').classList.toggle('active', alignment === 'some');
+    document.getElementById('alignNo').classList.toggle('active', alignment === 'no');
+  }
+
+  // Restore diffToday
+  if (state.diffToday) document.getElementById('diffToday').value = state.diffToday;
+
+  // Restore intentions
+  if (state.intentions) intentions = state.intentions;
+
+  // Restore quarters
+  if (state.q1) document.getElementById('q1').value = state.q1;
+  if (state.q2) document.getElementById('q2').value = state.q2;
+  if (state.q3) document.getElementById('q3').value = state.q3;
+  if (state.q4) document.getElementById('q4').value = state.q4;
+
+  // Restore scores
+  if (state.scores) scores = state.scores;
+
+  // Restore journal
+  if (state.j1) document.getElementById('j1').value = state.j1;
+  if (state.j2) document.getElementById('j2').value = state.j2;
+  if (state.j3) document.getElementById('j3').value = state.j3;
+
+  // Restore mode
+  if (state.mode) setMode(state.mode, true);
+
+  buildIntentions();
+  updateScorecard();
+  updateProgress();
+  syncDoc();
+}
+
+function resetForm() {
+  ratings = { sleep:0, feel:0 };
+  alignment = '';
+  intentions = [{ text:'', element:'' },{ text:'', element:'' },{ text:'', element:'' }];
+  scores = ['','',''];
+  document.getElementById('diffToday').value = '';
+  document.getElementById('q1').value = '';
+  document.getElementById('q2').value = '';
+  document.getElementById('q3').value = '';
+  document.getElementById('q4').value = '';
+  document.getElementById('j1').value = '';
+  document.getElementById('j2').value = '';
+  document.getElementById('j3').value = '';
+  document.querySelectorAll('.rating-dot').forEach(d => d.classList.remove('active'));
+  document.getElementById('alignYes').classList.remove('active');
+  document.getElementById('alignSome').classList.remove('active');
+  document.getElementById('alignNo').classList.remove('active');
+  document.getElementById('finalScore').classList.remove('visible');
+  setMode('am', true);
+  buildIntentions();
+  updateScorecard();
+  updateProgress();
+}
+
+function confirmReset() {
+  if (confirm('This will clear everything on the form so you can start a new day. Your saved entries for previous dates will not be affected.\n\nAre you sure you want to reset?')) {
+    // Remove today's storage key
+    try { localStorage.removeItem(getStorageKey()); } catch(e) {}
+    // Reset the date to today in case it was showing a previous day
+    const today = new Date();
+    document.getElementById('docDate').value = getPacificDateString();
+    syncDoc();
+    resetForm();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+}
+
+// Clean up storage keys older than 7 days to prevent clutter
+function cleanupOldEntries() {
+  try {
+    const now = Date.now();
+    const MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('lazarus-gameplan-')) {
+        const raw = localStorage.getItem(k);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.savedAt && (now - parsed.savedAt) > MAX_AGE) {
+            localStorage.removeItem(k);
+          }
+        }
+      }
+    }
+  } catch(e) {}
+}
+
+// ═══ MODE TOGGLE ═══
+function setMode(mode, skipSave) {
+  currentMode = mode;
+  document.getElementById('modeAM').classList.toggle('active', mode === 'am');
+  document.getElementById('modePM').classList.toggle('active', mode === 'pm');
+
+  const pmBlock = document.getElementById('pmBlock');
+  const transition = document.getElementById('pmTransition');
+  const notice = document.getElementById('amNotice');
+
+  if (mode === 'pm') {
+    pmBlock.classList.add('visible');
+    transition.classList.remove('visible');
+    notice.classList.add('visible');
+    updateScorecard();
+    pmBlock.scrollIntoView({ behavior:'smooth', block:'start' });
+  } else {
+    pmBlock.classList.remove('visible');
+    transition.classList.add('visible');
+    notice.classList.remove('visible');
+    document.getElementById('finalScore').classList.remove('visible');
+  }
+
+  if (!skipSave) saveState();
+}
+
+// ═══ RATINGS ═══
+function setRating(type, val) {
+  ratings[type] = val;
+  const container = document.getElementById(type + 'Rating');
+  container.querySelectorAll('.rating-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i < val);
+  });
+  updateProgress();
+  saveState();
+}
+
+function setAlign(val) {
+  alignment = val;
+  document.getElementById('alignYes').classList.toggle('active', val === 'yes');
+  document.getElementById('alignSome').classList.toggle('active', val === 'some');
+  document.getElementById('alignNo').classList.toggle('active', val === 'no');
+  updateProgress();
+  saveState();
+}
+
+// ═══ INTENTIONS ═══
+function buildIntentions() {
+  const container = document.getElementById('intentionsContainer');
+  container.innerHTML = '';
+  intentions.forEach((int, i) => {
+    const row = document.createElement('div');
+    row.className = 'intention-row';
+
+    const numSpan = document.createElement('span');
+    numSpan.className = 'int-num';
+    numSpan.textContent = (i+1) + '.';
+
+    const body = document.createElement('div');
+    body.className = 'int-body';
+
+    const input = document.createElement('input');
+    input.className = 'int-input';
+    input.type = 'text';
+    input.placeholder = PLACEHOLDERS[i];
+    input.value = int.text;
+    input.addEventListener('input', function() {
+      intentions[i].text = this.value;
+      updateScorecard();
+      updateProgress();
+      saveState();
+    });
+
+    const elemRow = document.createElement('div');
+    elemRow.className = 'int-elem-row';
+
+    ELEMENTS.forEach(el => {
+      const btn = document.createElement('span');
+      btn.className = 'int-elem-btn';
+      btn.textContent = el.emoji + ' ' + el.name;
+      if (int.element === el.id) {
+        btn.classList.add('active');
+        btn.style.background = el.color;
+        btn.style.borderColor = el.color;
+      }
+      btn.addEventListener('click', function() {
+        intentions[i].element = (intentions[i].element === el.id) ? '' : el.id;
+        buildIntentions();
+        updateScorecard();
+        updateProgress();
+        saveState();
+      });
+      elemRow.appendChild(btn);
+    });
+
+    body.appendChild(input);
+    body.appendChild(elemRow);
+    row.appendChild(numSpan);
+    row.appendChild(body);
+    container.appendChild(row);
+  });
+}
+
+// ═══ SCORECARD ═══
+function updateScorecard() {
+  const container = document.getElementById('scorecardContainer');
+  container.innerHTML = '';
+
+  const hasAny = intentions.some(int => int.text.trim());
+  if (!hasAny) {
+    container.innerHTML = '<div style="font-size:16px;color:var(--med);font-style:italic;padding:8px 0;">Your intentions from this morning will appear here for scoring.</div>';
+    return;
+  }
+
+  intentions.forEach((int, i) => {
+    if (!int.text.trim()) return;
+    const el = ELEMENTS.find(e => e.id === int.element);
+    const row = document.createElement('div');
+    row.className = 'sc-row';
+
+    const num = document.createElement('div');
+    num.className = 'sc-num';
+    num.textContent = (i+1);
+
+    let badge = '';
+    if (el) {
+      badge = document.createElement('span');
+      badge.className = 'sc-elem-badge';
+      badge.style.background = el.color;
+      badge.textContent = el.emoji + ' ' + el.name;
+    }
+
+    const text = document.createElement('div');
+    text.className = 'sc-text';
+    text.textContent = int.text;
+
+    const btns = document.createElement('div');
+    btns.className = 'sc-btns';
+
+    ['Yes','Partially','No'].forEach((label, li) => {
+      const btn = document.createElement('span');
+      btn.className = 'sc-btn';
+      btn.textContent = label;
+      const val = ['yes','partial','no'][li];
+      if (scores[i] === val) btn.classList.add(val);
+      btn.addEventListener('click', function() {
+        scores[i] = (scores[i] === val) ? '' : val;
+        updateScorecard();
+        updateProgress();
+        saveState();
+      });
+      btns.appendChild(btn);
+    });
+
+    row.appendChild(num);
+    if (badge) row.appendChild(badge);
+    row.appendChild(text);
+    row.appendChild(btns);
+    container.appendChild(row);
+  });
+}
+
+// ═══ PROGRESS ═══
+function updateProgress() {
+  const amFields = [
+    ratings.sleep > 0,
+    ratings.feel > 0,
+    alignment !== '',
+    document.getElementById('diffToday').value.trim() !== '',
+    intentions[0].text.trim() !== '',
+    document.getElementById('q1').value.trim() !== '',
+    document.getElementById('q2').value.trim() !== '',
+    document.getElementById('q3').value.trim() !== '',
+    document.getElementById('q4').value.trim() !== ''
+  ];
+  const pmFields = [
+    scores.some(s => s !== ''),
+    document.getElementById('j1').value.trim() !== '',
+    document.getElementById('j2').value.trim() !== '',
+    document.getElementById('j3').value.trim() !== ''
+  ];
+
+  const fields = currentMode === 'am' ? amFields : [...amFields, ...pmFields];
+  const filled = fields.filter(Boolean).length;
+  const pct = Math.round(filled / fields.length * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progPct').textContent = pct + '%';
+  document.getElementById('progLabel').textContent = currentMode === 'am' ? 'Morning Gameplan' : 'Full Day Progress';
+}
+
+function syncDoc() {
+  const name = document.getElementById('patientName').value.trim() || '________________';
+  const dateVal = document.getElementById('docDate').value;
+  document.getElementById('dn').textContent = name;
+  if (dateVal) {
+    const d = new Date(dateVal + 'T00:00:00');
+    document.getElementById('dd').textContent = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+    document.getElementById('dayOfWeek').value = d.toLocaleDateString('en-US', { weekday:'long' });
+  }
+}
+
+// ═══ FINAL SCORE (unchanged logic) ═══
+function generateFinalScore() {
+  const fs = document.getElementById('finalScore');
+  fs.classList.add('visible');
+  fs.scrollIntoView({ behavior:'smooth', block:'start' });
+
+  let points = 0, maxPoints = 0;
+
+  if (ratings.sleep > 0) points += ratings.sleep / 10;
+  maxPoints += 1;
+  if (ratings.feel > 0) points += ratings.feel / 10;
+  maxPoints += 1;
+  maxPoints += 1;
+  if (alignment === 'yes') points += 1;
+  else if (alignment === 'some') points += 0.5;
+  maxPoints += 0.5;
+  if (document.getElementById('diffToday').value.trim()) points += 0.5;
+  maxPoints += 1;
+  const intSet = intentions.filter(i => i.text.trim()).length;
+  if (intSet >= 1) points += Math.min(intSet / 3, 1);
+  maxPoints += 1;
+  const qFilled = ['q1','q2','q3','q4'].filter(id => document.getElementById(id).value.trim()).length;
+  points += qFilled / 4;
+  const scoredCount = intentions.filter(i => i.text.trim()).length || 1;
+  maxPoints += 3;
+  scores.forEach((s, i) => {
+    if (!intentions[i].text.trim()) return;
+    if (s === 'yes') points += 3 / scoredCount;
+    else if (s === 'partial') points += 1.5 / scoredCount;
+  });
+  maxPoints += 1.5;
+  ['j1','j2','j3'].forEach(id => { if (document.getElementById(id).value.trim()) points += 0.5; });
+
+  const finalScore = Math.round(Math.min(points / maxPoints * 10, 10) * 10) / 10;
+
+  let color, headline, message, border;
+  if (finalScore >= 8) { color='#2D6A4F'; border='#2D6A4F'; headline='Dominant Performance.'; message='You came in with a plan, executed your intentions, and finished strong. Days like this are what separate the people who talk about getting healthy from the people who actually do it. Carry this momentum into tomorrow.'; }
+  else if (finalScore >= 6) { color='#1A3A7A'; border='#1A3A7A'; headline='Solid Game.'; message='You showed up, you competed, and you made more right decisions than wrong ones. That counts. The gap between where you are and where you want to be is not talent — it is consistency. Keep building on what worked today.'; }
+  else if (finalScore >= 4) { color='#C46210'; border='#C46210'; headline='A Tough Quarter.'; message='Not every game goes your way, and that is fine. What matters is that you are still on the field. Look at what pulled you off your plan today and name it. Awareness is the first play in tomorrow\'s gameplan.'; }
+  else { color='#7A3A1E'; border='#7A3A1E'; headline='Time to Regroup.'; message='Today was a loss. There is no way around it. But here is the thing about a loss: it only defines you if you let it. The best players study their worst games the hardest. Tomorrow is a new game. Come in with a sharper plan.'; }
+
+  document.getElementById('fsNum').textContent = finalScore;
+  document.getElementById('fsNum').style.color = color;
+  document.getElementById('fsHeadline').textContent = headline;
+  document.getElementById('fsHeadline').style.color = color;
+  document.getElementById('fsMessage').textContent = message;
+  document.getElementById('fsCard').style.borderColor = border;
+
+  const ringFill = document.getElementById('fsRingFill');
+  const deg = (finalScore / 10) * 360;
+  ringFill.style.background = 'conic-gradient('+color+' '+deg+'deg, var(--border) '+deg+'deg)';
+
+  const intWrap = document.getElementById('fsIntentions');
+  const scWrap = document.getElementById('fsScores');
+  intWrap.innerHTML = ''; scWrap.innerHTML = '';
+
+  if (intSet === 0) {
+    intWrap.innerHTML = '<div class="fs-recap-empty">No intentions were set.</div>';
+    scWrap.innerHTML = '<div class="fs-recap-empty">Nothing to score.</div>';
+  } else {
+    intentions.forEach((int, i) => {
+      if (!int.text.trim()) return;
+      const el = ELEMENTS.find(e => e.id === int.element);
+      const intItem = document.createElement('div'); intItem.className = 'fs-recap-item';
+      if (el) { const b = document.createElement('span'); b.className='fs-recap-score'; b.style.background=el.color; b.textContent=el.emoji+' '+el.name; intItem.appendChild(b); }
+      const t = document.createElement('span'); t.textContent = int.text; intItem.appendChild(t); intWrap.appendChild(intItem);
+      const scItem = document.createElement('div'); scItem.className = 'fs-recap-item';
+      const scB = document.createElement('span'); scB.className = 'fs-recap-score';
+      const s = scores[i];
+      if (s==='yes'){scB.style.background='#2D6A4F';scB.textContent='✓ Yes';}
+      else if(s==='partial'){scB.style.background='#C46210';scB.textContent='~ Partially';}
+      else if(s==='no'){scB.style.background='#7A3A1E';scB.textContent='✗ No';}
+      else{scB.style.background='var(--border)';scB.style.color='var(--med)';scB.textContent='Not scored';}
+      scItem.appendChild(scB); scWrap.appendChild(scItem);
+    });
+  }
+
+  const qWrap = document.getElementById('fsQuarters'); qWrap.innerHTML = '';
+  [{id:'q1',label:'Q1',color:'var(--q1)'},{id:'q2',label:'Q2',color:'var(--q2)'},{id:'q3',label:'Q3',color:'var(--q3)'},{id:'q4',label:'Q4',color:'var(--q4)'}].forEach(q => {
+    const val = document.getElementById(q.id).value.trim();
+    const row = document.createElement('div'); row.className = 'fs-q-row';
+    row.innerHTML = '<span class="fs-q-badge" style="background:'+q.color+';">'+q.label+'</span><span class="'+(val?'fs-q-text':'fs-q-empty')+'">'+(val||'Not filled in')+'</span>';
+    qWrap.appendChild(row);
+  });
+
+  const refWrap = document.getElementById('fsReflection'); refWrap.innerHTML = '';
+  let hasRef = false;
+  [{id:'j1',label:'What worked'},{id:'j2',label:'Grateful for'},{id:'j3',label:'Improve tomorrow'}].forEach(p => {
+    const val = document.getElementById(p.id).value.trim();
+    if (!val) return; hasRef = true;
+    const item = document.createElement('div'); item.className = 'fs-recap-item';
+    item.innerHTML = '<span class="fs-recap-score" style="background:var(--section-bar);">'+p.label+'</span><span>'+val+'</span>';
+    refWrap.appendChild(item);
+  });
+  if (!hasRef) refWrap.innerHTML = '<div class="fs-recap-empty">No reflections were added. The best players study their game film.</div>';
+
+  saveState();
+}
+
+// ═══ INIT ═══
+const today = new Date();
+document.getElementById('docDate').value = getPacificDateString();
+syncDoc();
+buildIntentions();
+updateScorecard();
+
+// Show AM transition button by default
+document.getElementById('pmTransition').classList.add('visible');
+
+// Clean up entries older than 7 days
+cleanupOldEntries();
+
+// Try to load saved state for today (or recent entry within 36 hours)
+loadState();
+</script>
+</body>
+</html>
