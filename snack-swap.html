@@ -166,54 +166,86 @@
   }
 
   /* ============================================
-     MOBILE RESPONSIVE OVERRIDES
-     Auto-patched for vertical mobile viewing
+     MOBILE RESPONSIVE
+     Class-targeted overrides for actual layout
      ============================================ */
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Common container selectors — constrain to viewport width */
-  .input-inner, .patient-inner, .main, .main-wrap, .report-wrap,
-  .container, .shell, .prog-wrap, #document, #doc,
-  .worksheet-inner, .card-inner, .content-wrap, .page-wrap,
-  .section-wrap, .inner, .wrapper {
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
+  body { overflow-x: hidden; }
 
   @media (max-width: 640px) {
 
-    /* Prevent iOS from zooming on input focus */
-    input, select, textarea, button {
-      font-size: 16px !important;
-    }
+    /* Prevent iOS from zooming inputs on focus */
+    input, select, textarea, button { font-size: 16px !important; }
 
-    /* Stack any side-by-side layouts */
-    .grid, .two-col, .three-col, .columns,
-    [style*="display:flex"], [style*="display: flex"] {
-      flex-direction: column !important;
-    }
+    /* Wrappers fill viewport */
+    .input-inner, .report-wrap { max-width: 100%; width: 100%; }
 
-    /* Make tables scroll rather than overflow */
-    table {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-    }
+    /* Tighten outer chrome */
+    .input-panel { padding: 20px 16px 18px; }
+    .report-wrap { margin: 16px auto; padding: 0 12px; gap: 16px; }
 
-    /* Ensure padding on body for breathing room */
-    body {
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-    }
+    /* The big fix: shrink .page padding so content fits the viewport */
+    .page { padding: 28px 20px 32px; }
 
-    /* Override any remaining fixed-width elements */
-    [style*="width:"] {
-      max-width: 100% !important;
-    }
+    /* Stack patient name + date */
+    .input-grid { grid-template-columns: 1fr; gap: 12px; }
+
+    /* Action bar wraps and buttons share the row */
+    .action-bar { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+    .btn { padding: 10px 16px; flex: 1 1 auto; }
+
+    /* Header sizing */
+    .header { margin-bottom: 24px; }
+    .header-title { font-size: 22px; letter-spacing: 0.5px; line-height: 1.25; }
+    .header-rule { margin: 14px auto 0; }
+
+    /* Patient bar stacks vertically */
+    .patient-bar { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 0; }
+
+    /* Section bars: tighten letter-spacing for narrow widths */
+    .section-bar { letter-spacing: 2px; padding: 10px 12px; font-size: 10.5px; }
+
+    /* Rule box and calculator */
+    .rule-box { padding: 20px 16px; }
+    .rule-number { font-size: 30px; }
+    .rule-desc { font-size: 15px; }
+    .rule-footnotes { font-size: 12.5px; }
+    .calc-row { gap: 10px; }
+    .calc-input, .calc-result-val { width: 76px; padding: 8px 4px; }
+    .calc-divider, .calc-equals { padding-top: 14px; font-size: 18px; }
+
+    /* Two-column report blocks stack */
+    .two-col { grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+    .col-body { padding: 14px 16px; }
+
+    /* Banned items single column */
+    .banned-grid { grid-template-columns: 1fr; }
+
+    /* Fixes box single column */
+    .fixes-box { padding: 16px 18px; }
+    .fixes-grid { grid-template-columns: 1fr; }
+
+    /* Daily steps tighter */
+    .daily-step { gap: 10px; margin-bottom: 14px; }
+
+    /* Page 2 score cards stack */
+    .score-row { flex-direction: column; gap: 12px; margin-bottom: 24px; }
+    .score-card { padding: 16px; }
+
+    /* Selectors wrap if a row gets long */
+    .grade-selector, .thumb-selector { flex-wrap: wrap; }
+
+    /* Summary bar stacks and centers */
+    .summary-bar { flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 20px; margin-top: 24px; }
+    .summary-score { font-size: 36px; }
+
+    /* Reflect area spacing */
+    .reflect-prompt { margin-top: 22px; }
+
+    /* Tables scroll horizontally if any appear */
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; }
+
+    /* Footer spacing */
+    .page-footer { margin-top: 24px; }
   }
 
 </style>
