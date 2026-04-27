@@ -293,6 +293,39 @@ button, .btn, .top-btn, .trend-tab, .log-submit,
   color: var(--text-secondary) !important;
 }
 
+/* ═════════════════════════════════════════════════════════════════════
+   v1.5 — UNIVERSAL ACTIVE-STATE TEXT CONTRAST FIX
+
+   Many original tools defined active states like:
+     .chip.active { background: var(--gold); color: var(--white); }
+   When --gold gets remapped to near-black in this brand CSS, the
+   background correctly goes dark — but the white text gets killed by
+   our broad `.input-inner * { color: var(--text-primary) }` rule above.
+   Result: black text on black background, invisible.
+
+   This block restores light text on active pill / chip / btn / dot /
+   radio states. Attribute selectors give us specificity (0,2,0+) which
+   beats `.input-inner *` (0,1,1).
+
+   :not() exclusions preserve cases where active-state still has a LIGHT
+   background (lime CTAs, card-style "checked" selections like
+   .activity-card / .benefit-option / .food-card etc. — those keep dark
+   text correctly via the broad input-inner rule above).
+   ═════════════════════════════════════════════════════════════════════ */
+
+[class*="chip"].active, [class*="chip"].selected,
+[class*="chip"].active *, [class*="chip"].selected *,
+[class*="pill"].active, [class*="pill"].selected,
+[class*="pill"].active *, [class*="pill"].selected *,
+[class*="-btn"].active:not(.diff-btn):not(.btn-primary):not(.log-submit):not(.start-btn):not(.complete-btn):not(.checkpoint-btn):not(.btn-reset):not(.btn-save):not(.btn-generate),
+[class*="-btn"].active:not(.diff-btn):not(.btn-primary):not(.log-submit):not(.start-btn):not(.complete-btn):not(.checkpoint-btn):not(.btn-reset):not(.btn-save):not(.btn-generate) *,
+[class*="-dot"].active, [class*="-dot"].active *,
+[class*="-letter"].active, [class*="-letter"].active *,
+[class*="-pick"].active, [class*="-pick"].active *,
+[class*="-radio"].selected, [class*="-radio"].selected * {
+  color: var(--text-on-dark) !important;
+}
+
 /* DARK-SURFACE TEXT — high-specificity (.header.header trick) to beat
    any other rule that might try to set #0f0f0f */
 .header.header,
@@ -1116,6 +1149,42 @@ main, body > main {
   }
   .header { padding: var(--space-12) var(--content-pad-x) !important; }
   .stats-row { gap: var(--space-2) !important; }
+
+  /* ───────────────────────────────────────────────────────────────────
+     v1.5 — MOBILE GRID STACKING (unified across all 68 branded tools)
+
+     Many originals use `display: grid; grid-template-columns: 1fr 1fr`
+     for two-column layouts. Their per-file mobile fixes are inconsistent
+     — some try `flex-direction: column` which doesn't apply to grids,
+     leaving content overlapped/clipped on mobile.
+
+     This block forces all known multi-column grid classes to single
+     column on mobile. Safe-list excludes calendars and day-trackers
+     that need to stay multi-column structurally.
+     ─────────────────────────────────────────────────────────────────── */
+
+  .two-col, .three-col, .four-col, .columns, .concept-cols,
+  .banned-grid, .fixes-grid, .input-grid, .macro-grid,
+  .checklist-grid, .activity-grid, .compare-grid,
+  .element-grid, .topics-grid, .rank-grid,
+  .score-breakdown, .rule-items, .overview-grid,
+  .body-map, .protocol-grid, .plank-images,
+  .history-grid, .form-grid, .milestones-grid,
+  .checkin-grid, .slider-grid, .quiz-options,
+  .approved-grid, .swap-grid, .pair-grid,
+  .supp-row, .patient-grid, .patient-inner,
+  .done-stats, .ig, .rg {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .score-row, .calc-row, .pair-row, .swap-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
 }
 
 /* ═════════════════════════════════════════════════════════════════════
