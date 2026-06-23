@@ -1,0 +1,306 @@
+<div id="app">
+  <div class="wrap">
+    <header class="masthead">
+      <div class="eyebrow">The Lazarus Method &nbsp;·&nbsp; for eTeamSponsor</div>
+      <h1>One-on-One Consultations</h1>
+      <p class="sub">Private 20-minute sessions with Dr. Ryan Lazarus &nbsp;·&nbsp; Tuesday, July 8 &nbsp;·&nbsp; 12:00–2:00&nbsp;PM &nbsp;·&nbsp; HQ</p>
+      <p class="lede">Bring any health or performance question, or talk through your personal and professional goals. Six slots, first come, first served. Once a time is taken, it's gone, so grab yours early.</p>
+    </header>
+
+    <div id="status" class="status" aria-live="polite"></div>
+
+    <main id="slots" class="slots" aria-busy="true">
+      <div class="loading">Loading available times…</div>
+    </main>
+
+    <footer class="foot">
+      <span id="remaining"></span>
+      <button id="orgToggle" class="orglink" type="button">Organizer view</button>
+    </footer>
+  </div>
+</div>
+
+<style>
+  #app {
+    --navy:#1B2A4A;
+    --navy-soft:#26395f;
+    --gold:#B8893A;
+    --gold-deep:#8f6a29;
+    --cream:#FBF7EF;
+    --cream-cell:#F4EDDF;
+    --ink:#2A2A2A;
+    --grey:#6B6B6B;
+    --line:#E2D8C4;
+    --good:#3f7d52;
+    --serif:"EB Garamond","Georgia",serif;
+    --sans:"DM Sans","Segoe UI",system-ui,sans-serif;
+    font-family:var(--sans);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  #app *{box-sizing:border-box;}
+  .wrap{max-width:680px;margin:0 auto;padding:32px 22px 56px;}
+
+  .masthead{text-align:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:14px;}
+  .masthead h1{font-family:var(--serif);font-weight:600;color:var(--navy);font-size:38px;line-height:1.05;margin:0 0 12px;letter-spacing:.005em;}
+  .sub{font-size:14px;color:var(--navy);font-weight:600;margin:0 auto 14px;letter-spacing:.01em;}
+  .lede{font-family:var(--serif);font-size:18px;color:var(--ink);max-width:520px;margin:0 auto;}
+
+  .status{min-height:0;margin-bottom:0;}
+  .status.show{min-height:auto;margin-bottom:22px;}
+  .banner{padding:14px 16px;border-radius:10px;font-size:15px;display:flex;gap:10px;align-items:flex-start;}
+  .banner.ok{background:#eef4ef;border:1px solid #cfe0d3;color:#2c5839;}
+  .banner.info{background:var(--cream-cell);border:1px solid var(--line);color:var(--navy);}
+  .banner .mark{font-weight:700;flex:0 0 auto;}
+
+  .slots{display:flex;flex-direction:column;gap:12px;}
+  .loading{font-family:var(--serif);font-style:italic;color:var(--grey);text-align:center;padding:30px 0;}
+
+  .slot{
+    display:flex;align-items:center;gap:16px;
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;transition:border-color .15s,box-shadow .15s,background .15s;
+  }
+  .slot .time{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--navy);flex:0 0 96px;}
+  .slot .mid{flex:1 1 auto;min-width:0;}
+  .slot .state{font-size:13px;color:var(--grey);}
+  .slot.open:hover{border-color:var(--gold);box-shadow:0 2px 10px rgba(27,42,74,.07);}
+  .slot.taken{background:var(--cream);border-style:dashed;}
+  .slot.taken .time{color:var(--navy-soft);opacity:.55;}
+  .slot.mine{background:#eef4ef;border-color:#bcd6c3;border-style:solid;}
+  .slot.mine .time{color:var(--good);opacity:1;}
+
+  .slot .act{flex:0 0 auto;}
+  .btn{
+    font-family:var(--sans);font-weight:600;font-size:14px;
+    border:0;border-radius:8px;padding:10px 18px;cursor:pointer;
+    background:var(--navy);color:#fff;transition:background .15s,transform .05s;
+  }
+  .btn:hover{background:var(--navy-soft);}
+  .btn:active{transform:translateY(1px);}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .btn[disabled]{background:#cfc7b6;cursor:not-allowed;color:#fff;}
+  .btn.ghost{background:transparent;color:var(--gold-deep);border:1px solid var(--gold);}
+  .btn.ghost:hover{background:var(--cream-cell);}
+  .taglock{font-size:13px;color:var(--grey);font-style:italic;font-family:var(--serif);}
+  .tagmine{font-size:13px;color:var(--good);font-weight:600;}
+
+  .foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  #remaining{font-size:14px;color:var(--navy);font-weight:600;}
+  .orglink{background:none;border:0;color:var(--grey);font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:var(--sans);}
+  .orglink:hover{color:var(--navy);}
+
+  /* form */
+  .bookform{display:flex;flex-direction:column;gap:8px;width:100%;}
+  .bookform .row{display:flex;gap:8px;}
+  .bookform input{
+    flex:1 1 auto;font-family:var(--sans);font-size:15px;padding:10px 12px;
+    border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);min-width:0;
+  }
+  .bookform input:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold);}
+  .bookform .hint{font-size:12px;color:var(--grey);}
+  .bookform .err{font-size:13px;color:#a3402f;font-weight:600;}
+
+  /* organizer */
+  .org{background:var(--navy);color:#f4f1ea;border-radius:12px;padding:20px;margin-top:6px;}
+  .org h2{font-family:var(--serif);font-size:20px;margin:0 0 4px;color:#fff;font-weight:600;}
+  .org p{font-size:13px;color:#c4ccda;margin:0 0 14px;}
+  .org table{width:100%;border-collapse:collapse;font-size:14px;}
+  .org th,.org td{text-align:left;padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.13);}
+  .org th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fb0cf;font-weight:700;}
+  .org td.t{font-family:var(--serif);font-size:17px;color:#fff;width:90px;}
+  .org .empty{color:#7d8db0;font-style:italic;font-family:var(--serif);}
+  .org .release{background:none;border:1px solid rgba(255,255,255,.3);color:#dfe5ef;font-size:12px;border-radius:6px;padding:5px 10px;cursor:pointer;}
+  .org .release:hover{background:rgba(255,255,255,.1);}
+
+  @media(max-width:520px){
+    .masthead h1{font-size:30px;}
+    .slot{flex-wrap:wrap;gap:10px;}
+    .slot .time{flex-basis:auto;}
+    .slot .act{width:100%;}
+    .btn{width:100%;}
+    .bookform .row{flex-direction:column;}
+  }
+  @media(prefers-reduced-motion:reduce){.slot,.btn{transition:none;}}
+</style>
+
+<script>
+(function(){
+  const root = document.getElementById('app');
+  const SLOTS = ["12:00 PM","12:20 PM","12:40 PM","1:00 PM","1:20 PM","1:40 PM"];
+  const KEY = "ets_lazarus_consults_jul8";
+  const MINE_KEY = "ets_my_slot_jul8"; // local only, identifies this browser's booking
+  let orgMode = false;
+
+  const slotsEl = document.getElementById('slots');
+  const statusEl = document.getElementById('status');
+  const remEl = document.getElementById('remaining');
+  const orgToggle = document.getElementById('orgToggle');
+
+  // localStorage isn't available in this sandbox; track "mine" in memory + a flag we persist by name match
+  let myName = null;
+
+  async function load(){
+    let data = {};
+    try{
+      const res = await window.storage.get(KEY, true);
+      if(res && res.value) data = JSON.parse(res.value);
+    }catch(e){ data = {}; }
+    return data; // { "12:00 PM": {name, dept, ts}, ... }
+  }
+
+  async function save(data){
+    await window.storage.set(KEY, JSON.stringify(data), true);
+  }
+
+  function banner(type, mark, msg){
+    statusEl.className = "status show";
+    statusEl.innerHTML = '<div class="banner '+type+'"><span class="mark">'+mark+'</span><span>'+msg+'</span></div>';
+  }
+  function clearBanner(){ statusEl.className="status"; statusEl.innerHTML=""; }
+
+  function esc(s){return (s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  async function render(){
+    const data = await load();
+    slotsEl.setAttribute('aria-busy','false');
+
+    if(orgMode){ renderOrg(data); return; }
+
+    slotsEl.innerHTML = "";
+    let taken = 0;
+    SLOTS.forEach(time=>{
+      const rec = data[time];
+      const mine = rec && myName && rec.name.toLowerCase()===myName.toLowerCase();
+      const div = document.createElement('div');
+      div.className = "slot " + (rec ? (mine?"mine":"taken") : "open");
+
+      let right;
+      if(mine){
+        right = '<span class="tagmine">✓ Your slot</span>';
+      } else if(rec){
+        taken++;
+        right = '<span class="taglock">Reserved</span>';
+      } else {
+        right = '<button class="btn" data-time="'+esc(time)+'">Reserve</button>';
+      }
+
+      div.innerHTML =
+        '<div class="time">'+esc(time)+'</div>'+
+        '<div class="mid"><div class="state">'+
+          (mine ? 'Confirmed for you. See you then.' : rec ? 'This time is booked.' : '20 minutes with Dr. Lazarus')+
+        '</div></div>'+
+        '<div class="act">'+right+'</div>';
+      slotsEl.appendChild(div);
+      if(rec && !mine) {} // counted above
+    });
+
+    // recount taken cleanly
+    taken = SLOTS.filter(t=>data[t]).length;
+    const open = SLOTS.length - taken;
+    remEl.textContent = open>0 ? (open+" of "+SLOTS.length+" slots open") : "All slots filled";
+
+    if(myName && !SLOTS.some(t=>data[t] && data[t].name.toLowerCase()===myName.toLowerCase())){
+      myName = null; // their booking was released
+    }
+
+    if(open===0 && !myName){
+      banner('info','ⓘ','All six slots are filled. You won\'t miss what matters, the assessment, the 7-day Reset, and the full session on July 8 are for everyone.');
+    }
+
+    slotsEl.querySelectorAll('button[data-time]').forEach(b=>{
+      b.addEventListener('click',()=>openForm(b.dataset.time));
+    });
+  }
+
+  function openForm(time){
+    clearBanner();
+    // close any other open forms
+    render().then(()=>{
+      const target = [...slotsEl.querySelectorAll('.slot')].find(s=>s.querySelector('.time')?.textContent===time);
+      if(!target) return;
+      const act = target.querySelector('.act');
+      act.innerHTML =
+        '<form class="bookform">'+
+          '<div class="row">'+
+            '<input type="text" name="name" placeholder="Your full name" autocomplete="name" required>'+
+            '<input type="text" name="dept" placeholder="Department (optional)" autocomplete="off">'+
+          '</div>'+
+          '<div class="row">'+
+            '<button type="submit" class="btn">Confirm '+esc(time)+'</button>'+
+            '<button type="button" class="btn ghost cancel">Cancel</button>'+
+          '</div>'+
+          '<div class="msg"></div>'+
+        '</form>';
+      const form = act.querySelector('form');
+      const nameI = form.querySelector('input[name=name]');
+      nameI.focus();
+      form.querySelector('.cancel').addEventListener('click',render);
+      form.addEventListener('submit',async (e)=>{
+        e.preventDefault();
+        const name = nameI.value.trim();
+        const dept = form.querySelector('input[name=dept]').value.trim();
+        const msg = form.querySelector('.msg');
+        if(name.length<2){ msg.innerHTML='<div class="err">Please enter your name.</div>'; return; }
+
+        const data = await load();
+        // already have a slot?
+        const existing = SLOTS.find(t=>data[t] && data[t].name.toLowerCase()===name.toLowerCase());
+        if(existing && existing!==time){
+          msg.innerHTML='<div class="err">You already have '+esc(existing)+'. Release it first to switch.</div>';
+          myName = name; render(); return;
+        }
+        // race check
+        if(data[time]){
+          msg.innerHTML='<div class="err">Someone just took this slot. Pick another.</div>';
+          setTimeout(render,900); return;
+        }
+        data[time] = { name, dept, ts: Date.now() };
+        await save(data);
+        myName = name;
+        banner('ok','✓','You\'re booked for '+esc(time)+', '+esc(name)+'. A calendar hold and reminder will follow from the organizer.');
+        render();
+      });
+    });
+  }
+
+  async function renderOrg(data){
+    slotsEl.innerHTML = "";
+    const box = document.createElement('div');
+    box.className="org";
+    let rows = SLOTS.map(t=>{
+      const r = data[t];
+      return '<tr><td class="t">'+esc(t)+'</td>'+
+        (r? '<td>'+esc(r.name)+'</td><td>'+esc(r.dept||'—')+'</td><td><button class="release" data-rel="'+esc(t)+'">Release</button></td>'
+           : '<td class="empty" colspan="2">Open</td><td></td>')+
+        '</tr>';
+    }).join("");
+    box.innerHTML =
+      '<h2>Organizer view</h2>'+
+      '<p>Full booking list. Visible only when this view is toggled on. Attendees never see these names.</p>'+
+      '<table><thead><tr><th>Time</th><th>Name</th><th>Dept</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
+    slotsEl.appendChild(box);
+    const filled = SLOTS.filter(t=>data[t]).length;
+    remEl.textContent = filled+" of "+SLOTS.length+" booked";
+    box.querySelectorAll('button[data-rel]').forEach(b=>{
+      b.addEventListener('click',async ()=>{
+        if(!confirm('Release '+b.dataset.rel+'? This frees the slot for someone else.')) return;
+        const d = await load(); delete d[b.dataset.rel]; await save(d); render();
+      });
+    });
+  }
+
+  orgToggle.addEventListener('click',()=>{
+    orgMode=!orgMode;
+    orgToggle.textContent = orgMode ? "Attendee view" : "Organizer view";
+    clearBanner();
+    render();
+  });
+
+  render();
+  // light polling so slots taken by others update without refresh
+  setInterval(()=>{ if(!document.querySelector('.bookform')) render(); }, 6000);
+})();
+</script>
