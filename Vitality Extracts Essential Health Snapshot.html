@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Essential Health Snapshot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-soft: #2C3E60;
+    --gold: #C9A227;
+    --gold-soft: #E4C766;
+    --cream: #F7F3E9;
+    --cream-deep: #EFE8D6;
+    --ink: #26303F;
+    --muted: #6A7383;
+    --line: #D9D0BC;
+    --white: #FFFFFF;
+    --ok: #4F7A5B;
+    --warn: #B4703A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+    min-height: 100vh;
+  }
+
+  .brand {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .brand .mark {
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* Progress */
+  .progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--cream-deep);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gold);
+    border-radius: 999px;
+    transition: width .35s ease;
+  }
+  .progress-label {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 62px;
+    text-align: right;
+  }
+
+  /* Cards / screens */
+  .screen { display: none; }
+  .screen.active { display: block; animation: rise .4s ease; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'EB Garamond', serif;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.18;
+    color: var(--navy);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  h2 {
+    font-family: 'EB Garamond', serif;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 1.25;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .lede {
+    font-size: 19px;
+    color: var(--ink);
+    margin-bottom: 26px;
+  }
+  .lede.muted { color: var(--muted); font-size: 17px; }
+
+  /* Intro */
+  .intro-points {
+    list-style: none;
+    margin: 24px 0 32px;
+    border-top: 1px solid var(--line);
+  }
+  .intro-points li {
+    padding: 15px 0 15px 34px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    font-size: 17px;
+  }
+  .intro-points li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 22px;
+    width: 9px;
+    height: 9px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* Question */
+  .q-count {
+    font-size: 14px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .q-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 27px;
+    line-height: 1.3;
+    color: var(--navy);
+    font-weight: 600;
+    margin-bottom: 26px;
+  }
+
+  .options { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 17px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .05s;
+    line-height: 1.4;
+  }
+  .option:hover { border-color: var(--gold-soft); background: #FFFDF6; }
+  .option:active { transform: scale(0.995); }
+  .option:focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 2px; }
+  .option.selected {
+    border-color: var(--gold);
+    background: #FBF6E6;
+    font-weight: 500;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+  }
+  .back {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 4px;
+  }
+  .back:hover { color: var(--navy); }
+  .back:disabled { opacity: 0; pointer-events: none; }
+
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.01em;
+    border: none;
+    border-radius: 12px;
+    padding: 17px 32px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .18s, transform .05s;
+    text-align: center;
+  }
+  .btn:hover { background: var(--navy-soft); }
+  .btn:active { transform: scale(0.99); }
+  .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .btn.gold { background: var(--gold); color: var(--navy); }
+  .btn.gold:hover { background: var(--gold-soft); }
+  .btn.block { display: block; width: 100%; }
+  .btn.wide { min-width: 190px; }
+
+  /* Results */
+  .score-hero {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 18px;
+    padding: 36px 28px 32px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .score-hero .label {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .score-number {
+    font-family: 'EB Garamond', serif;
+    font-size: 76px;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--white);
+    margin: 4px 0 2px;
+  }
+  .score-number span { font-size: 30px; color: var(--gold-soft); }
+  .score-band {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 21px;
+    color: var(--gold-soft);
+  }
+
+  .focus-card {
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-left: 5px solid var(--gold);
+    border-radius: 14px;
+    padding: 26px 24px;
+    margin-bottom: 22px;
+  }
+  .focus-card .kicker {
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .focus-card h2 { margin-bottom: 12px; }
+  .focus-card p { color: var(--ink); margin-bottom: 14px; }
+  .focus-card p:last-child { margin-bottom: 0; }
+
+  .strength-note {
+    background: var(--cream-deep);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+  }
+  .strength-note .kicker {
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ok);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .strength-note p { color: var(--ink); }
+
+  /* Element bars */
+  .breakdown { margin: 30px 0 8px; }
+  .breakdown h3 {
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .bar-row { margin-bottom: 15px; }
+  .bar-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  .bar-head .name { font-weight: 500; color: var(--ink); }
+  .bar-head .pct { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar-track {
+    height: 9px;
+    background: var(--cream-deep);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--gold);
+    width: 0;
+    transition: width .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .bar-fill.low { background: var(--warn); }
+  .bar-fill.high { background: var(--ok); }
+
+  /* CTA block */
+  .cta-block {
+    background: var(--navy);
+    border-radius: 18px;
+    padding: 34px 28px;
+    text-align: center;
+    margin: 34px 0 20px;
+    color: var(--cream);
+  }
+  .cta-block .kicker {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .cta-block h2 { color: var(--white); margin-bottom: 12px; }
+  .cta-block p { color: #D6DCE6; font-size: 17px; margin-bottom: 24px; }
+
+  /* Care note (suppression) */
+  .care-note {
+    background: #FBF7EF;
+    border: 1.5px solid var(--gold-soft);
+    border-radius: 14px;
+    padding: 24px 24px;
+    margin: 26px 0;
+  }
+  .care-note .kicker {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warn);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .care-note p { color: var(--ink); font-size: 16px; margin-bottom: 0; }
+
+  .disclaimer {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.55;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    margin-top: 30px;
+  }
+
+  .restart {
+    display: block;
+    margin: 22px auto 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 17px; }
+    h1 { font-size: 29px; }
+    .q-text { font-size: 23px; }
+    .score-number { font-size: 64px; }
+    .wrap { padding: 24px 18px 64px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="mark">The Lazarus Method</div></div>
+
+  <div class="progress" id="progressBar" style="display:none;">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">1 of 14</div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="screen active" id="intro">
+    <div class="eyebrow">A 2-minute check-in</div>
+    <h1>Your Essential Health Snapshot</h1>
+    <p class="lede">Fourteen short questions about your everyday habits. At the end you'll get one clear place to start, and a free step to take this week.</p>
+    <ul class="intro-points">
+      <li>It looks at seven parts of everyday health, the way your body actually lives them.</li>
+      <li>The questions are simple and quick, with nothing to look up or measure.</li>
+      <li>It's a snapshot of your habits, not a medical test, and it doesn't diagnose anything.</li>
+    </ul>
+    <button class="btn gold block wide" onclick="start()">Start the snapshot</button>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen" id="question">
+    <div class="q-count" id="qCount">Question 1</div>
+    <div class="q-text" id="qText"></div>
+    <ul class="options" id="qOptions"></ul>
+    <div class="nav">
+      <button class="back" id="backBtn" onclick="back()">← Back</button>
+      <span></span>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen" id="results"></section>
+</div>
+
+<script>
+/* ---------- The seven elements ---------- */
+const ELEMENTS = ["Nourish","Move","Rest","Challenge","Connect","Learn","Spark"];
+
+/* ---------- 14 questions, two per element ----------
+   Each option scores 0..4. Order is deliberately interleaved so the
+   quiz doesn't feel like seven mini-sections. */
+const QUESTIONS = [
+  { el:"Nourish", text:"How often do you eat fried or processed food? (fast food, fries, chips, packaged snacks, frozen dinners)",
+    opts:["Daily","Often","Sometimes","Rarely","Never"] },
+
+  { el:"Move", text:"How often do you stretch or do gentle movement? (stretching, yoga, tai chi, easy range-of-motion)",
+    opts:["Never","Rarely","Sometimes","Often","Daily"] },
+
+  { el:"Rest", text:"How often do you sleep well? (fall asleep easily, stay asleep, wake up rested)",
+    opts:["Never","Rarely","Sometimes","Often","Always"] },
+
+  { el:"Connect", text:"How often do you spend time with someone who supports you? (family, a friend, or anyone you trust)",
+    opts:["Never","Rarely","Sometimes","Often","Daily"] },
+
+  { el:"Spark", text:"How often do you wake up with a sense of purpose? (a reason to get up, something to look forward to)",
+    opts:["Almost never","Rarely","Sometimes","Most days","Every day"] },
+
+  { el:"Challenge", text:"How often do you try something new or challenging? (a new hobby, skill, place, or activity)",
+    opts:["Never","Rarely","Sometimes","Often","Regularly"] },
+
+  { el:"Learn", text:"How often do you learn something new? (reading, a class, a podcast, a documentary)",
+    opts:["Never","Rarely","Sometimes","Often","Daily"] },
+
+  { el:"Nourish", text:"How often do you have sugary food or drinks? (soda, juice, candy, cookies, cake, sweetened coffee, ice cream)",
+    opts:["Daily","Often","Sometimes","Rarely","Never"] },
+
+  { el:"Move", text:"How often do you walk for at least 10 minutes?",
+    opts:["Never","Rarely","Sometimes","Often","Daily"] },
+
+  { el:"Rest", text:"Do you go to bed and wake up at about the same time each day?",
+    opts:["Never","Rarely","Sometimes","Most days","Every day"] },
+
+  { el:"Challenge", text:"When something new comes up, do you take it on?",
+    opts:["I avoid it","Rarely","Sometimes","Usually","Always"] },
+
+  { el:"Connect", text:"How many people can you count on when things get hard?",
+    opts:["No one","1 person","2 people","3 to 4 people","5 or more"] },
+
+  { el:"Learn", text:"Are you open to ideas that challenge how you think?",
+    opts:["Not at all","Rarely","Sometimes","Usually","Always"] },
+
+  { el:"Spark", text:"Do you feel your life has meaning?",
+    opts:["Not at all","Rarely","Somewhat","Mostly","Completely"] },
+];
+
+/* ---------- Focus-area copy: one per element ----------
+   Each names the element, why it's the cheapest place to start,
+   and what the free 7 Day Reset does for it. */
+const FOCUS = {
+  Nourish: {
+    title: "Start with Nourish",
+    body: "Of the seven areas, this is where your week showed the most room, and it's one of the most forgiving to change. You don't need a diet. The single highest-return move is pulling back on the foods that quietly stoke inflammation, the fried, the heavily processed, the sugary, because those are often what's feeding the aches and the afternoon slumps in the first place.",
+    reset: "Your 7 Day Reset gives you one simple swap each day, trading an inflammatory food for something that calms things down, no complicated cooking required."
+  },
+  Move: {
+    title: "Start with Move",
+    body: "This came back lowest, and if you're managing pain, that's usually the pain talking, not a lack of will. So the goal isn't more exercise. It's gentle mobility and a little walking, kept up on the days you feel worst, because that's the day it counts most and the day most people do nothing.",
+    reset: "Your 7 Day Reset walks you through a little gentle mobility and a short daily walk, scaled to how you feel. Joint-friendly, no floor work, no equipment."
+  },
+  Rest: {
+    title: "Start with Rest",
+    body: "Sleep is the area with the most room here. In people carrying pain or fatigue, broken sleep is often downstream of both, so chasing sleep head-on can disappoint. What actually moves it is the hygiene around it: a steadier clock and a calmer last half hour do more than most people expect.",
+    reset: "Your 7 Day Reset gives you one small sleep-hygiene change each day, the practical kind that steadies your nights without asking you to sleep on command."
+  },
+  Challenge: {
+    title: "Start with Challenge",
+    body: "This area is about meeting new challenges rather than backing away from them, and it's the area with the most room for you. As the years add up it gets easy to narrow the routine and avoid the unfamiliar, and that narrowing is its own slow cost. The fix isn't more stress. It's choosing, on purpose, to take on something a little new.",
+    reset: "Your 7 Day Reset hands you one small, doable new challenge each day, enough to stretch you a little without overwhelming you."
+  },
+  Connect: {
+    title: "Start with Connect",
+    body: "Connection scored lowest, and it's one of the strongest predictors of how well people feel as they age, ahead of most things people worry about more. What matters most right now is a real support system, the people you can actually lean on, and when you're managing pain or fatigue those are often the ones we drift from.",
+    reset: "Your 7 Day Reset gives you one small, low-pressure way each day to lean on and strengthen your support system, nothing that requires leaving the house."
+  },
+  Learn: {
+    title: "Start with Learn",
+    body: "This area, staying open to new information and letting it challenge your thinking, came back lowest. It's easy to let slide and easy to restart. A little new input most days, the kind that makes you reconsider something, keeps the mind doing the one thing it most needs to keep doing: working at something slightly unfamiliar.",
+    reset: "Your 7 Day Reset feeds you one genuinely interesting idea each day and a small way to apply it, sized for a busy or tired mind, enough to keep your brain sharp without feeling like homework."
+  },
+  Spark: {
+    title: "Start with Spark",
+    body: "This scored lowest, and it's the one almost everyone neglects, the sense of purpose behind your days, a reason to get up that's yours. It sounds soft. It isn't. A week with no purpose in it is a week the body reads as all obligation, and that shows up as fatigue long before anything else does.",
+    reset: "Your 7 Day Reset helps you reconnect with your sense of purpose, one small prompt a day, no productivity required."
+  }
+};
+
+const BANDS = [
+  { min: 80, label: "Strong footing" },
+  { min: 60, label: "Solid, with room" },
+  { min: 40, label: "A mixed week" },
+  { min: 20, label: "Running low" },
+  { min: 0,  label: "Worth attention" },
+];
+
+/* ---------- State ---------- */
+let current = 0;
+const answers = new Array(QUESTIONS.length).fill(null);
+
+function start(){
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('progressBar').style.display = 'flex';
+  current = 0;
+  showQuestion();
+}
+
+function showQuestion(){
+  document.getElementById('results').classList.remove('active');
+  const q = QUESTIONS[current];
+  const screen = document.getElementById('question');
+  screen.classList.add('active');
+
+  document.getElementById('qCount').textContent = "Question " + (current+1);
+  document.getElementById('qText').textContent = q.text;
+
+  const list = document.getElementById('qOptions');
+  list.innerHTML = "";
+  q.opts.forEach((opt, i) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[current] === i ? ' selected' : '');
+    btn.textContent = opt;
+    btn.setAttribute('type','button');
+    btn.onclick = () => choose(i);
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+
+  document.getElementById('backBtn').disabled = current === 0;
+  const pct = Math.round((current) / QUESTIONS.length * 100);
+  document.getElementById('progressFill').style.width = pct + "%";
+  document.getElementById('progressLabel').textContent = (current+1) + " of " + QUESTIONS.length;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function choose(i){
+  answers[current] = i;
+  // brief highlight, then advance
+  const btns = document.querySelectorAll('#qOptions .option');
+  btns.forEach((b,idx)=> b.classList.toggle('selected', idx===i));
+  setTimeout(()=>{
+    if(current < QUESTIONS.length - 1){ current++; showQuestion(); }
+    else { finish(); }
+  }, 180);
+}
+
+function back(){
+  if(current > 0){ current--; showQuestion(); }
+}
+
+function computeScores(){
+  const sum = {}, count = {};
+  ELEMENTS.forEach(e => { sum[e]=0; count[e]=0; });
+  QUESTIONS.forEach((q, idx) => {
+    const a = answers[idx] === null ? 0 : answers[idx];
+    sum[q.el] += a;
+    count[q.el] += 1;
+  });
+  const pct = {};
+  ELEMENTS.forEach(e => { pct[e] = Math.round((sum[e] / (count[e]*4)) * 100); });
+  const overall = Math.round(ELEMENTS.reduce((t,e)=>t+pct[e],0) / ELEMENTS.length);
+  return { pct, overall };
+}
+
+function bandFor(score){
+  return BANDS.find(b => score >= b.min).label;
+}
+
+function finish(){
+  const { pct, overall } = computeScores();
+  document.getElementById('progressFill').style.width = "100%";
+  document.getElementById('progressLabel').textContent = "Done";
+
+  // lowest element = focus. Tie-break by ELEMENTS order (stable).
+  let focusEl = ELEMENTS[0];
+  ELEMENTS.forEach(e => { if(pct[e] < pct[focusEl]) focusEl = e; });
+
+  // highest = strength
+  let strongEl = ELEMENTS[0];
+  ELEMENTS.forEach(e => { if(pct[e] > pct[strongEl]) strongEl = e; });
+
+  // suppression trigger: low mood/isolation cluster
+  // Fires on the low-mood / isolation cluster: near-absent enjoyment,
+  // thin connection, and poor rest travelling together. Tuned to catch
+  // the profile it exists for, not merely a flat week.
+  const careTrigger = (pct.Spark <= 25 && pct.Connect <= 40 && pct.Rest <= 40);
+
+  renderResults(pct, overall, focusEl, strongEl, careTrigger);
+}
+
+function strengthLine(el){
+  const lines = {
+    Nourish: "You're keeping the inflammatory, sugary, processed foods largely at bay, and that's a foundation the rest builds on. Most people can't say the same.",
+    Move: "On the days pain and stiffness were worst, you kept moving anyway, gently and on purpose. That's the single hardest habit on this whole snapshot, and you already have it. Most people without any pain don't.",
+    Rest: "Your sleep habits are doing their job right now, which is quietly protecting everything else. It's the thing most people in your situation are missing.",
+    Challenge: "You're still saying yes to new challenges rather than narrowing your world, and that willingness is one of the most protective things there is as the years add up.",
+    Connect: "You've kept a real support system close, and that matters more for how you age than almost anything else you could measure.",
+    Learn: "You're still staying open to new ideas and letting them change your thinking, and that's one of the most protective habits there is for keeping the mind sharp.",
+    Spark: "You're holding on to a sense of purpose, a reason to get up, and that's rarer than it sounds. It's quietly keeping your tank from running dry."
+  };
+  return lines[el];
+}
+
+function renderResults(pct, overall, focusEl, strongEl, careTrigger){
+  document.getElementById('question').classList.remove('active');
+  const r = document.getElementById('results');
+  r.classList.add('active');
+
+  const focus = FOCUS[focusEl];
+
+  let bars = "";
+  // show elements sorted low -> high so the focus area sits first
+  const ordered = [...ELEMENTS].sort((a,b)=> pct[a]-pct[b]);
+  ordered.forEach(e => {
+    const cls = pct[e] < 40 ? 'low' : (pct[e] >= 70 ? 'high' : '');
+    bars += `
+      <div class="bar-row">
+        <div class="bar-head"><span class="name">${e}</span><span class="pct">${pct[e]}%</span></div>
+        <div class="bar-track"><div class="bar-fill ${cls}" data-w="${pct[e]}"></div></div>
+      </div>`;
+  });
+
+  const careBlock = careTrigger ? `
+    <div class="care-note">
+      <div class="kicker">One honest note</div>
+      <p>A few of your answers, around rest, enjoyment, and connection, tend to travel together, and sometimes they point to something that a change of habits alone won't fully reach. If things have felt heavier than usual lately, it's worth mentioning to your doctor. That's not a diagnosis, just a nudge from someone who'd rather say it than not.</p>
+    </div>` : "";
+
+  r.innerHTML = `
+    <div class="eyebrow">Your snapshot</div>
+    <h1>Here's where you stand</h1>
+
+    <div class="score-hero">
+      <div class="label">Overall</div>
+      <div class="score-number">${overall}<span>/100</span></div>
+      <div class="score-band">${bandFor(overall)}</div>
+    </div>
+
+    <div class="focus-card">
+      <div class="kicker">Your one place to start</div>
+      <h2>${focus.title}</h2>
+      <p>${focus.body}</p>
+    </div>
+
+    <div class="strength-note">
+      <div class="kicker">Already working for you</div>
+      <p>${strengthLine(strongEl)}</p>
+    </div>
+
+    ${careBlock}
+
+    <div class="breakdown">
+      <h3>All seven, weakest to strongest</h3>
+      ${bars}
+    </div>
+
+    <div class="cta-block">
+      <div class="kicker">Your free next step</div>
+      <h2>The 7 Day Reset</h2>
+      <p>${focus.reset} One small thing a day, for seven days. Free, and built for exactly where you are right now.</p>
+      <a class="btn gold block" href="#" id="ctaBtn">Start my 7 Day Reset</a>
+    </div>
+
+    <p class="disclaimer">This snapshot reflects your everyday habits, and habits can change. It's a picture of where you are right now, not a measure of your health, and it isn't a medical assessment or a diagnosis. If anything here worries you, your doctor is the right person to talk to.</p>
+
+    <button class="restart" onclick="restart()">Take the snapshot again</button>
+  `;
+
+  window.scrollTo({top:0, behavior:'smooth'});
+  requestAnimationFrame(()=> {
+    setTimeout(()=> {
+      document.querySelectorAll('.bar-fill').forEach(el=>{
+        el.style.width = el.getAttribute('data-w') + "%";
+      });
+    }, 120);
+  });
+}
+
+function restart(){
+  answers.fill(null);
+  current = 0;
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('progressBar').style.display = 'none';
+  document.getElementById('intro').classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
