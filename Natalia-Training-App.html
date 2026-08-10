@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Train with Natalia</title>
+<title>Train with Coach Natalia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -47,6 +47,94 @@
     background: var(--gold);
     margin: 14px auto 0;
   }
+  .tlm-link {
+    display: block;
+    text-align: center;
+    margin: 44px auto 0;
+    text-decoration: none;
+    color: var(--navy);
+  }
+  .tlm-mark {
+    display: block;
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .tlm-sub {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-top: 3px;
+  }
+  .tlm-link:hover .tlm-mark, .tlm-link:focus-visible .tlm-mark { color: var(--navy-soft); }
+  .tlm-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+  /* Welcome */
+  .welcome { text-align: center; padding-top: 26px; }
+  .coach-photo {
+    display: block;
+    width: 190px; height: 190px;
+    margin: 6px auto 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 0 7px var(--card), 0 10px 30px rgba(27, 42, 74, 0.18);
+  }
+  .welcome-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .welcome-title {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(36px, 10vw, 48px);
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 4px 0 10px;
+  }
+  .welcome-sub {
+    color: var(--navy-soft);
+    font-size: 16px;
+    max-width: 42ch;
+    margin: 0 auto 30px;
+  }
+  .cta {
+    display: block;
+    width: 100%;
+    background: var(--navy);
+    color: var(--cream);
+    border: none;
+    border-radius: 12px;
+    padding: 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .cta:hover { background: var(--navy-soft); }
+  .cta:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .welcome > * { animation: rise 0.5s ease both; }
+  .welcome > *:nth-child(2) { animation-delay: 0.08s; }
+  .welcome > *:nth-child(3) { animation-delay: 0.16s; }
+  .welcome > *:nth-child(4) { animation-delay: 0.24s; }
+  .welcome > *:nth-child(5) { animation-delay: 0.32s; }
+  .welcome > *:nth-child(6) { animation-delay: 0.4s; }
+  .welcome > *:nth-child(7) { animation-delay: 0.48s; }
+  .disclaimer {
+    font-size: 11px;
+    color: var(--navy-soft);
+    line-height: 1.55;
+    max-width: 46ch;
+    margin: 22px auto 0;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   .step-count {
     text-align: center;
@@ -152,20 +240,6 @@
   .ex-name { font-size: 16px; font-weight: 700; }
   .ex-detail { font-size: 14px; color: var(--navy); font-variant-numeric: tabular-nums; }
   .ex-note { font-size: 13px; color: var(--navy-soft); font-style: italic; margin-top: 2px; }
-  .ex-timers { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
-  .ex-chip {
-    border: 1px solid var(--line);
-    background: var(--cream);
-    color: var(--navy);
-    border-radius: 999px;
-    padding: 5px 11px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .ex-chip:hover, .ex-chip:focus-visible { border-color: var(--gold); background: var(--gold-soft); }
-  .ex-chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
   .coach-note {
     background: var(--navy);
@@ -250,21 +324,7 @@
   }
   .timer-btn:hover, .timer-btn:focus-visible { border-color: var(--cream); }
   .timer-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .rest-chips { display: flex; gap: 6px; margin-left: auto; }
-  .rest-chip {
-    border: none;
-    background: var(--navy-soft);
-    color: var(--cream);
-    border-radius: 999px;
-    padding: 7px 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .rest-chip:hover, .rest-chip:focus-visible { background: var(--gold); color: var(--navy); }
-  .rest-chip:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
-  body.has-timer .wrap { padding-bottom: 180px; }
+  body.has-timer .wrap { padding-bottom: 150px; }
   .block-timer-btn {
     margin-top: 12px;
     width: 100%;
@@ -290,40 +350,33 @@
     text-align: center;
   }
   .hidden { display: none; }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="eyebrow">The Lazarus Method &middot; Move</div>
-    <div class="brand">Train with Natalia</div>
+    <div class="brand">Train with Coach Natalia</div>
     <div class="gold-rule"></div>
   </header>
 
   <main id="app"></main>
 
   <footer>
-    Warm up before every session. Questions about form or substitutions? Message Natalia before you improvise.
+    Warm up before every session. Questions about form or substitutions? Message Coach Natalia before you improvise.
   </footer>
 </div>
 
 <div class="timer-bar" id="timerBar">
   <div class="timer-inner">
     <div>
-      <span class="timer-label" id="timerLabel">Rest timer</span>
+      <span class="timer-label" id="timerLabel">Block timer</span>
       <span class="timer-display" id="timerDisplay">0:00</span>
     </div>
     <div class="timer-controls">
       <button class="timer-btn" id="timerToggle">Start</button>
       <button class="timer-btn" id="timerReset">Reset</button>
-    </div>
-    <div class="rest-chips" aria-label="Quick rest timers">
-      <button class="rest-chip" data-sec="30">0:30</button>
-      <button class="rest-chip" data-sec="45">0:45</button>
-      <button class="rest-chip" data-sec="60">1:00</button>
-      <button class="rest-chip" data-sec="90">1:30</button>
-      <button class="rest-chip" data-sec="120">2:00</button>
     </div>
   </div>
 </div>
@@ -345,6 +398,15 @@
    [ { ... }, { ... } ]. When it is a list, the app picks one
    at random and shows a button to swap to the other options.
 
+   TIMERS: every block gets its timer from the FIRST number
+   followed by "min" in its format text. Write formats like
+   "4 sets in 10 minutes" or "AMRAP 12 minutes" and the block
+   timer button appears automatically. A format containing
+   "EMOM" also beeps at the top of every minute. A format
+   containing "40 sec work, 20 sec rest" (any numbers, sec or
+   min, e.g. "3 min work, 1 min rest") beeps high at every work
+   start and low at every rest start.
+
    Each workout has:
      title    - the name shown at the top
      note     - your coaching message for this session
@@ -362,168 +424,366 @@ const WORKOUTS = {
     strength: {
       15: { title: "Strength Express", note: "Short on time, not on intent. Move heavy and crisp, rest only as written.",
         blocks: [
-          { heading: "Superset", format: "4 rounds, alternate exercises", exercises: [
+          { heading: "Superset", format: "4 rounds in 10 minutes, alternate exercises", exercises: [
             { name: "Goblet Squat", detail: "8 reps, then move on", note: "Heels down, chest tall, control the descent." },
             { name: "Dumbbell Bench Press", detail: "8 reps, rest 45 sec after", note: "Elbows at 45 degrees, full range." } ] },
-          { heading: "Finisher", format: "2 rounds", exercises: [
+          { heading: "Finisher", format: "2 rounds in 5 minutes", exercises: [
             { name: "Plank", detail: "40 sec, rest 30 sec", note: "Squeeze glutes, ribs down." } ] } ] },
-      30: { title: "Foundation Strength", note: "Quality over load today. Every rep should look identical to the first.",
+      30: { title: "Foundation Strength", note: "Go heavy today. Every rep should look identical to the first, so cut the set if form breaks.",
         blocks: [
-          { heading: "Block A", format: "4 sets", exercises: [
+          { heading: "Block A", format: "4 sets in 10 minutes", exercises: [
             { name: "Dumbbell Deadlift", detail: "6 reps, rest 90 sec", note: "Brace before you pull, flat back." } ] },
-          { heading: "Block B", format: "Superset, 3 rounds", exercises: [
+          { heading: "Block B", format: "Superset, 3 rounds in 10 minutes", exercises: [
             { name: "Dumbbell Bench Press", detail: "8 reps", note: "Slow 3 second lowering." },
-            { name: "One Arm Row", detail: "10 per side, rest 60 sec after", note: "Pull to your hip, not your armpit." } ] },
-          { heading: "Core", format: "2 rounds", exercises: [
+            { name: "Single Arm Row", detail: "10 per side, rest 60 sec after", note: "Pull to your hip, not your armpit." } ] },
+          { heading: "Core", format: "2 rounds in 5 minutes", exercises: [
             { name: "Dead Bug", detail: "10 per side, rest 30 sec", note: "Lower back stays glued to the floor." } ] } ] },
       45: [ { title: "Full Strength Session", note: "The main lifts come first while you are fresh. Do not rush block A.",
         blocks: [
-          { heading: "Block A", format: "4 sets", exercises: [
+          { heading: "Block A", format: "5 sets in 12 minutes", exercises: [
             { name: "Goblet or Barbell Squat", detail: "6 reps, rest 2 min", note: "Last set should feel like a 7 or 8 out of 10." } ] },
-          { heading: "Block B", format: "3 sets", exercises: [
+          { heading: "Block B", format: "4 sets in 10 minutes", exercises: [
             { name: "Romanian Deadlift", detail: "8 reps, rest 90 sec", note: "Push hips back, stop when hamstrings pull." } ] },
-          { heading: "Block C", format: "Superset, 3 rounds", exercises: [
+          { heading: "Block C", format: "Superset, 3 rounds in 10 minutes", exercises: [
             { name: "Shoulder Press", detail: "8 reps", note: "No lower back arch." },
             { name: "Lat Pulldown or Row", detail: "10 reps, rest 60 sec after", note: "Drive elbows down, pause at the bottom." } ] },
-          { heading: "Core", format: "2 rounds", exercises: [
+          { heading: "Core", format: "2 rounds in 5 minutes", exercises: [
             { name: "Side Plank", detail: "30 sec per side, rest 30 sec", note: "Straight line from head to feet." } ] } ] },
         { title: "The Strength Blocks", note: "Three blocks: lower, upper, core. Go heavy where it says heavy. Quality over speed.",
         blocks: [
-          { heading: "Block 1: Lower Body", format: "3 to 4 rounds, rest 45 to 60 sec between", exercises: [
+          { heading: "Block 1: Lower Body", format: "3 to 4 rounds in 15 minutes, rest 45 to 60 sec between", exercises: [
             { name: "Goblet Squat", detail: "10 to 12 reps", note: "Heavy kettlebell or dumbbell." },
             { name: "Romanian Deadlift", detail: "10 to 12 reps", note: "Start from standing." },
             { name: "Alternating Reverse Lunge", detail: "8 to 10 per leg", note: "" },
             { name: "Hip Thrust or Glute Bridge", detail: "12 to 15 reps", note: "" } ] },
-          { heading: "Block 2: Upper Body", format: "3 to 4 rounds, rest 45 to 60 sec between", exercises: [
+          { heading: "Block 2: Upper Body", format: "3 to 4 rounds in 15 minutes, rest 45 to 60 sec between", exercises: [
             { name: "Dumbbell Bench Press", detail: "8 to 12 reps", note: "Heavy kettlebell or dumbbell." },
             { name: "Single Arm Dumbbell Row", detail: "10 per side", note: "" },
             { name: "Dumbbell Push Press", detail: "8 to 12 reps", note: "" },
             { name: "Triceps Extensions", detail: "10 to 15 reps", note: "" } ] },
-          { heading: "Block 3: Core", format: "3 to 4 rounds, rest 30 to 45 sec between", exercises: [
+          { heading: "Block 3: Core", format: "3 to 4 rounds in 8 minutes, rest 30 to 45 sec between", exercises: [
             { name: "V Ups or Sit Ups", detail: "20 total", note: "" },
             { name: "Plank Hold", detail: "30 sec", note: "" },
             { name: "Weighted Russian Twist", detail: "25 total", note: "" },
             { name: "Plank Shoulder Tap", detail: "20 total", note: "" } ] } ] } ],
       60: { title: "Complete Strength Builder", note: "This is the full session. Log your weights so we can progress them next time.",
         blocks: [
-          { heading: "Block A", format: "5 sets", exercises: [
+          { heading: "Block A", format: "5 sets in 12 minutes", exercises: [
             { name: "Squat", detail: "5 reps, rest 2 min", note: "Build to a challenging but clean top set." } ] },
-          { heading: "Block B", format: "4 sets", exercises: [
+          { heading: "Block B", format: "4 sets in 12 minutes", exercises: [
             { name: "Bench Press", detail: "6 reps, rest 90 sec", note: "Feet planted, controlled touch, no bounce." } ] },
-          { heading: "Block C", format: "3 sets", exercises: [
+          { heading: "Block C", format: "3 sets in 8 minutes", exercises: [
             { name: "Romanian Deadlift", detail: "8 reps, rest 90 sec", note: "Soft knees, hinge, not a squat." } ] },
-          { heading: "Block D", format: "Superset, 3 rounds", exercises: [
+          { heading: "Block D", format: "Superset, 3 rounds in 10 minutes", exercises: [
             { name: "Walking Lunges", detail: "10 per leg", note: "Short steps, knee tracks over toes." },
-            { name: "One Arm Row", detail: "10 per side, rest 60 sec after", note: "Full stretch at the bottom." } ] },
-          { heading: "Core", format: "3 rounds", exercises: [
+            { name: "Single Arm Row", detail: "10 per side, rest 60 sec after", note: "Full stretch at the bottom." } ] },
+          { heading: "Core", format: "3 rounds in 6 minutes", exercises: [
             { name: "Plank", detail: "45 sec, rest 30 sec", note: "Breathe. Do not hold your breath." } ] } ] }
     },
     metcon: {
-      15: { title: "The Fast Fifteen", note: "One clock, one gear. Pick weights you can keep moving with.",
+      15: [ { title: "The Fast Fifteen", note: "One clock, one gear. Pick weights you can keep moving with.",
         blocks: [
           { heading: "AMRAP", format: "As many rounds as possible in 12 minutes", exercises: [
             { name: "Kettlebell Swing", detail: "15 reps", note: "Snap the hips, arms are just ropes." },
             { name: "Push Ups", detail: "10 reps", note: "Elevate hands if form breaks." },
             { name: "Goblet Squat", detail: "10 reps", note: "Light to moderate, smooth tempo." } ] } ] },
-      30: [ { title: "Engine Builder", note: "Honest rest periods. Use a timer, not a feeling.",
+        { title: "The 40/20", note: "Forty seconds on, twenty off, straight down the list until the clock runs out. The timer beeps at every switch.",
         blocks: [
-          { heading: "Part 1", format: "EMOM 10 minutes, alternate", exercises: [
-            { name: "Odd minutes: Kettlebell Swing", detail: "15 reps", note: "" },
-            { name: "Even minutes: Burpees", detail: "8 reps", note: "Steady pace you could hold all day." } ] },
-          { heading: "Part 2", format: "3 rounds, rest 60 sec between", exercises: [
-            { name: "Dumbbell Thruster", detail: "12 reps", note: "One smooth motion from squat to press." },
-            { name: "Row or Jog", detail: "200 m", note: "" },
-            { name: "Sit Ups", detail: "15 reps", note: "" } ] } ] },
+          { heading: "Circuit", format: "12 minutes: 40 sec work, 20 sec rest, rotate through the list", exercises: [
+            { name: "Jump Rope", detail: "40 sec", note: "" },
+            { name: "Walking Lunges", detail: "40 sec", note: "" },
+            { name: "Plank Hold", detail: "40 sec", note: "" },
+            { name: "High Knees", detail: "40 sec", note: "" },
+            { name: "Kettlebell Swing", detail: "40 sec", note: "" },
+            { name: "Wall Sit", detail: "40 sec", note: "" },
+            { name: "Mountain Climbers", detail: "40 sec", note: "" },
+            { name: "Deadlift", detail: "40 sec", note: "" },
+            { name: "Superman", detail: "40 sec", note: "" } ] } ] },
         { title: "The Ladder", note: "One trip down the ladder with jump rope on both ends. Note your finish time and try to beat it next round.",
         blocks: [
-          { heading: "For Time", format: "One round, as fast as clean form allows", exercises: [
+          { heading: "For Time", format: "One round for time, 15 minute cap", exercises: [
             { name: "Jump Rope", detail: "100 reps", note: "" },
             { name: "Lunges", detail: "50 total", note: "" },
             { name: "Kettlebell Deadlift", detail: "40 reps", note: "" },
             { name: "Kettlebell Swing", detail: "30 reps", note: "Snap the hips." },
             { name: "Burpees", detail: "20 reps", note: "" },
             { name: "Push Ups", detail: "10 reps", note: "" },
-            { name: "Jump Rope", detail: "100 reps", note: "" } ] } ] },
+            { name: "Jump Rope", detail: "100 reps", note: "" } ] } ] } ],
+      30: [ { title: "Engine Builder", note: "Honest rest periods. Use a timer, not a feeling.",
+        blocks: [
+          { heading: "Part 1", format: "EMOM 10 minutes, alternate", exercises: [
+            { name: "Odd minutes: Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Even minutes: Burpees", detail: "8 reps", note: "Steady pace you could hold all day." } ] },
+          { heading: "Part 2", format: "3 rounds in 12 minutes, rest 60 sec between", exercises: [
+            { name: "Dumbbell Thruster", detail: "12 reps", note: "One smooth motion from squat to press." },
+            { name: "Row or Jog", detail: "200 m", note: "" },
+            { name: "Sit Ups", detail: "15 reps", note: "" } ] } ] },
         { title: "The Pyramid", note: "Up the pyramid, then straight back down. Break sets as needed but keep moving.",
         blocks: [
-          { heading: "Warm Up", format: "One round", exercises: [
+          { heading: "Warm Up", format: "One round in 5 minutes", exercises: [
             { name: "Inchworm", detail: "5 reps", note: "" },
             { name: "Jump Rope", detail: "50 reps", note: "" },
             { name: "Lunge with Twist", detail: "10 reps", note: "" },
             { name: "Jump Rope", detail: "50 reps", note: "" },
             { name: "Double Pulse Squat", detail: "10 reps", note: "" } ] },
-          { heading: "The Pyramid", format: "Up then back down, one round", exercises: [
+          { heading: "The Pyramid", format: "Up then back down, one round, 15 minute cap", exercises: [
             { name: "Push Ups", detail: "10 reps", note: "" },
             { name: "Alternating Snatch", detail: "20 reps", note: "" },
             { name: "Lunges", detail: "30 total", note: "" },
             { name: "Air Squats", detail: "40 reps", note: "" },
             { name: "Toe Touches", detail: "50 reps", note: "The top of the pyramid." },
-            { name: "Then back down", detail: "40 squats, 30 lunges, 20 snatches, 10 push ups", note: "" } ] } ] } ],
-      45: { title: "The Grinder", note: "Pace the first two rounds. If round one is your fastest, you went out too hot.",
+            { name: "Then back down", detail: "40 squats, 30 lunges, 20 snatches, 10 push ups", note: "" } ] } ] },
+        { title: "The Countdown", note: "Descending ladder for time: 25, then 20, 15, 10, 5, with a run between every round. Note your finish time.",
         blocks: [
-          { heading: "Warm Up", format: "2 easy rounds", exercises: [
+          { heading: "For Time", format: "5 descending rounds, 25 minute cap", exercises: [
+            { name: "V Ups", detail: "25, 20, 15, 10, 5", note: "" },
+            { name: "Lunges", detail: "25, 20, 15, 10, 5 total", note: "" },
+            { name: "Push Press", detail: "25, 20, 15, 10, 5", note: "Light enough to keep the sets big." },
+            { name: "Run", detail: "200 m each round", note: "Or 60 sec of high knees." } ] } ] } ],
+      45: [ { title: "The Grinder", note: "Pace the first two rounds. If round one is your fastest, you went out too hot.",
+        blocks: [
+          { heading: "Warm Up", format: "2 easy rounds, about 5 minutes", exercises: [
             { name: "Jog or Row", detail: "2 min easy", note: "" },
             { name: "Air Squat + Arm Circles", detail: "10 each", note: "" } ] },
-          { heading: "Main Circuit", format: "4 rounds, rest 90 sec between", exercises: [
+          { heading: "Main Circuit", format: "5 rounds in 24 minutes, rest 90 sec between", exercises: [
             { name: "Kettlebell Swing", detail: "15 reps", note: "" },
             { name: "Dumbbell Thruster", detail: "10 reps", note: "" },
             { name: "Renegade Row", detail: "8 per side", note: "Hips stay square to the floor." },
             { name: "Row or Jog", detail: "250 m", note: "" } ] },
-          { heading: "Finisher", format: "1 round", exercises: [
+          { heading: "Finisher", format: "2 rounds in 9 minutes", exercises: [
             { name: "Farmer Carry", detail: "3 x 40 m, rest 45 sec", note: "Heavy. Tall posture, no leaning." } ] } ] },
-      60: { title: "The Hour of Power", note: "Three distinct efforts. Recover fully between blocks so each one has quality.",
+        { title: "The Three Clocks", note: "Needs a barbell, a kettlebell, and a rower or bike. The warm up stays genuinely easy, then three separate clocks back to back.",
         blocks: [
-          { heading: "Block 1", format: "EMOM 12 minutes, rotate", exercises: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy zone 2 pace", exercises: [
+            { name: "Glute Bridge", detail: "10 reps", note: "" },
+            { name: "Single Arm Devils Press", detail: "5 per side", note: "Light dumbbell, smooth reps." } ] },
+          { heading: "AMRAP 1", format: "AMRAP 8 minutes", exercises: [
+            { name: "Kettlebell Swing", detail: "10 reps", note: "" },
+            { name: "Push Ups", detail: "10 reps", note: "" } ] },
+          { heading: "AMRAP 2", format: "AMRAP 8 minutes", exercises: [
+            { name: "Z Press", detail: "10 reps", note: "Seated on the floor, legs straight, strict press." },
+            { name: "Single Leg Hip Thrust", detail: "10 per side", note: "" } ] },
+          { heading: "Metcon", format: "20 minutes: 3 min work, 1 min rest x 5 rounds", exercises: [
+            { name: "Deadlift", detail: "21 reps", note: "" },
+            { name: "Hang Power Clean", detail: "15 reps", note: "" },
+            { name: "Push Press", detail: "9 reps", note: "" },
+            { name: "Calories, Row or Bike", detail: "Max cals in the time remaining", note: "Score is total calories across all five rounds." } ] } ] },
+        { title: "Three by Nine", note: "Needs a med ball, a box, dumbbells, and a barbell. Three nine minute circuits: two minutes on, one off. Finish the reps, then spend the rest of each window on the last movement.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy zone 2 pace", exercises: [
+            { name: "Air Squat", detail: "8 reps", note: "" },
+            { name: "Sumo Squat", detail: "8 reps", note: "" },
+            { name: "Sumo Deadlift High Pull", detail: "10 reps", note: "Light and smooth." } ] },
+          { heading: "Circuit 1", format: "9 minutes: 2 min work, 1 min rest x 3 rounds", exercises: [
+            { name: "Med Ball Slam", detail: "15 reps", note: "" },
+            { name: "Box Jump or Step Up", detail: "10 reps", note: "" },
+            { name: "High Knees", detail: "Until the 2 min window ends", note: "" } ] },
+          { heading: "Circuit 2", format: "9 minutes: 2 min work, 1 min rest x 3 rounds", exercises: [
+            { name: "Dumbbell Snatch", detail: "12 reps", note: "Alternate arms." },
+            { name: "Barbell Lunge", detail: "16 total", note: "" },
+            { name: "Burpees", detail: "Max reps until the 2 min window ends", note: "" } ] },
+          { heading: "Circuit 3", format: "9 minutes: 2 min work, 1 min rest x 3 rounds", exercises: [
+            { name: "Goblet Squat", detail: "12 reps", note: "" },
+            { name: "Sumo High Pull", detail: "10 reps", note: "" },
+            { name: "Jump Rope", detail: "Until the 2 min window ends", note: "" } ] } ] } ],
+      60: { title: "The Hour of Power", note: "Four different formats in one hour: EMOM, a chipper for time, tabata, and heavy carries. Recover fully between blocks.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy zone 2 pace", exercises: [
+            { name: "Row or Jog", detail: "60 sec", note: "" },
+            { name: "Air Squat", detail: "10 reps", note: "" },
+            { name: "Inchworm", detail: "5 reps", note: "" } ] },
+          { heading: "Block 1: EMOM", format: "EMOM 12 minutes, rotate", exercises: [
             { name: "Min 1: Kettlebell Swing", detail: "15 reps", note: "" },
             { name: "Min 2: Push Ups", detail: "12 reps", note: "" },
             { name: "Min 3: Goblet Squat", detail: "12 reps", note: "" } ] },
-          { heading: "Block 2", format: "4 rounds, rest 60 sec between", exercises: [
-            { name: "Row or Jog", detail: "300 m", note: "" },
-            { name: "Dumbbell Thruster", detail: "10 reps", note: "" },
-            { name: "Sit Ups", detail: "15 reps", note: "" } ] },
-          { heading: "Block 3", format: "1 round, all out but clean", exercises: [
-            { name: "Farmer Carry", detail: "4 x 40 m, rest 45 sec", note: "" },
-            { name: "Plank", detail: "Max hold, one attempt", note: "Stop when your hips drop." } ] } ] }
+          { heading: "Block 2: Chipper", format: "For time, 15 minute cap", exercises: [
+            { name: "Row or Jog", detail: "500 m", note: "" },
+            { name: "Dumbbell Thruster", detail: "40 reps", note: "Break into smart sets from the start." },
+            { name: "Sit Ups", detail: "50 reps", note: "" },
+            { name: "Burpees", detail: "20 reps", note: "" } ] },
+          { heading: "Block 3: Tabata", format: "8 minutes: 20 sec work, 10 sec rest x 16 rounds", exercises: [
+            { name: "Rounds 1 to 8: Mountain Climbers", detail: "20 sec all out", note: "" },
+            { name: "Rounds 9 to 16: Hollow Hold", detail: "20 sec", note: "" } ] },
+          { heading: "Finisher", format: "1 round in 6 minutes", exercises: [
+            { name: "Farmer Carry", detail: "4 x 40 m, rest 45 sec", note: "Heavy. Tall posture." } ] } ] }
     },
     combo: {
       15: { title: "Strength + Sprint", note: "Heavy first, breathless second. Two flavors in fifteen minutes.",
         blocks: [
-          { heading: "Strength", format: "3 sets", exercises: [
+          { heading: "Strength", format: "3 sets in 8 minutes", exercises: [
             { name: "Goblet Squat", detail: "6 heavy reps, rest 60 sec", note: "Heavier than you would pick for a circuit." } ] },
           { heading: "Metcon", format: "AMRAP 6 minutes", exercises: [
             { name: "Kettlebell Swing", detail: "12 reps", note: "" },
             { name: "Push Ups", detail: "8 reps", note: "" } ] } ] },
       30: { title: "The Split Session", note: "Do not let the metcon steal from the strength work. Lift first, lift well.",
         blocks: [
-          { heading: "Strength", format: "4 sets", exercises: [
+          { heading: "Strength", format: "4 sets in 10 minutes", exercises: [
             { name: "Dumbbell Deadlift", detail: "5 reps, rest 90 sec", note: "Every rep from a dead stop." } ] },
           { heading: "Metcon", format: "AMRAP 12 minutes", exercises: [
             { name: "Dumbbell Thruster", detail: "10 reps", note: "" },
             { name: "Row or Jog", detail: "150 m", note: "" },
             { name: "Mountain Climbers", detail: "20 total", note: "" } ] } ] },
-      45: { title: "Best of Both", note: "Strength builds the engine block, the metcon revs it. Respect the rest times.",
+      45: [ { title: "Best of Both", note: "Strength builds the engine block, the metcon revs it. Respect the rest times.",
         blocks: [
-          { heading: "Strength A", format: "4 sets", exercises: [
+          { heading: "Strength A", format: "5 sets in 12 minutes", exercises: [
             { name: "Squat", detail: "6 reps, rest 2 min", note: "Challenging but clean." } ] },
-          { heading: "Strength B", format: "3 sets", exercises: [
+          { heading: "Strength B", format: "4 sets in 10 minutes", exercises: [
             { name: "Dumbbell Bench Press", detail: "8 reps, rest 90 sec", note: "" } ] },
-          { heading: "Metcon", format: "3 rounds, rest 60 sec between", exercises: [
+          { heading: "Metcon", format: "4 rounds in 16 minutes, rest 60 sec between", exercises: [
             { name: "Kettlebell Swing", detail: "15 reps", note: "" },
             { name: "Burpees", detail: "8 reps", note: "" },
             { name: "Row or Jog", detail: "200 m", note: "" } ] } ] },
+        { title: "The Original", note: "The full class format: warm up, two EMOM circuits working the whole minute, stations, cool down. Hit the reps in about 40 seconds, then rest until the next minute beep.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy pace", exercises: [
+            { name: "Reverse Lunges", detail: "20 total", note: "" },
+            { name: "Inchworm", detail: "6 reps", note: "" },
+            { name: "Jump Rope", detail: "50 reps", note: "" },
+            { name: "Worlds Greatest Stretch", detail: "6 total", note: "" } ] },
+          { heading: "Circuit 1", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Goblet Squat", detail: "12 reps", note: "" },
+            { name: "Min 2: Push Ups", detail: "12 reps", note: "" },
+            { name: "Min 3: Kettlebell Deadlift", detail: "12 reps", note: "Repeat the rotation 4 times." } ] },
+          { heading: "Circuit 2", format: "EMOM 9 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Min 2: Dumbbell Reverse Lunge", detail: "12 total", note: "" },
+            { name: "Min 3: Burpees", detail: "8 reps", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 3: Stations", format: "10 minutes: 45 sec work, 15 sec transition, 5 stations x 2 rounds", exercises: [
+            { name: "Plank Shoulder Taps", detail: "45 sec", note: "" },
+            { name: "High Knees", detail: "45 sec", note: "" },
+            { name: "Russian Twists", detail: "45 sec", note: "" },
+            { name: "Med Ball Slam", detail: "45 sec", note: "" },
+            { name: "Step Ups", detail: "45 sec", note: "" } ] },
+          { heading: "Cool Down", format: "One round in 5 minutes", exercises: [
+            { name: "Forward Fold", detail: "45 sec", note: "" },
+            { name: "Kneeling Hip Flexor Stretch", detail: "45 sec per side", note: "" },
+            { name: "Childs Pose", detail: "45 sec", note: "" },
+            { name: "Paleo Squat Hold", detail: "45 sec", note: "" },
+            { name: "Airplane Stretch", detail: "45 sec", note: "" } ] } ] },
+        { title: "Sumo Slam", note: "Class format: two full minute EMOM circuits, then stations. Aim to finish each set of reps in about 40 seconds, the rest of the minute is yours.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy pace", exercises: [
+            { name: "Air Squats", detail: "20 total", note: "" },
+            { name: "Good Mornings", detail: "6 reps", note: "" },
+            { name: "Jump Rope", detail: "50 reps", note: "" },
+            { name: "Worlds Greatest Stretch", detail: "6 total", note: "" } ] },
+          { heading: "Circuit 1", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Sumo High Pull", detail: "12 reps", note: "" },
+            { name: "Min 2: Row", detail: "12 reps, or 40 sec on the rower", note: "Rower, or bent over rows." },
+            { name: "Min 3: Push Press", detail: "10 reps", note: "Repeat the rotation 4 times." } ] },
+          { heading: "Circuit 2", format: "EMOM 9 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Jumping Lunge", detail: "16 total", note: "Step back lunges to scale." },
+            { name: "Min 2: Deadlift", detail: "10 reps", note: "" },
+            { name: "Min 3: Burpees", detail: "8 reps", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 3: Stations", format: "10 minutes: 45 sec work, 15 sec transition, 5 stations x 2 rounds", exercises: [
+            { name: "Sit Ups", detail: "45 sec", note: "" },
+            { name: "Plank Hold", detail: "45 sec", note: "" },
+            { name: "Med Ball Slam", detail: "45 sec", note: "" },
+            { name: "High Knees", detail: "45 sec", note: "" },
+            { name: "Step Ups or Jump Rope", detail: "45 sec", note: "" } ] },
+          { heading: "Cool Down", format: "One round in 5 minutes", exercises: [
+            { name: "Forward Fold", detail: "45 sec", note: "" },
+            { name: "Kneeling Hip Flexor Stretch", detail: "45 sec per side", note: "" },
+            { name: "Childs Pose", detail: "45 sec", note: "" },
+            { name: "Paleo Squat Hold", detail: "45 sec", note: "" },
+            { name: "Airplane Stretch", detail: "45 sec", note: "" } ] } ] },
+        { title: "The Barbell Three", note: "The heaviest class format: barbell EMOM in the middle. Load so the reps take about 40 seconds with clean form; the last 20 seconds are your rest.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy pace", exercises: [
+            { name: "Air Squats", detail: "20 total", note: "" },
+            { name: "Inchworm", detail: "6 reps", note: "" },
+            { name: "Run", detail: "200 m", note: "Or 60 sec of high knees." },
+            { name: "Side Lunge", detail: "10 total", note: "" } ] },
+          { heading: "Circuit 1", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Single Arm Alternating Snatch", detail: "12 total", note: "" },
+            { name: "Min 2: Left Side Plank or Oblique Work", detail: "40 sec", note: "" },
+            { name: "Min 3: Push Press", detail: "10 reps", note: "" },
+            { name: "Min 4: Right Side Plank or Oblique Work", detail: "40 sec", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 2", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Bench Press", detail: "10 reps", note: "" },
+            { name: "Min 2: Deadlift", detail: "10 reps", note: "" },
+            { name: "Min 3: Burpees", detail: "8 reps", note: "" },
+            { name: "Min 4: Front Squat", detail: "10 reps", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 3: Stations", format: "10 minutes: 45 sec work, 15 sec transition, 5 stations x 2 rounds", exercises: [
+            { name: "Sit Ups", detail: "45 sec", note: "" },
+            { name: "High Knees", detail: "45 sec", note: "" },
+            { name: "Plank Hold", detail: "45 sec", note: "" },
+            { name: "Jump Rope or Jacks", detail: "45 sec", note: "" },
+            { name: "Walking Lunges", detail: "45 sec", note: "" } ] },
+          { heading: "Cool Down", format: "One round in 5 minutes", exercises: [
+            { name: "Forward Fold", detail: "45 sec", note: "" },
+            { name: "Kneeling Hip Flexor Stretch", detail: "45 sec per side", note: "" },
+            { name: "Childs Pose", detail: "45 sec", note: "" },
+            { name: "Paleo Squat Hold", detail: "45 sec", note: "" },
+            { name: "Airplane Stretch", detail: "45 sec", note: "" } ] } ] },
+        { title: "Clean Sweep", note: "Hang cleans and plank drags in the same hour. Finish each minute's reps in about 40 seconds, and pick loads that keep that honest.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy pace", exercises: [
+            { name: "Reverse Lunges", detail: "16 total", note: "" },
+            { name: "Glute Bridge", detail: "12 reps", note: "" },
+            { name: "Jump Rope or Lateral Hops", detail: "50 reps", note: "" },
+            { name: "Thread the Needle", detail: "6 each side", note: "" } ] },
+          { heading: "Circuit 1", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Push Ups", detail: "12 reps", note: "" },
+            { name: "Min 2: Hang Clean", detail: "10 reps", note: "" },
+            { name: "Min 3: Plank Drag", detail: "12 total", note: "" },
+            { name: "Min 4: Tricep Extensions", detail: "12 reps", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 2", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Step Back Lunge to Drive", detail: "12 total", note: "" },
+            { name: "Min 2: Romanian Deadlift", detail: "12 reps", note: "" },
+            { name: "Min 3: Burpee Lateral Jump", detail: "8 reps", note: "" },
+            { name: "Min 4: Wall Sit", detail: "40 sec", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 3: Stations", format: "10 minutes: 45 sec work, 15 sec transition, 5 stations x 2 rounds", exercises: [
+            { name: "Mountain Climbers", detail: "45 sec", note: "" },
+            { name: "Alternating Toe Touch Crunch", detail: "45 sec", note: "" },
+            { name: "Side Plank Left", detail: "45 sec", note: "" },
+            { name: "Jump Rope or Fast Feet", detail: "45 sec", note: "" },
+            { name: "Side Plank Right", detail: "45 sec", note: "" } ] },
+          { heading: "Cool Down", format: "One round in 5 minutes", exercises: [
+            { name: "Forward Fold", detail: "45 sec", note: "" },
+            { name: "Kneeling Hip Flexor Stretch", detail: "45 sec per side", note: "" },
+            { name: "Childs Pose", detail: "45 sec", note: "" },
+            { name: "Paleo Squat Hold", detail: "45 sec", note: "" },
+            { name: "Airplane Stretch", detail: "45 sec", note: "" } ] } ] },
+        { title: "The Triple Threat", note: "Thrusters, cleans, and burpees in the first circuit alone. About 40 seconds of work per minute, so smart pacing beats hero pacing.",
+        blocks: [
+          { heading: "Warm Up", format: "AMRAP 6 minutes, easy pace", exercises: [
+            { name: "Air Squats", detail: "10 reps", note: "" },
+            { name: "Inchworm", detail: "5 reps", note: "" },
+            { name: "Jump Rope", detail: "50 reps", note: "" } ] },
+          { heading: "Circuit 1", format: "EMOM 12 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Thruster", detail: "10 reps", note: "" },
+            { name: "Min 2: Clean", detail: "10 reps", note: "" },
+            { name: "Min 3: Burpees", detail: "8 reps", note: "Repeat the rotation 4 times." } ] },
+          { heading: "Circuit 2", format: "EMOM 9 minutes, about 40 sec of work each minute, rotate", exercises: [
+            { name: "Min 1: Push Press", detail: "10 reps", note: "" },
+            { name: "Min 2: Row", detail: "12 reps, or 40 sec on the rower", note: "Rower, or bent over rows." },
+            { name: "Min 3: Mountain Climbers", detail: "40 total", note: "Repeat the rotation 3 times." } ] },
+          { heading: "Circuit 3: Stations", format: "10 minutes: 45 sec work, 15 sec transition, 5 stations x 2 rounds", exercises: [
+            { name: "Jump Rope", detail: "45 sec", note: "" },
+            { name: "Jumping Lunge", detail: "45 sec", note: "" },
+            { name: "Leg Lifts", detail: "45 sec", note: "" },
+            { name: "High Knees", detail: "45 sec", note: "" },
+            { name: "Plank Drag", detail: "45 sec", note: "" } ] },
+          { heading: "Cool Down", format: "One round in 5 minutes", exercises: [
+            { name: "Forward Fold", detail: "45 sec", note: "" },
+            { name: "Kneeling Hip Flexor Stretch", detail: "45 sec per side", note: "" },
+            { name: "Childs Pose", detail: "45 sec", note: "" },
+            { name: "Paleo Squat Hold", detail: "45 sec", note: "" },
+            { name: "Airplane Stretch", detail: "45 sec", note: "" } ] } ] } ],
       60: { title: "The Complete Athlete", note: "This is the full picture: strength, then conditioning, then core. Bring a water bottle.",
         blocks: [
-          { heading: "Strength A", format: "5 sets", exercises: [
+          { heading: "Strength A", format: "5 sets in 12 minutes", exercises: [
             { name: "Deadlift or Trap Bar Deadlift", detail: "5 reps, rest 2 min", note: "Brace hard, flat back, no rushing." } ] },
-          { heading: "Strength B", format: "Superset, 3 rounds", exercises: [
+          { heading: "Strength B", format: "Superset, 4 rounds in 12 minutes", exercises: [
             { name: "Shoulder Press", detail: "8 reps", note: "" },
-            { name: "One Arm Row", detail: "10 per side, rest 60 sec after", note: "" } ] },
-          { heading: "Metcon", format: "AMRAP 15 minutes", exercises: [
+            { name: "Single Arm Row", detail: "10 per side, rest 60 sec after", note: "" } ] },
+          { heading: "Metcon", format: "AMRAP 18 minutes", exercises: [
             { name: "Kettlebell Swing", detail: "15 reps", note: "" },
             { name: "Goblet Squat", detail: "10 reps", note: "" },
             { name: "Push Ups", detail: "10 reps", note: "" },
             { name: "Row or Jog", detail: "200 m", note: "" } ] },
-          { heading: "Core", format: "2 rounds", exercises: [
+          { heading: "Core", format: "2 rounds in 6 minutes", exercises: [
             { name: "Dead Bug", detail: "10 per side, rest 30 sec", note: "" } ] } ] }
     }
   },
@@ -531,61 +791,82 @@ const WORKOUTS = {
     strength: {
       15: { title: "Bodyweight Strength Express", note: "Tempo is your barbell today. Slow lowering makes light exercises heavy.",
         blocks: [
-          { heading: "Circuit", format: "3 rounds, rest 45 sec between", exercises: [
+          { heading: "Circuit", format: "3 rounds in 10 minutes, rest 45 sec between", exercises: [
             { name: "Tempo Push Ups", detail: "8 reps, 3 sec down", note: "Elevate hands if needed, keep the tempo." },
             { name: "Split Squat", detail: "8 per leg", note: "Back knee kisses the floor." },
             { name: "Hollow Hold", detail: "20 sec", note: "Lower back pressed into the floor." } ] } ] },
-      30: { title: "No Equipment, No Excuses", note: "Own every position. If a set gets easy, slow it down instead of speeding up.",
+      30: [ { title: "No Equipment, No Excuses", note: "Own every position. If a set gets easy, slow it down instead of speeding up.",
         blocks: [
-          { heading: "Block A", format: "3 sets each, rest 60 sec", exercises: [
+          { heading: "Block A", format: "3 sets each in 10 minutes, rest 60 sec", exercises: [
             { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
             { name: "Split Squat", detail: "10 per leg", note: "" } ] },
-          { heading: "Block B", format: "3 sets each, rest 45 sec", exercises: [
+          { heading: "Block B", format: "3 sets each in 8 minutes, rest 45 sec", exercises: [
             { name: "Pike Push Ups", detail: "8 reps", note: "Hips high, head travels toward the floor." },
             { name: "Single Leg Glute Bridge", detail: "10 per side", note: "Squeeze at the top for 2 sec." } ] },
-          { heading: "Core", format: "2 rounds", exercises: [
+          { heading: "Core", format: "2 rounds in 5 minutes", exercises: [
             { name: "Side Plank", detail: "30 sec per side", note: "" } ] } ] },
-      45: { title: "Bodyweight Builder", note: "Volume does the work today. Keep rest honest and form identical from first set to last.",
+        { title: "Bodyweight Builder", note: "Volume does the work today. Keep rest honest and form identical from first set to last.",
         blocks: [
-          { heading: "Block A", format: "4 sets each, rest 60 sec", exercises: [
+          { heading: "Block A", format: "4 sets each in 12 minutes, rest 60 sec", exercises: [
             { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
             { name: "Bulgarian Split Squat (foot on chair)", detail: "8 per leg", note: "Front heel stays down." } ] },
-          { heading: "Block B", format: "3 sets each, rest 60 sec", exercises: [
+          { heading: "Block B", format: "3 sets each in 10 minutes, rest 60 sec", exercises: [
             { name: "Pike Push Ups", detail: "8 reps", note: "" },
             { name: "Step Ups (chair or bench)", detail: "10 per leg", note: "Drive through the whole foot." } ] },
-          { heading: "Block C", format: "3 rounds", exercises: [
+          { heading: "Block C", format: "3 rounds in 6 minutes", exercises: [
             { name: "Single Leg Glute Bridge", detail: "12 per side", note: "" },
-            { name: "Hollow Hold", detail: "25 sec, rest 30 sec", note: "" } ] } ] },
+            { name: "Hollow Hold", detail: "25 sec, rest 30 sec", note: "" } ] } ] } ],
+      45: { title: "The Long Builder", note: "The full bodyweight strength session. Volume does the work; keep rest honest and form identical from first set to last.",
+        blocks: [
+          { heading: "Block A", format: "4 sets each in 14 minutes, rest 75 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "12 reps, 3 sec down", note: "Elevate hands if needed, keep the tempo." },
+            { name: "Bulgarian Split Squat (foot on chair)", detail: "10 per leg", note: "Front heel stays down." } ] },
+          { heading: "Block B", format: "4 sets each in 12 minutes, rest 60 sec", exercises: [
+            { name: "Pike Push Ups", detail: "10 reps", note: "Hips high, head travels toward the floor." },
+            { name: "Step Ups (chair or bench)", detail: "12 per leg", note: "Drive through the whole foot." } ] },
+          { heading: "Block C", format: "3 rounds in 8 minutes", exercises: [
+            { name: "Single Leg Glute Bridge", detail: "12 per side", note: "" },
+            { name: "Hollow Hold", detail: "25 sec, rest 30 sec", note: "" } ] },
+          { heading: "Finisher", format: "1 round in 5 minutes", exercises: [
+            { name: "Wall Sit", detail: "60 sec", note: "" },
+            { name: "Side Plank", detail: "45 sec per side", note: "" } ] } ] },
       60: { title: "The Full Bodyweight Hour", note: "This is a serious session. Treat each block like a heavy lift: focused, unhurried, precise.",
         blocks: [
-          { heading: "Block A", format: "4 sets each, rest 75 sec", exercises: [
+          { heading: "Block A", format: "4 sets each in 14 minutes, rest 75 sec", exercises: [
             { name: "Tempo Push Ups", detail: "12 reps, 3 sec down", note: "Progress to deficit push ups on books if easy." },
             { name: "Bulgarian Split Squat", detail: "10 per leg", note: "" } ] },
-          { heading: "Block B", format: "4 sets each, rest 60 sec", exercises: [
+          { heading: "Block B", format: "4 sets each in 14 minutes, rest 60 sec", exercises: [
             { name: "Pike Push Ups", detail: "10 reps", note: "" },
             { name: "Sliding Leg Curl (towel on floor)", detail: "8 reps", note: "Bridge up, slide heels out slowly." } ] },
-          { heading: "Block C", format: "3 sets each, rest 45 sec", exercises: [
+          { heading: "Block C", format: "4 sets each in 12 minutes, rest 45 sec", exercises: [
             { name: "Step Ups", detail: "12 per leg", note: "" },
             { name: "Wall Sit", detail: "45 sec", note: "" } ] },
-          { heading: "Core", format: "3 rounds", exercises: [
+          { heading: "Core", format: "3 rounds in 8 minutes", exercises: [
             { name: "Hollow Hold", detail: "25 sec", note: "" },
             { name: "Side Plank", detail: "30 sec per side, rest 30 sec", note: "" } ] } ] }
     },
     metcon: {
-      15: { title: "The Living Room Burner", note: "Twelve minutes of steady work. Find a pace you can hold, then hold it.",
+      15: [ { title: "The Living Room Burner", note: "Twelve minutes of steady work. Find a pace you can hold, then hold it.",
         blocks: [
           { heading: "AMRAP", format: "As many rounds as possible in 12 minutes", exercises: [
             { name: "Air Squats", detail: "12 reps", note: "" },
             { name: "Push Ups", detail: "8 reps", note: "" },
             { name: "Mountain Climbers", detail: "20 total", note: "" },
             { name: "Burpees", detail: "5 reps", note: "Step back instead of jumping if needed." } ] } ] },
+        { title: "Death by Burpees", note: "An ascending clock: every minute you owe one more burpee than the last. When you cannot finish inside the minute, you are done. The minute beep is your starting gun.",
+        blocks: [
+          { heading: "Ascending EMOM", format: "EMOM, add one rep every round, 12 minute cap", exercises: [
+            { name: "Minute 1", detail: "4 burpees", note: "" },
+            { name: "Minute 2", detail: "5 burpees", note: "" },
+            { name: "Every minute after", detail: "Add 1 burpee", note: "Rest in whatever is left of each minute." },
+            { name: "Survive all 12 minutes?", detail: "That is 15 burpees in the final minute", note: "Your score is the last full minute you completed." } ] } ] } ],
       30: [ { title: "Sweat Equity", note: "The EMOM keeps you honest, the circuit empties the tank. Scale reps, never form.",
         blocks: [
           { heading: "Part 1", format: "EMOM 12 minutes, rotate", exercises: [
             { name: "Min 1: Jumping Jacks", detail: "30 reps", note: "" },
             { name: "Min 2: Air Squats", detail: "15 reps", note: "" },
             { name: "Min 3: Push Ups", detail: "10 reps", note: "" } ] },
-          { heading: "Part 2", format: "3 rounds, rest 60 sec between", exercises: [
+          { heading: "Part 2", format: "3 rounds in 12 minutes, rest 60 sec between", exercises: [
             { name: "Burpees", detail: "8 reps", note: "" },
             { name: "Reverse Lunges", detail: "10 per leg", note: "" },
             { name: "Plank Shoulder Taps", detail: "20 total", note: "Hips stay still." } ] } ] },
@@ -607,38 +888,62 @@ const WORKOUTS = {
             { name: "Forearm Plank", detail: "30 sec", note: "" },
             { name: "Bicycle Crunches", detail: "30 sec", note: "" },
             { name: "Side Plank Left", detail: "30 sec", note: "" },
-            { name: "Side Plank Right", detail: "30 sec", note: "" } ] } ] } ],
-      45: { title: "The Long Burn", note: "Four big rounds. Round three is where it counts, so pace rounds one and two.",
+            { name: "Side Plank Right", detail: "30 sec", note: "" } ] } ] },
+        { title: "The Long Burn", note: "Four big rounds. Round three is where it counts, so pace rounds one and two.",
         blocks: [
-          { heading: "Warm Up", format: "2 easy rounds", exercises: [
+          { heading: "Warm Up", format: "2 easy rounds, about 5 minutes", exercises: [
             { name: "March in Place", detail: "60 sec", note: "" },
             { name: "Air Squats + Arm Circles", detail: "10 each", note: "" } ] },
-          { heading: "Main Circuit", format: "4 rounds, rest 90 sec between", exercises: [
+          { heading: "Main Circuit", format: "4 rounds in 18 minutes, rest 90 sec between", exercises: [
             { name: "Burpees", detail: "10 reps", note: "" },
             { name: "Air Squats", detail: "20 reps", note: "" },
             { name: "Push Ups", detail: "12 reps", note: "" },
             { name: "Mountain Climbers", detail: "30 total", note: "" },
             { name: "Reverse Lunges", detail: "10 per leg", note: "" } ] },
-          { heading: "Finisher", format: "2 rounds", exercises: [
-            { name: "Wall Sit", detail: "45 sec, rest 30 sec", note: "" } ] } ] },
-      60: { title: "The Bodyweight Gauntlet", note: "Three blocks, three different energies. Full recovery between blocks, full effort inside them.",
+          { heading: "Finisher", format: "2 rounds in 5 minutes", exercises: [
+            { name: "Wall Sit", detail: "45 sec, rest 30 sec", note: "" } ] } ] } ],
+      45: { title: "The Longer Burn", note: "Five big rounds and a tabata to close. Round three is where it counts, so pace the early rounds.",
         blocks: [
-          { heading: "Block 1", format: "EMOM 15 minutes, rotate", exercises: [
+          { heading: "Warm Up", format: "2 easy rounds, about 5 minutes", exercises: [
+            { name: "March in Place", detail: "60 sec", note: "" },
+            { name: "Air Squats + Arm Circles", detail: "10 each", note: "" } ] },
+          { heading: "Main Circuit", format: "5 rounds in 24 minutes, rest 90 sec between", exercises: [
+            { name: "Burpees", detail: "10 reps", note: "" },
+            { name: "Air Squats", detail: "20 reps", note: "" },
+            { name: "Push Ups", detail: "12 reps", note: "" },
+            { name: "Mountain Climbers", detail: "30 total", note: "" },
+            { name: "Reverse Lunges", detail: "10 per leg", note: "" } ] },
+          { heading: "Tabata Finisher", format: "8 minutes: 20 sec work, 10 sec rest x 16 rounds", exercises: [
+            { name: "Rounds 1 to 8: High Knees", detail: "20 sec", note: "" },
+            { name: "Rounds 9 to 16: Bicycle Crunches", detail: "20 sec", note: "" } ] } ] },
+      60: { title: "The Bodyweight Gauntlet", note: "Four formats, no equipment: EMOM, a chipper for time, tabata, and an AMRAP. Full recovery between blocks, full effort inside them.",
+        blocks: [
+          { heading: "Warm Up", format: "One round in 5 minutes, easy pace", exercises: [
+            { name: "March in Place", detail: "60 sec", note: "" },
+            { name: "Air Squat", detail: "10 reps", note: "" },
+            { name: "Inchworm", detail: "5 reps", note: "" },
+            { name: "Worlds Greatest Stretch", detail: "6 total", note: "" } ] },
+          { heading: "Block 1: EMOM", format: "EMOM 12 minutes, rotate", exercises: [
             { name: "Min 1: Jumping Jacks", detail: "35 reps", note: "" },
             { name: "Min 2: Air Squats", detail: "15 reps", note: "" },
             { name: "Min 3: Push Ups", detail: "12 reps", note: "" } ] },
-          { heading: "Block 2", format: "4 rounds, rest 60 sec between", exercises: [
-            { name: "Burpees", detail: "10 reps", note: "" },
-            { name: "Reverse Lunges", detail: "12 per leg", note: "" },
-            { name: "Plank Shoulder Taps", detail: "24 total", note: "" } ] },
-          { heading: "Block 3", format: "1 round, finish strong", exercises: [
-            { name: "Air Squats", detail: "50 reps, break as needed", note: "" },
-            { name: "Plank", detail: "Max hold, one attempt", note: "" } ] } ] }
+          { heading: "Block 2: Chipper", format: "For time, 12 minute cap", exercises: [
+            { name: "Burpees", detail: "30 reps", note: "" },
+            { name: "Reverse Lunges", detail: "40 total", note: "" },
+            { name: "Plank Shoulder Taps", detail: "50 total", note: "" },
+            { name: "Air Squats", detail: "60 reps", note: "Break everything into smart sets." } ] },
+          { heading: "Block 3: Tabata", format: "8 minutes: 20 sec work, 10 sec rest x 16 rounds", exercises: [
+            { name: "Rounds 1 to 8: High Knees", detail: "20 sec all out", note: "" },
+            { name: "Rounds 9 to 16: Mountain Climbers", detail: "20 sec", note: "" } ] },
+          { heading: "Block 4: AMRAP", format: "AMRAP 10 minutes, steady pace", exercises: [
+            { name: "Air Squats", detail: "10 reps", note: "" },
+            { name: "Push Ups", detail: "8 reps", note: "" },
+            { name: "Sit Ups", detail: "10 reps", note: "" } ] } ] }
     },
     combo: {
       15: { title: "Quick Combo", note: "Strength quality first, then six honest minutes of work.",
         blocks: [
-          { heading: "Strength", format: "3 rounds, rest 45 sec", exercises: [
+          { heading: "Strength", format: "3 rounds in 8 minutes, rest 45 sec", exercises: [
             { name: "Tempo Push Ups", detail: "8 reps, 3 sec down", note: "" },
             { name: "Split Squat", detail: "8 per leg", note: "" } ] },
           { heading: "Metcon", format: "AMRAP 6 minutes", exercises: [
@@ -646,38 +951,38 @@ const WORKOUTS = {
             { name: "Mountain Climbers", detail: "20 total", note: "" } ] } ] },
       30: { title: "Half Hour Hybrid", note: "Slow strength, fast finish. Two different disciplines in one session.",
         blocks: [
-          { heading: "Strength", format: "3 sets each, rest 60 sec", exercises: [
+          { heading: "Strength", format: "4 sets each in 13 minutes, rest 60 sec", exercises: [
             { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
             { name: "Bulgarian Split Squat", detail: "8 per leg", note: "" } ] },
-          { heading: "Metcon", format: "AMRAP 10 minutes", exercises: [
+          { heading: "Metcon", format: "AMRAP 12 minutes", exercises: [
             { name: "Burpees", detail: "6 reps", note: "" },
             { name: "Air Squats", detail: "12 reps", note: "" },
             { name: "Plank Shoulder Taps", detail: "16 total", note: "" } ] } ] },
       45: { title: "The Hybrid Builder", note: "Strength earns the metcon. If block A is sloppy, the whole session is.",
         blocks: [
-          { heading: "Strength A", format: "4 sets each, rest 60 sec", exercises: [
+          { heading: "Strength A", format: "4 sets each in 14 minutes, rest 60 sec", exercises: [
             { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
             { name: "Bulgarian Split Squat", detail: "8 per leg", note: "" } ] },
-          { heading: "Strength B", format: "3 sets each, rest 45 sec", exercises: [
+          { heading: "Strength B", format: "3 sets each in 10 minutes, rest 45 sec", exercises: [
             { name: "Pike Push Ups", detail: "8 reps", note: "" },
             { name: "Single Leg Glute Bridge", detail: "10 per side", note: "" } ] },
-          { heading: "Metcon", format: "3 rounds, rest 60 sec between", exercises: [
+          { heading: "Metcon", format: "4 rounds in 15 minutes, rest 60 sec between", exercises: [
             { name: "Burpees", detail: "8 reps", note: "" },
             { name: "Reverse Lunges", detail: "10 per leg", note: "" },
             { name: "Mountain Climbers", detail: "24 total", note: "" } ] } ] },
       60: { title: "The Complete Hour", note: "The full menu: strength, conditioning, and core. This is a flagship session, treat it that way.",
         blocks: [
-          { heading: "Strength A", format: "4 sets each, rest 75 sec", exercises: [
+          { heading: "Strength A", format: "4 sets each in 14 minutes, rest 75 sec", exercises: [
             { name: "Tempo Push Ups", detail: "12 reps, 3 sec down", note: "" },
             { name: "Bulgarian Split Squat", detail: "10 per leg", note: "" } ] },
-          { heading: "Strength B", format: "3 sets each, rest 60 sec", exercises: [
+          { heading: "Strength B", format: "4 sets each in 12 minutes, rest 60 sec", exercises: [
             { name: "Pike Push Ups", detail: "10 reps", note: "" },
             { name: "Sliding Leg Curl", detail: "8 reps", note: "" } ] },
-          { heading: "Metcon", format: "AMRAP 12 minutes", exercises: [
+          { heading: "Metcon", format: "AMRAP 15 minutes", exercises: [
             { name: "Burpees", detail: "8 reps", note: "" },
             { name: "Air Squats", detail: "15 reps", note: "" },
             { name: "Plank Shoulder Taps", detail: "20 total", note: "" } ] },
-          { heading: "Core", format: "2 rounds", exercises: [
+          { heading: "Core", format: "2 rounds in 6 minutes", exercises: [
             { name: "Hollow Hold", detail: "25 sec", note: "" },
             { name: "Side Plank", detail: "30 sec per side, rest 30 sec", note: "" } ] } ] }
     }
@@ -685,6 +990,7 @@ const WORKOUTS = {
 };
 /* ============ END OF EDITABLE SECTION ============ */
 
+const COACH_PHOTO = "data:image/jpeg;base64,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";
 const app = document.getElementById('app');
 const state = { equipment: null, time: null, focus: null };
 
@@ -694,6 +1000,7 @@ const timerDisplay = document.getElementById('timerDisplay');
 const timerLabel = document.getElementById('timerLabel');
 const timerToggle = document.getElementById('timerToggle');
 let tick = null, remaining = 0, running = false, emomMode = false, audioCtx = null;
+let totalSecs = 0, intervalPattern = null;
 
 function beep(freq, dur) {
   try {
@@ -715,9 +1022,11 @@ function fmt(s) {
 }
 function updateDisplay() { timerDisplay.textContent = fmt(Math.max(remaining, 0)); }
 
-function startCountdown(seconds, label, emom) {
+function startCountdown(seconds, label, emom, pattern) {
   clearInterval(tick);
   remaining = seconds;
+  totalSecs = seconds;
+  intervalPattern = pattern || null;
   emomMode = !!emom;
   running = true;
   timerLabel.textContent = label || 'Timer';
@@ -734,6 +1043,11 @@ function startCountdown(seconds, label, emom) {
       timerToggle.textContent = 'Start';
       timerLabel.textContent = 'Time!';
       beep(660, 0.6); buzz(400);
+    } else if (intervalPattern) {
+      const elapsed = totalSecs - remaining;
+      const cycle = intervalPattern.work + intervalPattern.rest;
+      if (elapsed % cycle === 0) { beep(880, 0.25); buzz(200); }
+      else if (elapsed % cycle === intervalPattern.work) { beep(520, 0.25); buzz(100); }
     } else if (emomMode && remaining % 60 === 0) {
       beep(880, 0.2); buzz(150);
     } else if (remaining <= 3) {
@@ -753,11 +1067,8 @@ document.getElementById('timerReset').addEventListener('click', () => {
   running = false;
   remaining = 0;
   updateDisplay();
-  timerLabel.textContent = 'Rest timer';
+  timerLabel.textContent = 'Block timer';
   timerToggle.textContent = 'Start';
-});
-document.querySelectorAll('.rest-chip').forEach(c => {
-  c.addEventListener('click', () => startCountdown(parseInt(c.dataset.sec, 10), 'Rest', false));
 });
 function showTimer() {
   timerBar.classList.add('visible');
@@ -770,33 +1081,8 @@ function hideTimer() {
   running = false;
   remaining = 0;
   updateDisplay();
-  timerLabel.textContent = 'Rest timer';
+  timerLabel.textContent = 'Block timer';
   timerToggle.textContent = 'Start';
-}
-
-/* Reads durations out of workout text so every written time
-   gets its own matching timer button automatically.
-   Understands: "40 sec", "2 min" at the start of a detail line,
-   and "rest 45 sec", "rest 2 min", "rest 45 to 60 sec" anywhere. */
-function parseTimers(text) {
-  const out = [];
-  const work = text.match(/^(\d+)\s*(sec|min)/i);
-  if (work) out.push({ label: 'Work', sec: parseInt(work[1], 10) * (work[2].toLowerCase() === 'min' ? 60 : 1) });
-  const rest = text.match(/rest\s+(\d+)(?:\s*to\s*(\d+))?\s*(sec|min)/i);
-  if (rest) {
-    const mult = rest[3].toLowerCase() === 'min' ? 60 : 1;
-    out.push({ label: 'Rest', sec: parseInt(rest[1], 10) * mult });
-    if (rest[2]) out.push({ label: 'Rest', sec: parseInt(rest[2], 10) * mult });
-  }
-  return out;
-}
-
-function timerChip(t, context) {
-  const b = document.createElement('button');
-  b.className = 'ex-chip';
-  b.textContent = t.label + ' ' + fmt(t.sec);
-  b.addEventListener('click', () => startCountdown(t.sec, t.label + ' \u00B7 ' + context, false));
-  return b;
 }
 
 const STEPS = [
@@ -896,30 +1182,21 @@ function renderWorkout() {
       exDiv.innerHTML = '<div class="ex-name">' + ex.name + '</div>' +
                         '<div class="ex-detail">' + ex.detail + '</div>' +
                         (ex.note ? '<div class="ex-note">' + ex.note + '</div>' : '');
-      const times = parseTimers(ex.detail);
-      if (times.length) {
-        const row = document.createElement('div');
-        row.className = 'ex-timers';
-        times.forEach(t => row.appendChild(timerChip(t, ex.name)));
-        exDiv.appendChild(row);
-      }
       div.appendChild(exDiv);
     });
     const tm = block.format.match(/(\d+)\s*min/i);
     if (tm) {
       const tb = document.createElement('button');
       tb.className = 'block-timer-btn';
-      tb.textContent = 'Start ' + tm[1] + ' minute timer';
+      tb.textContent = 'Start ' + tm[1] + ' minute block timer';
       const isEmom = /emom/i.test(block.format);
-      tb.addEventListener('click', () => startCountdown(parseInt(tm[1], 10) * 60, block.heading, isEmom));
+      const wr = block.format.match(/(\d+)\s*(sec|min) work,?\s*(\d+)\s*(sec|min) (?:rest|transition)/i);
+      const pattern = wr ? {
+        work: parseInt(wr[1], 10) * (wr[2].toLowerCase() === 'min' ? 60 : 1),
+        rest: parseInt(wr[3], 10) * (wr[4].toLowerCase() === 'min' ? 60 : 1)
+      } : null;
+      tb.addEventListener('click', () => startCountdown(parseInt(tm[1], 10) * 60, block.heading, isEmom, pattern));
       div.appendChild(tb);
-    }
-    const blockRests = parseTimers(block.format).filter(t => t.label === 'Rest');
-    if (blockRests.length) {
-      const row = document.createElement('div');
-      row.className = 'ex-timers';
-      blockRests.forEach(t => row.appendChild(timerChip(t, 'between rounds')));
-      div.appendChild(row);
     }
     app.appendChild(div);
   });
@@ -942,7 +1219,36 @@ function renderWorkout() {
   showTimer();
 }
 
-renderStep();
+function renderWelcome() {
+  hideTimer();
+  app.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'welcome';
+  div.innerHTML = '<img class="coach-photo" src="' + COACH_PHOTO + '" alt="Coach Natalia">' +
+    '<div class="welcome-eyebrow">Welcome</div>' +
+    '<h1 class="welcome-title">Let&rsquo;s get to work.</h1>' +
+    '<p class="welcome-sub">I&rsquo;m Coach Natalia. Answer three quick questions and I&rsquo;ll hand you today&rsquo;s workout, timers and coaching cues included.</p>';
+  const cta = document.createElement('button');
+  cta.className = 'cta';
+  cta.textContent = 'Build today\'s workout';
+  cta.addEventListener('click', () => { currentStep = 0; renderStep(); window.scrollTo(0, 0); });
+  div.appendChild(cta);
+  const disc = document.createElement('p');
+  disc.className = 'disclaimer';
+  disc.textContent = 'This app provides general fitness information, not medical advice. Consult your physician before beginning any exercise program. By using these workouts you agree that you do so voluntarily, at your own risk, and that you assume full responsibility for any injury.';
+  div.appendChild(disc);
+  const logo = document.createElement('a');
+  logo.className = 'tlm-link';
+  logo.href = 'https://www.lazarusmethod.com';
+  logo.target = '_blank';
+  logo.rel = 'noopener';
+  logo.setAttribute('aria-label', 'The Lazarus Method website');
+  logo.innerHTML = '<span class="tlm-mark">The Lazarus Method</span><span class="tlm-sub">lazarusmethod.com</span>';
+  div.appendChild(logo);
+  app.appendChild(div);
+}
+
+renderWelcome();
 </script>
 </body>
 </html>
