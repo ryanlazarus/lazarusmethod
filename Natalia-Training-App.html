@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Train with Natalia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F6F1E7;
+    --navy: #1B2A4A;
+    --navy-soft: #33506F;
+    --gold: #C9A227;
+    --gold-soft: #E8D9A8;
+    --card: #FFFFFF;
+    --line: #E3DAC6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--cream);
+    color: var(--navy);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 20px 80px; }
+
+  header { padding: 30px 0 6px; text-align: center; }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .gold-rule {
+    width: 44px; height: 2px;
+    background: var(--gold);
+    margin: 14px auto 0;
+  }
+
+  .step-count {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--navy-soft);
+    margin: 30px 0 8px;
+  }
+  .question {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(30px, 8vw, 40px);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .question-sub {
+    text-align: center;
+    color: var(--navy-soft);
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 12px; }
+  .opt {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--navy);
+    transition: border-color 0.15s ease;
+  }
+  .opt:hover, .opt:focus-visible { border-color: var(--gold); }
+  .opt:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .opt .opt-title { font-size: 17px; font-weight: 700; }
+  .opt .opt-sub { font-size: 14px; color: var(--navy-soft); margin-top: 2px; }
+
+  .back-btn {
+    background: none; border: none;
+    color: var(--navy-soft);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    display: block;
+    margin: 26px auto 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .back-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* Workout screen */
+  .workout-eyebrow {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-top: 28px;
+  }
+  .workout-title {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(30px, 8vw, 40px);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.15;
+    margin: 4px 0 4px;
+  }
+  .workout-meta {
+    text-align: center;
+    color: var(--navy-soft);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .block {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .block-heading {
+    font-family: 'EB Garamond', serif;
+    font-size: 21px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .block-format {
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .ex { padding: 10px 0; border-top: 1px solid var(--line); }
+  .ex:first-of-type { border-top: none; }
+  .ex-name { font-size: 16px; font-weight: 700; }
+  .ex-detail { font-size: 14px; color: var(--navy); font-variant-numeric: tabular-nums; }
+  .ex-note { font-size: 13px; color: var(--navy-soft); font-style: italic; margin-top: 2px; }
+  .ex-timers { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+  .ex-chip {
+    border: 1px solid var(--line);
+    background: var(--cream);
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .ex-chip:hover, .ex-chip:focus-visible { border-color: var(--gold); background: var(--gold-soft); }
+  .ex-chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  .coach-note {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .coach-note strong {
+    color: var(--gold);
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .restart {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    background: var(--navy);
+    color: var(--cream);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .restart:hover { background: var(--navy-soft); }
+  .restart:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* Timer */
+  .timer-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--navy);
+    color: var(--cream);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    display: none;
+    z-index: 50;
+    box-shadow: 0 -4px 16px rgba(27, 42, 74, 0.25);
+  }
+  .timer-bar.visible { display: block; }
+  .timer-inner {
+    max-width: 560px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+  }
+  .timer-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .timer-display {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .timer-controls { display: flex; gap: 8px; }
+  .timer-btn {
+    border: 1px solid var(--gold);
+    background: none;
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .timer-btn:hover, .timer-btn:focus-visible { border-color: var(--cream); }
+  .timer-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .rest-chips { display: flex; gap: 6px; margin-left: auto; }
+  .rest-chip {
+    border: none;
+    background: var(--navy-soft);
+    color: var(--cream);
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .rest-chip:hover, .rest-chip:focus-visible { background: var(--gold); color: var(--navy); }
+  .rest-chip:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+  body.has-timer .wrap { padding-bottom: 180px; }
+  .block-timer-btn {
+    margin-top: 12px;
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid var(--gold);
+    color: var(--navy);
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .block-timer-btn:hover, .block-timer-btn:focus-visible { background: var(--gold-soft); }
+  .block-timer-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  footer {
+    margin-top: 44px;
+    font-size: 13px;
+    color: var(--navy-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    text-align: center;
+  }
+  .hidden { display: none; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">The Lazarus Method &middot; Move</div>
+    <div class="brand">Train with Natalia</div>
+    <div class="gold-rule"></div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer>
+    Warm up before every session. Questions about form or substitutions? Message Natalia before you improvise.
+  </footer>
+</div>
+
+<div class="timer-bar" id="timerBar">
+  <div class="timer-inner">
+    <div>
+      <span class="timer-label" id="timerLabel">Rest timer</span>
+      <span class="timer-display" id="timerDisplay">0:00</span>
+    </div>
+    <div class="timer-controls">
+      <button class="timer-btn" id="timerToggle">Start</button>
+      <button class="timer-btn" id="timerReset">Reset</button>
+    </div>
+    <div class="rest-chips" aria-label="Quick rest timers">
+      <button class="rest-chip" data-sec="30">0:30</button>
+      <button class="rest-chip" data-sec="45">0:45</button>
+      <button class="rest-chip" data-sec="60">1:00</button>
+      <button class="rest-chip" data-sec="90">1:30</button>
+      <button class="rest-chip" data-sec="120">2:00</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================
+   EDIT YOUR WORKOUTS HERE, NATALIA
+   ==========================================================
+   The app asks three questions:
+     1. equipment:  "equip" (gym / equipment) or "bw" (bodyweight)
+     2. time:       15, 30, 45, or 60
+     3. focus:      "strength", "metcon", or "combo"
+
+   The workout shown comes from WORKOUTS[equipment][focus][time].
+   Every combination below is filled in. To change a workout,
+   find its slot and edit the text between quotation marks.
+
+   A slot can hold ONE workout { ... } or a LIST of workouts
+   [ { ... }, { ... } ]. When it is a list, the app picks one
+   at random and shows a button to swap to the other options.
+
+   Each workout has:
+     title    - the name shown at the top
+     note     - your coaching message for this session
+     blocks   - sections of the workout. Each block has:
+        heading  - e.g. "Block A" or "Warm Up"
+        format   - e.g. "3 sets" or "AMRAP 12 minutes"
+        exercises - list of { name, detail, note }
+          detail is the sets/reps/rest line
+          note is your form cue (optional)
+
+   Keep the commas, quotes, and brackets exactly as they are.
+   ========================================================== */
+const WORKOUTS = {
+  equip: {
+    strength: {
+      15: { title: "Strength Express", note: "Short on time, not on intent. Move heavy and crisp, rest only as written.",
+        blocks: [
+          { heading: "Superset", format: "4 rounds, alternate exercises", exercises: [
+            { name: "Goblet Squat", detail: "8 reps, then move on", note: "Heels down, chest tall, control the descent." },
+            { name: "Dumbbell Bench Press", detail: "8 reps, rest 45 sec after", note: "Elbows at 45 degrees, full range." } ] },
+          { heading: "Finisher", format: "2 rounds", exercises: [
+            { name: "Plank", detail: "40 sec, rest 30 sec", note: "Squeeze glutes, ribs down." } ] } ] },
+      30: { title: "Foundation Strength", note: "Quality over load today. Every rep should look identical to the first.",
+        blocks: [
+          { heading: "Block A", format: "4 sets", exercises: [
+            { name: "Dumbbell Deadlift", detail: "6 reps, rest 90 sec", note: "Brace before you pull, flat back." } ] },
+          { heading: "Block B", format: "Superset, 3 rounds", exercises: [
+            { name: "Dumbbell Bench Press", detail: "8 reps", note: "Slow 3 second lowering." },
+            { name: "One Arm Row", detail: "10 per side, rest 60 sec after", note: "Pull to your hip, not your armpit." } ] },
+          { heading: "Core", format: "2 rounds", exercises: [
+            { name: "Dead Bug", detail: "10 per side, rest 30 sec", note: "Lower back stays glued to the floor." } ] } ] },
+      45: [ { title: "Full Strength Session", note: "The main lifts come first while you are fresh. Do not rush block A.",
+        blocks: [
+          { heading: "Block A", format: "4 sets", exercises: [
+            { name: "Goblet or Barbell Squat", detail: "6 reps, rest 2 min", note: "Last set should feel like a 7 or 8 out of 10." } ] },
+          { heading: "Block B", format: "3 sets", exercises: [
+            { name: "Romanian Deadlift", detail: "8 reps, rest 90 sec", note: "Push hips back, stop when hamstrings pull." } ] },
+          { heading: "Block C", format: "Superset, 3 rounds", exercises: [
+            { name: "Shoulder Press", detail: "8 reps", note: "No lower back arch." },
+            { name: "Lat Pulldown or Row", detail: "10 reps, rest 60 sec after", note: "Drive elbows down, pause at the bottom." } ] },
+          { heading: "Core", format: "2 rounds", exercises: [
+            { name: "Side Plank", detail: "30 sec per side, rest 30 sec", note: "Straight line from head to feet." } ] } ] },
+        { title: "The Strength Blocks", note: "Three blocks: lower, upper, core. Go heavy where it says heavy. Quality over speed.",
+        blocks: [
+          { heading: "Block 1: Lower Body", format: "3 to 4 rounds, rest 45 to 60 sec between", exercises: [
+            { name: "Goblet Squat", detail: "10 to 12 reps", note: "Heavy kettlebell or dumbbell." },
+            { name: "Romanian Deadlift", detail: "10 to 12 reps", note: "Start from standing." },
+            { name: "Alternating Reverse Lunge", detail: "8 to 10 per leg", note: "" },
+            { name: "Hip Thrust or Glute Bridge", detail: "12 to 15 reps", note: "" } ] },
+          { heading: "Block 2: Upper Body", format: "3 to 4 rounds, rest 45 to 60 sec between", exercises: [
+            { name: "Dumbbell Bench Press", detail: "8 to 12 reps", note: "Heavy kettlebell or dumbbell." },
+            { name: "Single Arm Dumbbell Row", detail: "10 per side", note: "" },
+            { name: "Dumbbell Push Press", detail: "8 to 12 reps", note: "" },
+            { name: "Triceps Extensions", detail: "10 to 15 reps", note: "" } ] },
+          { heading: "Block 3: Core", format: "3 to 4 rounds, rest 30 to 45 sec between", exercises: [
+            { name: "V Ups or Sit Ups", detail: "20 total", note: "" },
+            { name: "Plank Hold", detail: "30 sec", note: "" },
+            { name: "Weighted Russian Twist", detail: "25 total", note: "" },
+            { name: "Plank Shoulder Tap", detail: "20 total", note: "" } ] } ] } ],
+      60: { title: "Complete Strength Builder", note: "This is the full session. Log your weights so we can progress them next time.",
+        blocks: [
+          { heading: "Block A", format: "5 sets", exercises: [
+            { name: "Squat", detail: "5 reps, rest 2 min", note: "Build to a challenging but clean top set." } ] },
+          { heading: "Block B", format: "4 sets", exercises: [
+            { name: "Bench Press", detail: "6 reps, rest 90 sec", note: "Feet planted, controlled touch, no bounce." } ] },
+          { heading: "Block C", format: "3 sets", exercises: [
+            { name: "Romanian Deadlift", detail: "8 reps, rest 90 sec", note: "Soft knees, hinge, not a squat." } ] },
+          { heading: "Block D", format: "Superset, 3 rounds", exercises: [
+            { name: "Walking Lunges", detail: "10 per leg", note: "Short steps, knee tracks over toes." },
+            { name: "One Arm Row", detail: "10 per side, rest 60 sec after", note: "Full stretch at the bottom." } ] },
+          { heading: "Core", format: "3 rounds", exercises: [
+            { name: "Plank", detail: "45 sec, rest 30 sec", note: "Breathe. Do not hold your breath." } ] } ] }
+    },
+    metcon: {
+      15: { title: "The Fast Fifteen", note: "One clock, one gear. Pick weights you can keep moving with.",
+        blocks: [
+          { heading: "AMRAP", format: "As many rounds as possible in 12 minutes", exercises: [
+            { name: "Kettlebell Swing", detail: "15 reps", note: "Snap the hips, arms are just ropes." },
+            { name: "Push Ups", detail: "10 reps", note: "Elevate hands if form breaks." },
+            { name: "Goblet Squat", detail: "10 reps", note: "Light to moderate, smooth tempo." } ] } ] },
+      30: [ { title: "Engine Builder", note: "Honest rest periods. Use a timer, not a feeling.",
+        blocks: [
+          { heading: "Part 1", format: "EMOM 10 minutes, alternate", exercises: [
+            { name: "Odd minutes: Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Even minutes: Burpees", detail: "8 reps", note: "Steady pace you could hold all day." } ] },
+          { heading: "Part 2", format: "3 rounds, rest 60 sec between", exercises: [
+            { name: "Dumbbell Thruster", detail: "12 reps", note: "One smooth motion from squat to press." },
+            { name: "Row or Jog", detail: "200 m", note: "" },
+            { name: "Sit Ups", detail: "15 reps", note: "" } ] } ] },
+        { title: "The Ladder", note: "One trip down the ladder with jump rope on both ends. Note your finish time and try to beat it next round.",
+        blocks: [
+          { heading: "For Time", format: "One round, as fast as clean form allows", exercises: [
+            { name: "Jump Rope", detail: "100 reps", note: "" },
+            { name: "Lunges", detail: "50 total", note: "" },
+            { name: "Kettlebell Deadlift", detail: "40 reps", note: "" },
+            { name: "Kettlebell Swing", detail: "30 reps", note: "Snap the hips." },
+            { name: "Burpees", detail: "20 reps", note: "" },
+            { name: "Push Ups", detail: "10 reps", note: "" },
+            { name: "Jump Rope", detail: "100 reps", note: "" } ] } ] },
+        { title: "The Pyramid", note: "Up the pyramid, then straight back down. Break sets as needed but keep moving.",
+        blocks: [
+          { heading: "Warm Up", format: "One round", exercises: [
+            { name: "Inchworm", detail: "5 reps", note: "" },
+            { name: "Jump Rope", detail: "50 reps", note: "" },
+            { name: "Lunge with Twist", detail: "10 reps", note: "" },
+            { name: "Jump Rope", detail: "50 reps", note: "" },
+            { name: "Double Pulse Squat", detail: "10 reps", note: "" } ] },
+          { heading: "The Pyramid", format: "Up then back down, one round", exercises: [
+            { name: "Push Ups", detail: "10 reps", note: "" },
+            { name: "Alternating Snatch", detail: "20 reps", note: "" },
+            { name: "Lunges", detail: "30 total", note: "" },
+            { name: "Air Squats", detail: "40 reps", note: "" },
+            { name: "Toe Touches", detail: "50 reps", note: "The top of the pyramid." },
+            { name: "Then back down", detail: "40 squats, 30 lunges, 20 snatches, 10 push ups", note: "" } ] } ] } ],
+      45: { title: "The Grinder", note: "Pace the first two rounds. If round one is your fastest, you went out too hot.",
+        blocks: [
+          { heading: "Warm Up", format: "2 easy rounds", exercises: [
+            { name: "Jog or Row", detail: "2 min easy", note: "" },
+            { name: "Air Squat + Arm Circles", detail: "10 each", note: "" } ] },
+          { heading: "Main Circuit", format: "4 rounds, rest 90 sec between", exercises: [
+            { name: "Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Dumbbell Thruster", detail: "10 reps", note: "" },
+            { name: "Renegade Row", detail: "8 per side", note: "Hips stay square to the floor." },
+            { name: "Row or Jog", detail: "250 m", note: "" } ] },
+          { heading: "Finisher", format: "1 round", exercises: [
+            { name: "Farmer Carry", detail: "3 x 40 m, rest 45 sec", note: "Heavy. Tall posture, no leaning." } ] } ] },
+      60: { title: "The Hour of Power", note: "Three distinct efforts. Recover fully between blocks so each one has quality.",
+        blocks: [
+          { heading: "Block 1", format: "EMOM 12 minutes, rotate", exercises: [
+            { name: "Min 1: Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Min 2: Push Ups", detail: "12 reps", note: "" },
+            { name: "Min 3: Goblet Squat", detail: "12 reps", note: "" } ] },
+          { heading: "Block 2", format: "4 rounds, rest 60 sec between", exercises: [
+            { name: "Row or Jog", detail: "300 m", note: "" },
+            { name: "Dumbbell Thruster", detail: "10 reps", note: "" },
+            { name: "Sit Ups", detail: "15 reps", note: "" } ] },
+          { heading: "Block 3", format: "1 round, all out but clean", exercises: [
+            { name: "Farmer Carry", detail: "4 x 40 m, rest 45 sec", note: "" },
+            { name: "Plank", detail: "Max hold, one attempt", note: "Stop when your hips drop." } ] } ] }
+    },
+    combo: {
+      15: { title: "Strength + Sprint", note: "Heavy first, breathless second. Two flavors in fifteen minutes.",
+        blocks: [
+          { heading: "Strength", format: "3 sets", exercises: [
+            { name: "Goblet Squat", detail: "6 heavy reps, rest 60 sec", note: "Heavier than you would pick for a circuit." } ] },
+          { heading: "Metcon", format: "AMRAP 6 minutes", exercises: [
+            { name: "Kettlebell Swing", detail: "12 reps", note: "" },
+            { name: "Push Ups", detail: "8 reps", note: "" } ] } ] },
+      30: { title: "The Split Session", note: "Do not let the metcon steal from the strength work. Lift first, lift well.",
+        blocks: [
+          { heading: "Strength", format: "4 sets", exercises: [
+            { name: "Dumbbell Deadlift", detail: "5 reps, rest 90 sec", note: "Every rep from a dead stop." } ] },
+          { heading: "Metcon", format: "AMRAP 12 minutes", exercises: [
+            { name: "Dumbbell Thruster", detail: "10 reps", note: "" },
+            { name: "Row or Jog", detail: "150 m", note: "" },
+            { name: "Mountain Climbers", detail: "20 total", note: "" } ] } ] },
+      45: { title: "Best of Both", note: "Strength builds the engine block, the metcon revs it. Respect the rest times.",
+        blocks: [
+          { heading: "Strength A", format: "4 sets", exercises: [
+            { name: "Squat", detail: "6 reps, rest 2 min", note: "Challenging but clean." } ] },
+          { heading: "Strength B", format: "3 sets", exercises: [
+            { name: "Dumbbell Bench Press", detail: "8 reps, rest 90 sec", note: "" } ] },
+          { heading: "Metcon", format: "3 rounds, rest 60 sec between", exercises: [
+            { name: "Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Burpees", detail: "8 reps", note: "" },
+            { name: "Row or Jog", detail: "200 m", note: "" } ] } ] },
+      60: { title: "The Complete Athlete", note: "This is the full picture: strength, then conditioning, then core. Bring a water bottle.",
+        blocks: [
+          { heading: "Strength A", format: "5 sets", exercises: [
+            { name: "Deadlift or Trap Bar Deadlift", detail: "5 reps, rest 2 min", note: "Brace hard, flat back, no rushing." } ] },
+          { heading: "Strength B", format: "Superset, 3 rounds", exercises: [
+            { name: "Shoulder Press", detail: "8 reps", note: "" },
+            { name: "One Arm Row", detail: "10 per side, rest 60 sec after", note: "" } ] },
+          { heading: "Metcon", format: "AMRAP 15 minutes", exercises: [
+            { name: "Kettlebell Swing", detail: "15 reps", note: "" },
+            { name: "Goblet Squat", detail: "10 reps", note: "" },
+            { name: "Push Ups", detail: "10 reps", note: "" },
+            { name: "Row or Jog", detail: "200 m", note: "" } ] },
+          { heading: "Core", format: "2 rounds", exercises: [
+            { name: "Dead Bug", detail: "10 per side, rest 30 sec", note: "" } ] } ] }
+    }
+  },
+  bw: {
+    strength: {
+      15: { title: "Bodyweight Strength Express", note: "Tempo is your barbell today. Slow lowering makes light exercises heavy.",
+        blocks: [
+          { heading: "Circuit", format: "3 rounds, rest 45 sec between", exercises: [
+            { name: "Tempo Push Ups", detail: "8 reps, 3 sec down", note: "Elevate hands if needed, keep the tempo." },
+            { name: "Split Squat", detail: "8 per leg", note: "Back knee kisses the floor." },
+            { name: "Hollow Hold", detail: "20 sec", note: "Lower back pressed into the floor." } ] } ] },
+      30: { title: "No Equipment, No Excuses", note: "Own every position. If a set gets easy, slow it down instead of speeding up.",
+        blocks: [
+          { heading: "Block A", format: "3 sets each, rest 60 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
+            { name: "Split Squat", detail: "10 per leg", note: "" } ] },
+          { heading: "Block B", format: "3 sets each, rest 45 sec", exercises: [
+            { name: "Pike Push Ups", detail: "8 reps", note: "Hips high, head travels toward the floor." },
+            { name: "Single Leg Glute Bridge", detail: "10 per side", note: "Squeeze at the top for 2 sec." } ] },
+          { heading: "Core", format: "2 rounds", exercises: [
+            { name: "Side Plank", detail: "30 sec per side", note: "" } ] } ] },
+      45: { title: "Bodyweight Builder", note: "Volume does the work today. Keep rest honest and form identical from first set to last.",
+        blocks: [
+          { heading: "Block A", format: "4 sets each, rest 60 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
+            { name: "Bulgarian Split Squat (foot on chair)", detail: "8 per leg", note: "Front heel stays down." } ] },
+          { heading: "Block B", format: "3 sets each, rest 60 sec", exercises: [
+            { name: "Pike Push Ups", detail: "8 reps", note: "" },
+            { name: "Step Ups (chair or bench)", detail: "10 per leg", note: "Drive through the whole foot." } ] },
+          { heading: "Block C", format: "3 rounds", exercises: [
+            { name: "Single Leg Glute Bridge", detail: "12 per side", note: "" },
+            { name: "Hollow Hold", detail: "25 sec, rest 30 sec", note: "" } ] } ] },
+      60: { title: "The Full Bodyweight Hour", note: "This is a serious session. Treat each block like a heavy lift: focused, unhurried, precise.",
+        blocks: [
+          { heading: "Block A", format: "4 sets each, rest 75 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "12 reps, 3 sec down", note: "Progress to deficit push ups on books if easy." },
+            { name: "Bulgarian Split Squat", detail: "10 per leg", note: "" } ] },
+          { heading: "Block B", format: "4 sets each, rest 60 sec", exercises: [
+            { name: "Pike Push Ups", detail: "10 reps", note: "" },
+            { name: "Sliding Leg Curl (towel on floor)", detail: "8 reps", note: "Bridge up, slide heels out slowly." } ] },
+          { heading: "Block C", format: "3 sets each, rest 45 sec", exercises: [
+            { name: "Step Ups", detail: "12 per leg", note: "" },
+            { name: "Wall Sit", detail: "45 sec", note: "" } ] },
+          { heading: "Core", format: "3 rounds", exercises: [
+            { name: "Hollow Hold", detail: "25 sec", note: "" },
+            { name: "Side Plank", detail: "30 sec per side, rest 30 sec", note: "" } ] } ] }
+    },
+    metcon: {
+      15: { title: "The Living Room Burner", note: "Twelve minutes of steady work. Find a pace you can hold, then hold it.",
+        blocks: [
+          { heading: "AMRAP", format: "As many rounds as possible in 12 minutes", exercises: [
+            { name: "Air Squats", detail: "12 reps", note: "" },
+            { name: "Push Ups", detail: "8 reps", note: "" },
+            { name: "Mountain Climbers", detail: "20 total", note: "" },
+            { name: "Burpees", detail: "5 reps", note: "Step back instead of jumping if needed." } ] } ] },
+      30: [ { title: "Sweat Equity", note: "The EMOM keeps you honest, the circuit empties the tank. Scale reps, never form.",
+        blocks: [
+          { heading: "Part 1", format: "EMOM 12 minutes, rotate", exercises: [
+            { name: "Min 1: Jumping Jacks", detail: "30 reps", note: "" },
+            { name: "Min 2: Air Squats", detail: "15 reps", note: "" },
+            { name: "Min 3: Push Ups", detail: "10 reps", note: "" } ] },
+          { heading: "Part 2", format: "3 rounds, rest 60 sec between", exercises: [
+            { name: "Burpees", detail: "8 reps", note: "" },
+            { name: "Reverse Lunges", detail: "10 per leg", note: "" },
+            { name: "Plank Shoulder Taps", detail: "20 total", note: "Hips stay still." } ] } ] },
+        { title: "The Indoor Circuit", note: "Steady pace and continuous movement, not max intensity. Scale any movement, never skip the transition rest.",
+        blocks: [
+          { heading: "Circuit", format: "20 minutes: 45 sec work, 15 sec transition, 10 exercises x 2 rounds", exercises: [
+            { name: "Glute Bridges", detail: "45 sec", note: "Drive through the heels, squeeze at the top." },
+            { name: "Alternating Reverse Lunges", detail: "45 sec", note: "Controlled reps, alternating legs." },
+            { name: "Toe Taps", detail: "45 sec", note: "Quick feet, stay light and athletic." },
+            { name: "Push Ups", detail: "45 sec", note: "Scale to knees or incline if needed." },
+            { name: "Air Squats", detail: "45 sec", note: "Full depth, smooth tempo." },
+            { name: "Burpees", detail: "45 sec", note: "Step back or jump back based on fitness level." },
+            { name: "Bird Dogs", detail: "45 sec", note: "Alternate sides, focus on stability." },
+            { name: "Alternating Lateral Lunges", detail: "45 sec", note: "Sit back into the hip, chest tall." },
+            { name: "Mountain Climbers", detail: "45 sec", note: "Steady pace, core tight." },
+            { name: "Plank Shoulder Taps", detail: "45 sec", note: "Minimize hip movement." } ] },
+          { heading: "Core Finisher", format: "5 minutes: run through the list twice, continuous", exercises: [
+            { name: "Russian Twist", detail: "30 sec", note: "" },
+            { name: "Forearm Plank", detail: "30 sec", note: "" },
+            { name: "Bicycle Crunches", detail: "30 sec", note: "" },
+            { name: "Side Plank Left", detail: "30 sec", note: "" },
+            { name: "Side Plank Right", detail: "30 sec", note: "" } ] } ] } ],
+      45: { title: "The Long Burn", note: "Four big rounds. Round three is where it counts, so pace rounds one and two.",
+        blocks: [
+          { heading: "Warm Up", format: "2 easy rounds", exercises: [
+            { name: "March in Place", detail: "60 sec", note: "" },
+            { name: "Air Squats + Arm Circles", detail: "10 each", note: "" } ] },
+          { heading: "Main Circuit", format: "4 rounds, rest 90 sec between", exercises: [
+            { name: "Burpees", detail: "10 reps", note: "" },
+            { name: "Air Squats", detail: "20 reps", note: "" },
+            { name: "Push Ups", detail: "12 reps", note: "" },
+            { name: "Mountain Climbers", detail: "30 total", note: "" },
+            { name: "Reverse Lunges", detail: "10 per leg", note: "" } ] },
+          { heading: "Finisher", format: "2 rounds", exercises: [
+            { name: "Wall Sit", detail: "45 sec, rest 30 sec", note: "" } ] } ] },
+      60: { title: "The Bodyweight Gauntlet", note: "Three blocks, three different energies. Full recovery between blocks, full effort inside them.",
+        blocks: [
+          { heading: "Block 1", format: "EMOM 15 minutes, rotate", exercises: [
+            { name: "Min 1: Jumping Jacks", detail: "35 reps", note: "" },
+            { name: "Min 2: Air Squats", detail: "15 reps", note: "" },
+            { name: "Min 3: Push Ups", detail: "12 reps", note: "" } ] },
+          { heading: "Block 2", format: "4 rounds, rest 60 sec between", exercises: [
+            { name: "Burpees", detail: "10 reps", note: "" },
+            { name: "Reverse Lunges", detail: "12 per leg", note: "" },
+            { name: "Plank Shoulder Taps", detail: "24 total", note: "" } ] },
+          { heading: "Block 3", format: "1 round, finish strong", exercises: [
+            { name: "Air Squats", detail: "50 reps, break as needed", note: "" },
+            { name: "Plank", detail: "Max hold, one attempt", note: "" } ] } ] }
+    },
+    combo: {
+      15: { title: "Quick Combo", note: "Strength quality first, then six honest minutes of work.",
+        blocks: [
+          { heading: "Strength", format: "3 rounds, rest 45 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "8 reps, 3 sec down", note: "" },
+            { name: "Split Squat", detail: "8 per leg", note: "" } ] },
+          { heading: "Metcon", format: "AMRAP 6 minutes", exercises: [
+            { name: "Air Squats", detail: "10 reps", note: "" },
+            { name: "Mountain Climbers", detail: "20 total", note: "" } ] } ] },
+      30: { title: "Half Hour Hybrid", note: "Slow strength, fast finish. Two different disciplines in one session.",
+        blocks: [
+          { heading: "Strength", format: "3 sets each, rest 60 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
+            { name: "Bulgarian Split Squat", detail: "8 per leg", note: "" } ] },
+          { heading: "Metcon", format: "AMRAP 10 minutes", exercises: [
+            { name: "Burpees", detail: "6 reps", note: "" },
+            { name: "Air Squats", detail: "12 reps", note: "" },
+            { name: "Plank Shoulder Taps", detail: "16 total", note: "" } ] } ] },
+      45: { title: "The Hybrid Builder", note: "Strength earns the metcon. If block A is sloppy, the whole session is.",
+        blocks: [
+          { heading: "Strength A", format: "4 sets each, rest 60 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "10 reps, 3 sec down", note: "" },
+            { name: "Bulgarian Split Squat", detail: "8 per leg", note: "" } ] },
+          { heading: "Strength B", format: "3 sets each, rest 45 sec", exercises: [
+            { name: "Pike Push Ups", detail: "8 reps", note: "" },
+            { name: "Single Leg Glute Bridge", detail: "10 per side", note: "" } ] },
+          { heading: "Metcon", format: "3 rounds, rest 60 sec between", exercises: [
+            { name: "Burpees", detail: "8 reps", note: "" },
+            { name: "Reverse Lunges", detail: "10 per leg", note: "" },
+            { name: "Mountain Climbers", detail: "24 total", note: "" } ] } ] },
+      60: { title: "The Complete Hour", note: "The full menu: strength, conditioning, and core. This is a flagship session, treat it that way.",
+        blocks: [
+          { heading: "Strength A", format: "4 sets each, rest 75 sec", exercises: [
+            { name: "Tempo Push Ups", detail: "12 reps, 3 sec down", note: "" },
+            { name: "Bulgarian Split Squat", detail: "10 per leg", note: "" } ] },
+          { heading: "Strength B", format: "3 sets each, rest 60 sec", exercises: [
+            { name: "Pike Push Ups", detail: "10 reps", note: "" },
+            { name: "Sliding Leg Curl", detail: "8 reps", note: "" } ] },
+          { heading: "Metcon", format: "AMRAP 12 minutes", exercises: [
+            { name: "Burpees", detail: "8 reps", note: "" },
+            { name: "Air Squats", detail: "15 reps", note: "" },
+            { name: "Plank Shoulder Taps", detail: "20 total", note: "" } ] },
+          { heading: "Core", format: "2 rounds", exercises: [
+            { name: "Hollow Hold", detail: "25 sec", note: "" },
+            { name: "Side Plank", detail: "30 sec per side, rest 30 sec", note: "" } ] } ] }
+    }
+  }
+};
+/* ============ END OF EDITABLE SECTION ============ */
+
+const app = document.getElementById('app');
+const state = { equipment: null, time: null, focus: null };
+
+/* ---- Timer ---- */
+const timerBar = document.getElementById('timerBar');
+const timerDisplay = document.getElementById('timerDisplay');
+const timerLabel = document.getElementById('timerLabel');
+const timerToggle = document.getElementById('timerToggle');
+let tick = null, remaining = 0, running = false, emomMode = false, audioCtx = null;
+
+function beep(freq, dur) {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+function buzz(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
+function fmt(s) {
+  const m = Math.floor(s / 60), r = s % 60;
+  return m + ':' + (r < 10 ? '0' : '') + r;
+}
+function updateDisplay() { timerDisplay.textContent = fmt(Math.max(remaining, 0)); }
+
+function startCountdown(seconds, label, emom) {
+  clearInterval(tick);
+  remaining = seconds;
+  emomMode = !!emom;
+  running = true;
+  timerLabel.textContent = label || 'Timer';
+  timerToggle.textContent = 'Pause';
+  updateDisplay();
+  beep(880, 0.15);
+  tick = setInterval(() => {
+    if (!running) return;
+    remaining--;
+    updateDisplay();
+    if (remaining <= 0) {
+      clearInterval(tick);
+      running = false;
+      timerToggle.textContent = 'Start';
+      timerLabel.textContent = 'Time!';
+      beep(660, 0.6); buzz(400);
+    } else if (emomMode && remaining % 60 === 0) {
+      beep(880, 0.2); buzz(150);
+    } else if (remaining <= 3) {
+      beep(440, 0.1);
+    }
+  }, 1000);
+}
+
+timerToggle.addEventListener('click', () => {
+  if (remaining > 0) {
+    running = !running;
+    timerToggle.textContent = running ? 'Pause' : 'Resume';
+  }
+});
+document.getElementById('timerReset').addEventListener('click', () => {
+  clearInterval(tick);
+  running = false;
+  remaining = 0;
+  updateDisplay();
+  timerLabel.textContent = 'Rest timer';
+  timerToggle.textContent = 'Start';
+});
+document.querySelectorAll('.rest-chip').forEach(c => {
+  c.addEventListener('click', () => startCountdown(parseInt(c.dataset.sec, 10), 'Rest', false));
+});
+function showTimer() {
+  timerBar.classList.add('visible');
+  document.body.classList.add('has-timer');
+}
+function hideTimer() {
+  timerBar.classList.remove('visible');
+  document.body.classList.remove('has-timer');
+  clearInterval(tick);
+  running = false;
+  remaining = 0;
+  updateDisplay();
+  timerLabel.textContent = 'Rest timer';
+  timerToggle.textContent = 'Start';
+}
+
+/* Reads durations out of workout text so every written time
+   gets its own matching timer button automatically.
+   Understands: "40 sec", "2 min" at the start of a detail line,
+   and "rest 45 sec", "rest 2 min", "rest 45 to 60 sec" anywhere. */
+function parseTimers(text) {
+  const out = [];
+  const work = text.match(/^(\d+)\s*(sec|min)/i);
+  if (work) out.push({ label: 'Work', sec: parseInt(work[1], 10) * (work[2].toLowerCase() === 'min' ? 60 : 1) });
+  const rest = text.match(/rest\s+(\d+)(?:\s*to\s*(\d+))?\s*(sec|min)/i);
+  if (rest) {
+    const mult = rest[3].toLowerCase() === 'min' ? 60 : 1;
+    out.push({ label: 'Rest', sec: parseInt(rest[1], 10) * mult });
+    if (rest[2]) out.push({ label: 'Rest', sec: parseInt(rest[2], 10) * mult });
+  }
+  return out;
+}
+
+function timerChip(t, context) {
+  const b = document.createElement('button');
+  b.className = 'ex-chip';
+  b.textContent = t.label + ' ' + fmt(t.sec);
+  b.addEventListener('click', () => startCountdown(t.sec, t.label + ' \u00B7 ' + context, false));
+  return b;
+}
+
+const STEPS = [
+  { key: 'equipment', question: 'What do you have today?', sub: 'Be honest about your setup, both paths work.',
+    options: [
+      { value: 'equip', title: 'Gym or equipment', sub: 'Dumbbells, kettlebells, or a full gym' },
+      { value: 'bw', title: 'Bodyweight only', sub: 'No equipment, anywhere' } ] },
+  { key: 'time', question: 'How much time do you have?', sub: 'Including your warm up.',
+    options: [
+      { value: 15, title: '15 minutes', sub: 'Short and sharp' },
+      { value: 30, title: '30 minutes', sub: 'The sweet spot' },
+      { value: 45, title: '45 minutes', sub: 'A full session' },
+      { value: 60, title: '1 hour', sub: 'The complete workout' } ] },
+  { key: 'focus', question: 'What is the focus?', sub: 'Pick the energy you want today.',
+    options: [
+      { value: 'strength', title: 'Strength', sub: 'Heavier, slower, controlled' },
+      { value: 'metcon', title: 'Metcon', sub: 'Conditioning, heart rate, sweat' },
+      { value: 'combo', title: 'Combo', sub: 'Strength first, conditioning after' } ] }
+];
+
+let currentStep = 0;
+
+function renderStep() {
+  hideTimer();
+  state.wList = null;
+  state.wIndex = undefined;
+  const step = STEPS[currentStep];
+  app.innerHTML = '';
+  const count = document.createElement('div');
+  count.className = 'step-count';
+  count.textContent = 'Step ' + (currentStep + 1) + ' of 3';
+  const q = document.createElement('h1');
+  q.className = 'question';
+  q.textContent = step.question;
+  const sub = document.createElement('p');
+  sub.className = 'question-sub';
+  sub.textContent = step.sub;
+  const opts = document.createElement('div');
+  opts.className = 'options';
+  step.options.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<div class="opt-title">' + o.title + '</div><div class="opt-sub">' + o.sub + '</div>';
+    b.addEventListener('click', () => {
+      state[step.key] = o.value;
+      if (currentStep < STEPS.length - 1) { currentStep++; renderStep(); }
+      else { renderWorkout(); }
+      window.scrollTo(0, 0);
+    });
+    opts.appendChild(b);
+  });
+  app.append(count, q, sub, opts);
+  if (currentStep > 0) {
+    const back = document.createElement('button');
+    back.className = 'back-btn';
+    back.textContent = 'Go back';
+    back.addEventListener('click', () => { currentStep--; renderStep(); });
+    app.appendChild(back);
+  }
+}
+
+function renderWorkout() {
+  const slot = WORKOUTS[state.equipment][state.focus][state.time];
+  const list = Array.isArray(slot) ? slot : [slot];
+  if (!state.wList || state.wList !== list || state.wIndex === undefined) {
+    state.wList = list;
+    state.wIndex = Math.floor(Math.random() * list.length);
+  }
+  const w = list[state.wIndex];
+  const focusLabel = { strength: 'Strength', metcon: 'Metcon', combo: 'Strength + Metcon' }[state.focus];
+  const equipLabel = state.equipment === 'bw' ? 'Bodyweight' : 'Equipment';
+  app.innerHTML = '';
+  const eyebrow = document.createElement('div');
+  eyebrow.className = 'workout-eyebrow';
+  eyebrow.textContent = 'Your session';
+  const title = document.createElement('h1');
+  title.className = 'workout-title';
+  title.textContent = w.title;
+  const meta = document.createElement('p');
+  meta.className = 'workout-meta';
+  meta.textContent = equipLabel + ' \u00B7 ' + state.time + ' min \u00B7 ' + focusLabel;
+  app.append(eyebrow, title, meta);
+  if (w.note) {
+    const note = document.createElement('div');
+    note.className = 'coach-note';
+    note.innerHTML = '<strong>From Natalia</strong>' + w.note;
+    app.appendChild(note);
+  }
+  w.blocks.forEach(block => {
+    const div = document.createElement('div');
+    div.className = 'block';
+    div.innerHTML = '<h2 class="block-heading">' + block.heading + '</h2>' +
+                    '<div class="block-format">' + block.format + '</div>';
+    block.exercises.forEach(ex => {
+      const exDiv = document.createElement('div');
+      exDiv.className = 'ex';
+      exDiv.innerHTML = '<div class="ex-name">' + ex.name + '</div>' +
+                        '<div class="ex-detail">' + ex.detail + '</div>' +
+                        (ex.note ? '<div class="ex-note">' + ex.note + '</div>' : '');
+      const times = parseTimers(ex.detail);
+      if (times.length) {
+        const row = document.createElement('div');
+        row.className = 'ex-timers';
+        times.forEach(t => row.appendChild(timerChip(t, ex.name)));
+        exDiv.appendChild(row);
+      }
+      div.appendChild(exDiv);
+    });
+    const tm = block.format.match(/(\d+)\s*min/i);
+    if (tm) {
+      const tb = document.createElement('button');
+      tb.className = 'block-timer-btn';
+      tb.textContent = 'Start ' + tm[1] + ' minute timer';
+      const isEmom = /emom/i.test(block.format);
+      tb.addEventListener('click', () => startCountdown(parseInt(tm[1], 10) * 60, block.heading, isEmom));
+      div.appendChild(tb);
+    }
+    const blockRests = parseTimers(block.format).filter(t => t.label === 'Rest');
+    if (blockRests.length) {
+      const row = document.createElement('div');
+      row.className = 'ex-timers';
+      blockRests.forEach(t => row.appendChild(timerChip(t, 'between rounds')));
+      div.appendChild(row);
+    }
+    app.appendChild(div);
+  });
+  if (list.length > 1) {
+    const swap = document.createElement('button');
+    swap.className = 'back-btn';
+    swap.textContent = 'Show me a different option';
+    swap.addEventListener('click', () => {
+      state.wIndex = (state.wIndex + 1) % list.length;
+      renderWorkout();
+      window.scrollTo(0, 0);
+    });
+    app.appendChild(swap);
+  }
+  const restart = document.createElement('button');
+  restart.className = 'restart';
+  restart.textContent = 'Build another workout';
+  restart.addEventListener('click', () => { currentStep = 0; renderStep(); window.scrollTo(0, 0); });
+  app.appendChild(restart);
+  showTimer();
+}
+
+renderStep();
+</script>
+</body>
+</html>
