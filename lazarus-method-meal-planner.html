@@ -183,6 +183,18 @@ details.recipe[open] summary::after{content:"\2212"}
 .rx h2{font-size:18px;margin-bottom:4px}
 .rx .linkbox{font-size:12px;word-break:break-all;background:var(--page);border-radius:var(--r-input);padding:10px;margin-top:10px;color:var(--ink-2)}
 .printonly{display:none}
+.todo{flex-wrap:wrap}
+.todo .todo-main{flex:1 1 0}
+.choice{display:flex;gap:8px;flex:1 1 100%}
+.choice button{flex:1;border:1px solid var(--ink);background:#fff;border-radius:var(--r-pill);padding:10px 12px;font-weight:600;font-size:14px;min-height:44px}
+.choice .ate[aria-pressed="true"]{background:var(--lime);border-color:var(--lime)}
+.choice .skip{border-color:var(--line)}
+.choice .skip[aria-pressed="true"]{background:#e9e6e2;border-color:#bdb8b1;color:#4a4744}
+.todo.skipped{background:#f8f7f5}.todo.skipped .todo-main b{color:var(--ink-2);text-decoration:line-through}
+.meal .choice{margin-top:12px}
+.meal-today{font-size:12.5px;font-weight:600;background:var(--lime);border-radius:var(--r-pill);padding:2px 10px;margin-left:8px;vertical-align:2px}
+.adh{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.adh .tile b{font-size:24px}
 .topbtn{margin-left:auto;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:var(--r-pill);padding:9px 16px;font-weight:600;font-size:14px;min-height:44px;white-space:nowrap}
 .top-right:not(:empty)+.topbtn{margin-left:12px}
 .sheet{background:#fff;border:2px solid var(--ink);border-radius:var(--r-card);padding:20px;margin-bottom:18px}
@@ -306,7 +318,7 @@ button,.opt,.chip,.navb,summary{-webkit-tap-highlight-color:transparent;touch-ac
   .day{display:block!important}
   .day h2{break-after:avoid;margin-top:18px}
   .meal-h,.total,.groc li,.recipe-body>div{break-inside:avoid}
-  .nav,.how,.chooser,.addday,.meal-actions,.topbtn,.sheet{display:none!important}
+  .nav,.how,.chooser,.addday,.meal-actions,.topbtn,.sheet,.choice{display:none!important}
   .meal{margin-bottom:8px}.meal-h{padding:12px 16px 10px}.pic{width:80px;height:80px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.recipe-body{padding:0 16px 12px;font-size:10pt}
   details.recipe summary{display:none}
   .target{padding:16px 18px}.target .kcal{font-size:36pt}
@@ -1062,7 +1074,7 @@ S.meals = S.slots.length;
 function save() { if (RX) return; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
 let step = 0, plan = null, target = null, dayIdx = 0, seed = 0, problem = '';
-let chooser = null, cq = '', sheet = false;
+let chooser = null, cq = '', sheet = false, logDate = null;
 let tab = 'plan', dashMode = 'day', dashDate = null, query = '', manualOpen = false, planStart = null, storageOk = true;
 const STEPS = RX ? ['Your plan settings', 'Foods to avoid', 'Your plan'] : ['About you', 'How you eat', 'Foods to avoid', 'Your plan'];
 const SCREEN = [
@@ -1246,13 +1258,14 @@ function cmpRow(name, cls, val, goal, unit, ok) {
 function dayHtml(d, i) {
   const main = d.entries.filter((e) => !e.addon), adds = d.entries.filter((e) => e.addon);
   let snackN = 0;
-  let h = '<section class="day" id="day' + i + '"' + (i === dayIdx ? '' : ' hidden') + '><h2>Day ' + (i + 1) + '</h2>';
+  let h = '<section class="day" id="day' + i + '"' + (i === dayIdx ? '' : ' hidden') + '><h2>Day ' + (i + 1) + (i === planDayFor(today()) ? '<span class="meal-today noprint">Today</span>' : '') + '</h2>';
   main.forEach((e, mi) => {
     const x = e.item, m = e.mult || 1, isRecipe = !!x.ing;
     const mine = adds.filter((a) => a.slot === e.slot && e.slot !== 'snack');
     const label = e.extra ? 'Added by you' : e.slot === 'snack' ? 'Snack' + (plan.prefs.snacks > 1 ? ' ' + (++snackN) : '') : LM.SLOT_LABEL[e.slot];
     h += '<article class="meal"><div class="meal-h"><div class="meal-row">' + pic(x) + '<div class="meal-main"><div class="meal-top"><div><div class="slot">' + label + (x.prep ? ', ' + esc(x.prep) : '') + '</div><h3>' + esc(x.name) + '</h3></div></div>' +
       '<span class="portion">' + esc(portionText(e)) + '</span><div class="nums">' + nums(x, m) + '</div>' +
+      (i === planDayFor(today()) ? choiceHtml(today(), mi, mealGroups(i)[mi]) : '') +
       '<div class="meal-actions noprint"><button type="button" class="btn ghost small" data-swap="' + i + ':' + mi + '">Swap for me</button><button type="button" class="btn ghost small" data-choose="' + i + ':' + mi + '">Choose my own</button>' + (e.extra ? '<button type="button" class="btn ghost small" data-remove="' + i + ':' + mi + '">Remove</button>' : '') + '</div></div></div>';
     if (mine.length) {
       h += '<ul class="addons">' + mine.map((a) => '<li><span><span class="lab">Add on the side:</span> ' + esc(a.item.name) + ', ' + esc(portionText(a)) + '</span><span>' + R(a.item.k * a.mult) + ' cal</span></li>').join('') + '</ul>';
@@ -1352,7 +1365,7 @@ function loadPlan() {
   return true;
 }
 function planDayFor(k) { if (!plan || plan.error) return -1; const n = plan.days.length; const diff = Math.round((dparse(k) - dparse(planStart || today())) / 86400000); return ((diff % n) + n) % n; }
-function totalsOf(k) { const t = { kcal: 0, p: 0, c: 0, f: 0, n: 0 }; (LOG[k] || []).forEach((e) => { const q = e.q || 1; t.kcal += e.k * q; t.p += e.p * q; t.c += e.c * q; t.f += e.f * q; t.n++; }); return t; }
+function totalsOf(k) { const t = { kcal: 0, p: 0, c: 0, f: 0, n: 0 }; (LOG[k] || []).forEach((e) => { if (e.src === 'skip') return; const q = e.q || 1; t.kcal += e.k * q; t.p += e.p * q; t.c += e.c * q; t.f += e.f * q; t.n++; }); return t; }
 function mealGroups(di) {
   const d = plan.days[di], main = d.entries.filter((e) => !e.addon), adds = d.entries.filter((e) => e.addon);
   return main.map((e, i) => {
@@ -1361,12 +1374,42 @@ function mealGroups(di) {
     return { e: e, adds: mine, t: t, pid: 'p|' + e.slot + '|' + e.item.name + '|' + (e.mult || 1) + '|' + i };
   });
 }
-function logPlanMeal(k, gidx) {
+function cur() { return logDate || today(); }
+function mealState(k, gr) { const e = (LOG[k] || []).find((x) => x.pid === gr.pid); return !e ? '' : e.src === 'skip' ? 'skip' : 'eat'; }
+/* Record a planned meal as eaten or skipped. Tapping the same answer again clears it. */
+function setMeal(k, gidx, what) {
   const gr = mealGroups(planDayFor(k))[gidx]; if (!gr) return;
-  LOG[k] = LOG[k] || []; const at = LOG[k].findIndex((x) => x.pid === gr.pid);
-  if (at >= 0) LOG[k].splice(at, 1);
-  else LOG[k].push({ pid: gr.pid, name: gr.e.item.name + (gr.adds.length ? ' with ' + gr.adds.map((a) => a.item.name.toLowerCase()).join(' and ') : ''), k: Math.round(gr.t.kcal), p: Math.round(gr.t.p), c: Math.round(gr.t.c), f: Math.round(gr.t.f), q: 1, src: 'plan' });
+  const was = mealState(k, gr);
+  LOG[k] = (LOG[k] || []).filter((x) => x.pid !== gr.pid);
+  const name = gr.e.item.name + (gr.adds.length ? ' with ' + gr.adds.map((a) => a.item.name.toLowerCase()).join(' and ') : '');
+  if (was !== what) {
+    if (what === 'eat') LOG[k].push({ pid: gr.pid, name: name, k: Math.round(gr.t.kcal), p: Math.round(gr.t.p), c: Math.round(gr.t.c), f: Math.round(gr.t.f), q: 1, src: 'plan' });
+    else LOG[k].push({ pid: gr.pid, name: name, k: 0, p: 0, c: 0, f: 0, q: 1, src: 'skip' });
+  }
   saveLog();
+}
+function choiceHtml(k, i, gr) {
+  const s = mealState(k, gr);
+  return '<div class="choice noprint"><button type="button" class="ate" data-meal="' + k + '|' + i + '|eat" aria-pressed="' + (s === 'eat') + '">' + (s === 'eat' ? 'Eaten ✓' : 'I ate this') + '</button><button type="button" class="skip" data-meal="' + k + '|' + i + '|skip" aria-pressed="' + (s === 'skip') + '">' + (s === 'skip' ? 'Skipped' : 'Skipped it') + '</button></div>';
+}
+function plannedRows(k) {
+  return mealGroups(planDayFor(k)).map((gr, i) => {
+    const s = mealState(k, gr), x = gr.e.item;
+    return '<div class="todo' + (s === 'eat' ? ' done' : s === 'skip' ? ' skipped' : '') + '">' + pic(x) + '<div class="todo-main"><b>' + esc(x.name) + '</b><small>' + (gr.e.slot === 'snack' ? 'Snack' : LM.SLOT_LABEL[gr.e.slot]) + ', ' + R(gr.t.kcal) + ' cal, ' + R(gr.t.p) + ' g protein' + (gr.adds.length ? ', with sides' : '') + '</small></div>' + choiceHtml(k, i, gr) + '</div>';
+  }).join('');
+}
+/* How closely the plan was followed on a day: planned meals eaten, skipped, and not recorded. */
+function adherence(k) {
+  if (!plan || plan.error || k > today() || (planStart && k < planStart)) return null;
+  const planned = mealGroups(planDayFor(k)).length, list = LOG[k] || [];
+  const eaten = Math.min(planned, list.filter((e) => e.src === 'plan').length), skipped = Math.min(planned - eaten, list.filter((e) => e.src === 'skip').length);
+  return { planned: planned, eaten: eaten, skipped: skipped, open: planned - eaten - skipped };
+}
+function adherenceTiles(a) {
+  return '<div class="adh"><div class="tile"><b>' + a.eaten + '</b><span>planned meals eaten</span></div><div class="tile"><b>' + a.skipped + '</b><span>skipped</span></div><div class="tile"><b>' + a.open + '</b><span>not recorded</span></div></div>';
+}
+function dateNav(k, step, label) {
+  return '<div class="datenav"><button type="button" data-' + step + '="-1" aria-label="Previous day">‹</button><b>' + esc(label) + '</b><button type="button" data-' + step + '="1" aria-label="Next day"' + (k >= today() ? ' disabled' : '') + '>›</button></div>';
 }
 let FOODS = null;
 function foods() {
@@ -1390,27 +1433,28 @@ function heroHtml(k, title) {
 }
 function loggedList(k, editable) {
   const list = LOG[k] || [];
-  if (!list.length) return '<div class="soft">Nothing logged ' + (k === today() ? 'yet today' : 'for this day') + '.</div>';
+  if (!list.filter((e) => e.src !== 'skip').length) return '<div class="soft">Nothing logged ' + (k === today() ? 'yet today' : 'for this day') + '.</div>';
   return '<div class="card" style="padding:6px 18px">' + list.map((e, i) => {
+    if (e.src === 'skip') return '';
     const q = e.q || 1;
     return '<div class="logrow"><div class="logrow-main"><b>' + esc(e.name) + '</b><small>' + R(e.k * q) + ' cal, ' + R(e.p * q) + ' g protein, ' + R(e.c * q) + ' g carbs, ' + R(e.f * q) + ' g fat</small></div>' +
       (editable ? '<div class="step">' + (e.src === 'plan' ? '' : '<button type="button" data-q="' + i + ':-1" aria-label="Less">&minus;</button><span>' + q + '×</span><button type="button" data-q="' + i + ':1" aria-label="More">+</button>') + '<button type="button" data-del="' + i + '" aria-label="Remove ' + esc(e.name) + '">×</button></div>' : '') + '</div>';
   }).join('') + '</div>';
 }
 function viewToday() {
-  const k = today(), di = planDayFor(k), groups = mealGroups(di), logged = LOG[k] || [];
+  const k = cur(), isToday = k === today(), di = planDayFor(k), logged = (LOG[k] || []).filter((e) => e.src !== 'skip');
   let h = '<div class="lead" style="margin-bottom:14px"><h1>' + (S.name ? 'Hi ' + esc(S.name) : 'Today') + '</h1></div>';
   if (!storageOk) h += '<div class="notice">This browser is not saving data, so your log will be lost when you close the page. Turn off private browsing, or open the page in Chrome or Safari.</div>';
+  h += dateNav(k, 'logshift', niceDate(k));
   h += heroHtml(k, dparse(k).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }));
-  h += '<div class="h2row"><h2>Today’s plan</h2><span>Plan day ' + (di + 1) + ' of ' + plan.days.length + '</span></div>';
-  groups.forEach((gr, i) => {
-    const on = logged.some((x) => x.pid === gr.pid), x = gr.e.item;
-    h += '<div class="todo' + (on ? ' done' : '') + '">' + pic(x) + '<div class="todo-main"><b>' + esc(x.name) + '</b><small>' + (gr.e.slot === 'snack' ? 'Snack' : LM.SLOT_LABEL[gr.e.slot]) + ', ' + R(gr.t.kcal) + ' cal, ' + R(gr.t.p) + ' g protein' + (gr.adds.length ? ', with sides' : '') + '</small></div>' +
-      '<button type="button" class="eat" data-eat="' + i + '" aria-pressed="' + on + '">' + (on ? 'Eaten ✓' : 'I ate this') + '</button></div>';
-  });
+  if (planStart && k < planStart) h += '<div class="soft">Your plan started on ' + dparse(planStart).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + ', so there are no planned meals for this day. You can still log what you ate.</div>';
+  else {
+    h += '<div class="h2row"><h2>' + (isToday ? 'Today’s plan' : 'Planned meals') + '</h2><span>Plan day ' + (di + 1) + ' of ' + plan.days.length + '</span></div>';
+    h += '<p class="hint" style="margin:-4px 0 10px;color:var(--ink-2);font-size:14px">Tap one for each meal. Tap it again to clear it.</p>' + plannedRows(k);
+  }
   h += '<div class="h2row"><h2>Ate something else?</h2></div><div class="card"><label class="f" for="q">Search foods and recipes</label><input class="inp" id="q" placeholder="Try chicken, banana, Prima" autocomplete="off" value="' + esc(query) + '"><div id="results">' + resultsHtml() + '</div>' +
     '<div style="margin-top:14px">' + (manualOpen ? manualForm() : '<button type="button" class="btn small" id="openManual">Enter numbers from my photo app</button>') + '</div></div>';
-  h += '<div class="h2row"><h2>Logged today</h2><span>' + logged.length + (logged.length === 1 ? ' item' : ' items') + '</span></div>' + loggedList(k, true);
+  h += '<div class="h2row"><h2>' + (isToday ? 'Logged today' : 'Logged ' + esc(niceDate(k).toLowerCase())) + '</h2><span>' + logged.length + (logged.length === 1 ? ' item' : ' items') + '</span></div>' + loggedList(k, true);
   return h;
 }
 function resultsHtml() {
@@ -1428,10 +1472,12 @@ function weekStats(end) {
   const keys = weekKeys(end), days = keys.map((k) => ({ k: k, t: totalsOf(k) })), logged = days.filter((d) => d.t.n > 0), n = logged.length;
   const avg = { kcal: 0, p: 0, c: 0, f: 0 };
   logged.forEach((d) => { avg.kcal += d.t.kcal / n; avg.p += d.t.p / n; avg.c += d.t.c / n; avg.f += d.t.f / n; });
-  return { days: days, n: n, avg: avg, calDays: logged.filter((d) => near(d.t.kcal, target.kcal, 0.10)).length, proDays: logged.filter((d) => d.t.p >= target.p * 0.9).length };
+  const ad = { planned: 0, eaten: 0, skipped: 0, open: 0, days: 0 };
+  keys.forEach((k) => { const a = adherence(k); if (a) { ad.planned += a.planned; ad.eaten += a.eaten; ad.skipped += a.skipped; ad.open += a.open; ad.days++; } });
+  return { ad: ad, days: days, n: n, avg: avg, calDays: logged.filter((d) => near(d.t.kcal, target.kcal, 0.10)).length, proDays: logged.filter((d) => d.t.p >= target.p * 0.9).length };
 }
 function insight(st) {
-  if (!st.n) return ['Start logging', 'Tap “I ate this” on the Today tab after each meal. Your dashboard fills in as you go.'];
+  if (!st.n) return ['Start logging', 'Tap “I ate this” or “Skipped it” on each planned meal. Your dashboard fills in as you go.'];
   const a = st.avg, gaps = [['protein', (a.p - target.p) / target.p, R(a.p), target.p, ' g'], ['calories', (a.kcal - target.kcal) / target.kcal, R(a.kcal), target.kcal, ''], ['carbs', (a.c - target.c) / Math.max(target.c, 40), R(a.c), target.c, ' g'], ['fat', (a.f - target.f) / Math.max(target.f, 30), R(a.f), target.f, ' g']];
   if (gaps[0][1] < -0.10) return ['Protein is your biggest gap', 'You are averaging ' + gaps[0][2] + ' g against a goal of ' + target.p + ' g. Add a protein side or a bar to one meal a day.'];
   gaps.sort((x, y) => Math.abs(y[1]) - Math.abs(x[1])); const g = gaps[0];
@@ -1443,8 +1489,9 @@ function shareText(st, end) {
   l.push((S.name ? S.name + ', ' : '') + 'week of ' + dparse(keys[0]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' to ' + dparse(keys[6]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
   l.push('Goal: ' + target.kcal + ' cal, ' + target.p + ' g protein, ' + target.c + ' g carbs, ' + target.f + ' g fat');
   l.push('Average on ' + st.n + ' logged days: ' + R(a.kcal) + ' cal, ' + R(a.p) + ' g protein, ' + R(a.c) + ' g carbs, ' + R(a.f) + ' g fat');
+  if (st.ad.days) l.push('Planned meals: ' + st.ad.eaten + ' eaten, ' + st.ad.skipped + ' skipped, ' + st.ad.open + ' not recorded, of ' + st.ad.planned);
   l.push('Calories within 10% of goal: ' + st.calDays + ' of ' + st.n + ' days. Protein goal met: ' + st.proDays + ' of ' + st.n + ' days.');
-  st.days.forEach((d) => l.push(dparse(d.k).toLocaleDateString('en-US', { weekday: 'short' }) + ': ' + (d.t.n ? R(d.t.kcal) + ' cal, P ' + R(d.t.p) + ', C ' + R(d.t.c) + ', F ' + R(d.t.f) : 'not logged')));
+  st.days.forEach((d) => l.push(dparse(d.k).toLocaleDateString('en-US', { weekday: 'short' }) + ': ' + (d.t.n ? R(d.t.kcal) + ' cal, P ' + R(d.t.p) + ', C ' + R(d.t.c) + ', F ' + R(d.t.f) : 'not logged') + (adherence(d.k) ? ' | planned meals: ' + adherence(d.k).eaten + ' eaten, ' + adherence(d.k).skipped + ' skipped' : '')));
   return l.join('\n');
 }
 function viewDash() {
@@ -1460,12 +1507,15 @@ function viewDash() {
       const hits = [near(t.kcal, target.kcal, 0.10), t.p >= target.p * 0.9, near(t.c, target.c, 0.15) || Math.abs(t.c - target.c) <= 8, near(t.f, target.f, 0.15) || Math.abs(t.f - target.f) <= 8].filter(Boolean).length;
       h += '<div class="insight"><b>' + hits + ' of 4 goals hit</b>' + (hits === 4 ? 'Calories, protein, carbs, and fat all landed in range.' : (t.p < target.p * 0.9 ? 'Protein came in ' + R(target.p - t.p) + ' g short. ' : '') + (t.kcal > target.kcal * 1.1 ? 'Calories ran ' + R(t.kcal - target.kcal) + ' over. ' : t.kcal < target.kcal * 0.9 ? 'Calories came in ' + R(target.kcal - t.kcal) + ' under. ' : '')) + '</div>';
     }
+    const ad = adherence(end);
+    if (ad) h += '<div class="h2row"><h2>Planned meals</h2><span>Tap to record</span></div>' + adherenceTiles(ad) + plannedRows(end);
     h += '<div class="h2row"><h2>What you ate</h2></div>' + loggedList(end, false);
     return h;
   }
   const st = weekStats(end), keys = weekKeys(end), ins = insight(st);
   h += '<div class="datenav"><button type="button" data-shift="-7" aria-label="Previous week">‹</button><b>' + dparse(keys[0]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' to ' + dparse(keys[6]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</b><button type="button" data-shift="7" aria-label="Next week"' + (atToday ? ' disabled' : '') + '>›</button></div>';
   h += '<div class="insight"><b>' + esc(ins[0]) + '</b>' + esc(ins[1]) + '</div>';
+  if (st.ad.days) h += '<div class="h2row" style="margin-top:4px"><h2>Following the plan</h2><span>' + st.ad.planned + ' planned meals</span></div>' + adherenceTiles(st.ad);
   h += '<div class="tiles"><div class="tile"><b>' + st.n + ' of 7</b><span>days logged</span></div><div class="tile"><b>' + st.calDays + '</b><span>days calories on goal</span></div><div class="tile"><b>' + st.proDays + '</b><span>days protein goal met</span></div></div>';
   const max = Math.max(target.kcal * 1.25, ...st.days.map((d) => d.t.kcal)), tl = (target.kcal / max) * 100;
   h += '<div class="card"><h2>Calories each day</h2><p class="hint" style="margin-bottom:0">The dashed line is your goal of ' + target.kcal.toLocaleString() + '.</p><div class="chart" role="img" aria-label="Calories eaten each day compared with the goal">' +
@@ -1519,7 +1569,7 @@ function howHtml() {
     '<h3>Your plan lives on this device</h3><p>Your plan and food log are saved in this browser, on this phone or computer. Nothing is sent to Dr. Lazarus or anyone else unless you tap share.</p>' +
     '<h3>Come back the same way every time</h3><ul><li>Use the same link in the same browser. Chrome or Safari work best.</li><li>Add it to your home screen so it opens like an app. On iPhone, tap Share, then Add to Home Screen. On Android, tap the menu, then Add to Home screen.</li><li>A different browser, a different device, or a private window starts empty.</li></ul>' +
     '<h3>What can erase it</h3><ul><li>Clearing your browser history or site data.</li><li>On iPhone, not opening it for about a week. Open it at least every few days.</li></ul>' +
-    '<h3>Using it day to day</h3><ul><li><b>Today</b> is where you log. Tap “I ate this” after a planned meal, or search and add anything else.</li><li><b>My plan</b> shows every day. Use “Swap for me” for a new idea or “Choose my own” to pick a specific meal, such as a protein shake for breakfast.</li><li><b>Dashboard</b> shows your day and your week against your goals, and lets you send your week to Dr. Lazarus.</li></ul>' +
+    '<h3>Using it day to day</h3><ul><li><b>Today</b> is where you log. For each planned meal tap “I ate this” or “Skipped it”, or search and add anything else. Use the arrows to fill in an earlier day.</li><li><b>My plan</b> shows every day. Use “Swap for me” for a new idea or “Choose my own” to pick a specific meal, such as a protein shake for breakfast.</li><li><b>Dashboard</b> shows your day and your week against your goals, and lets you send your week to Dr. Lazarus.</li></ul>' +
     '<h3>Good to know</h3><ul><li><b>Start over</b>, at the top of every screen, lets you change your answers, build a new plan, or erase everything.</li><li>Building a new plan replaces this one. Your food log stays.</li><li>You need a connection to open the page. After it loads, it works without one.</li><li>Calories and macros are estimates.</li></ul>' +
     '<button type="button" class="btn small" id="howOk" style="margin-top:8px">Got it</button></div></details>';
 }
@@ -1604,17 +1654,18 @@ document.addEventListener('click', (ev) => {
   if (t.dataset.pick && chooser) { const item = pickList()[+t.dataset.pick]; if (chooser.idx === 'add') LM.addExtra(plan, chooser.day, item); else LM.chooseEntry(plan, chooser.day, chooser.idx, item); chooser = null; savePlan(); return render(true); }
   if (t.dataset.remove) { const p = t.dataset.remove.split(':'); LM.removeEntry(plan, +p[0], +p[1]); chooser = null; savePlan(); return render(true); }
   if (t.id === 'howOk') { try { localStorage.setItem('lm_how_seen', '1'); } catch (e) {} const d = t.closest('details'); if (d) d.open = false; return; }
-  if (t.dataset.tab) { chooser = null; tab = t.dataset.tab; if (tab === 'plan') dayIdx = planDayFor(today()); if (tab === 'dash') dashDate = null; query = ''; manualOpen = false; return render(); }
-  if (t.dataset.eat) { logPlanMeal(today(), +t.dataset.eat); return render(true); }
-  if (t.dataset.add) { const x = foods()[+t.dataset.add], k = today(); LOG[k] = LOG[k] || []; LOG[k].push({ name: x.name + ', ' + x.por, k: x.k, p: x.p, c: x.c, f: x.f, q: 1, src: 'food' }); saveLog(); query = ''; return render(true); }
-  if (t.dataset.q) { const p = t.dataset.q.split(':'), e = (LOG[today()] || [])[+p[0]]; if (e) { e.q = Math.max(0.5, Math.min(6, (e.q || 1) + 0.5 * +p[1])); saveLog(); } return render(true); }
-  if (t.dataset.del) { (LOG[today()] || []).splice(+t.dataset.del, 1); saveLog(); return render(true); }
+  if (t.dataset.tab) { chooser = null; logDate = null; tab = t.dataset.tab; if (tab === 'plan') dayIdx = planDayFor(today()); if (tab === 'dash') dashDate = null; query = ''; manualOpen = false; return render(); }
+  if (t.dataset.meal) { const p = t.dataset.meal.split('|'); setMeal(p[0], +p[1], p[2]); return render(true); }
+  if (t.dataset.logshift) { const nx = addDays(cur(), +t.dataset.logshift), lo = addDays(today(), -30); logDate = nx >= today() ? null : (nx < lo ? lo : nx); query = ''; manualOpen = false; return render(true); }
+  if (t.dataset.add) { const x = foods()[+t.dataset.add], k = cur(); LOG[k] = LOG[k] || []; LOG[k].push({ name: x.name + ', ' + x.por, k: x.k, p: x.p, c: x.c, f: x.f, q: 1, src: 'food' }); saveLog(); query = ''; return render(true); }
+  if (t.dataset.q) { const p = t.dataset.q.split(':'), e = (LOG[cur()] || [])[+p[0]]; if (e) { e.q = Math.max(0.5, Math.min(6, (e.q || 1) + 0.5 * +p[1])); saveLog(); } return render(true); }
+  if (t.dataset.del) { (LOG[cur()] || []).splice(+t.dataset.del, 1); saveLog(); return render(true); }
   if (t.id === 'openManual') { manualOpen = true; render(true); const n = $('#m_name'); if (n) n.focus(); return; }
   if (t.id === 'closeManual') { manualOpen = false; return render(true); }
   if (t.id === 'saveManual') {
     const num = (id) => Math.max(0, Math.min(9999, parseFloat(($('#m_' + id).value || '').replace(/[^\d.]/g, '')) || 0)), kc = num('k');
     if (!kc) { $('#m_err').hidden = false; return; }
-    const k = today(); LOG[k] = LOG[k] || []; LOG[k].push({ name: ($('#m_name').value || '').trim().slice(0, 60) || 'My entry', k: kc, p: num('p'), c: num('c'), f: num('f'), q: 1, src: 'manual' }); saveLog(); manualOpen = false; return render(true);
+    const k = cur(); LOG[k] = LOG[k] || []; LOG[k].push({ name: ($('#m_name').value || '').trim().slice(0, 60) || 'My entry', k: kc, p: num('p'), c: num('c'), f: num('f'), q: 1, src: 'manual' }); saveLog(); manualOpen = false; return render(true);
   }
   if (t.dataset.mode) { dashMode = t.dataset.mode; return render(true); }
   if (t.dataset.shift) { const nx = addDays(dashDate || today(), +t.dataset.shift); dashDate = nx > today() ? today() : nx; return render(true); }
